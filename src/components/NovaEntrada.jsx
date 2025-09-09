@@ -38,12 +38,15 @@ export default function NovaEntrada({ token, onSuccess }) {
     setMembroBusca(termo);
     setMembroId(null);
     setMembros([]);
+    console.log("Busca termo:", termo);
     if (termo.length > 2 && tokenSalvo) {
       try {
         const lista = await membrosAPI.filtrarMembros(termo, tokenSalvo);
+        console.log("Retorno membrosAPI:", lista);
         setMembros(lista);
       } catch (err) {
         setError("Erro ao buscar membros");
+        console.error("Erro ao buscar membros:", err);
       }
     }
   };
@@ -236,46 +239,54 @@ export default function NovaEntrada({ token, onSuccess }) {
           padding: "0.7rem",
           borderRadius: 8,
           border: "1px solid #ced4da",
+          position: "relative",
         }}
         placeholder="Digite para buscar..."
       />
-      {membros.length > 0 && (
-        <ul
-          style={{
-            listStyle: "none",
-            margin: "0.5rem 0 0 0",
-            padding: 0,
-            background: "#fff",
-            border: "1px solid #e2e8f0",
-            borderRadius: 8,
-            boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
-            maxHeight: 160,
-            overflowY: "auto",
-          }}
-        >
-          {membros.map((m, idx) => (
-            <li
-              key={m.id}
-              style={{
-                padding: "0.85rem 1.2rem",
-                cursor: "pointer",
-                color: membroId === m.id ? "#0077b6" : "#2d3748",
-                background: membroId === m.id ? "#ebf8ff" : "#fff",
-                fontWeight: membroId === m.id ? "bold" : "normal",
-                borderBottom:
-                  idx === membros.length - 1 ? "none" : "1px solid #f1f5f9",
-              }}
-              onClick={() => {
-                setMembroId(m.id);
-                setMembroBusca(m.nome);
-                setMembros([]);
-              }}
-            >
-              {m.nome}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div style={{ position: "relative" }}>
+        {membros.length > 0 && (
+          <ul
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: "100%",
+              zIndex: 100,
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: 8,
+              boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
+              maxHeight: 160,
+              overflowY: "auto",
+            }}
+          >
+            {membros.map((m, idx) => (
+              <li
+                key={m.id}
+                style={{
+                  padding: "0.85rem 1.2rem",
+                  cursor: "pointer",
+                  color: membroId === m.id ? "#0077b6" : "#2d3748",
+                  background: membroId === m.id ? "#ebf8ff" : "#fff",
+                  fontWeight: membroId === m.id ? "bold" : "normal",
+                  borderBottom:
+                    idx === membros.length - 1 ? "none" : "1px solid #f1f5f9",
+                }}
+                onClick={() => {
+                  setMembroId(m.id);
+                  setMembroBusca(m.nome);
+                  setMembros([]);
+                }}
+              >
+                {m.nome}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <button
         type="submit"
         disabled={loading}

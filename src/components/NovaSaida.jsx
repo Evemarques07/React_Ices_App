@@ -19,9 +19,28 @@ export default function NovaSaida({ token, onSuccess }) {
   const [valor, setValor] = useState("");
   const [data, setData] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [membroBusca, setMembroBusca] = useState("");
+  const [membros, setMembros] = useState([]);
+  const [membroId, setMembroId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  // Busca membros conforme digitação
+  const handleBuscaChange = async (e) => {
+    const termo = e.target.value;
+    setMembroBusca(termo);
+    setMembroId(null);
+    setMembros([]);
+    if (termo.length > 2 && tokenSalvo) {
+      try {
+        const { membrosAPI } = await import("../services/api");
+        const lista = await membrosAPI.filtrarMembros(termo, tokenSalvo);
+        setMembros(lista);
+      } catch (err) {
+        setError("Erro ao buscar membros");
+      }
+    }
+  };
 
   let tokenSalvo = token;
   if (!tokenSalvo) {
@@ -41,11 +60,19 @@ export default function NovaSaida({ token, onSuccess }) {
         setLoading(false);
         return;
       }
+      if (
+        !membroId &&
+        !window.confirm("Nenhum membro selecionado. Deseja continuar?")
+      ) {
+        setLoading(false);
+        return;
+      }
       const saida = {
         tipo,
         valor: Number(valor),
         data,
         descricao,
+        membro_id: membroId || null,
       };
       let fn;
       if (caixa === "financeiro") fn = saidasAPI.criarSaidaFinanceira;
@@ -59,6 +86,9 @@ export default function NovaSaida({ token, onSuccess }) {
       setValor("");
       setData("");
       setDescricao("");
+      setMembroBusca("");
+      setMembros([]);
+      setMembroId(null);
       if (onSuccess) onSuccess();
     } catch (err) {
       setError(err.message || "Erro ao registrar saída.");
@@ -184,6 +214,57 @@ export default function NovaSaida({ token, onSuccess }) {
         }}
         placeholder="Opcional"
       />
+      <label style={{ fontWeight: 600 }}>Membro (Opcional)</label>
+      <input
+        type="text"
+        value={membroBusca}
+        onChange={handleBuscaChange}
+        style={{
+          padding: "0.7rem",
+          borderRadius: 8,
+          border: "1px solid #ced4da",
+        }}
+        placeholder="Digite para buscar..."
+      />
+      {membros.length > 0 && (
+        <ul
+          style={{
+            listStyle: "none",
+            margin: "0.5rem 0 0 0",
+            padding: 0,
+            background: "#fff",
+            border: "1px solid #e2e8f0",
+            borderRadius: 8,
+            boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
+            maxHeight: 160,
+            overflowY: "auto",
+            zIndex: 1,
+            position: "relative",
+          }}
+        >
+          {membros.map((m, idx) => (
+            <li
+              key={m.id}
+              style={{
+                padding: "0.85rem 1.2rem",
+                cursor: "pointer",
+                color: membroId === m.id ? "#0077b6" : "#2d3748",
+                background: membroId === m.id ? "#ebf8ff" : "#fff",
+                fontWeight: membroId === m.id ? "bold" : "normal",
+                borderBottom:
+                  idx === membros.length - 1 ? "none" : "1px solid #f1f5f9",
+              }}
+              onClick={() => {
+                setMembroId(m.id);
+                setMembroBusca(m.nome);
+                setMembros([]);
+              }}
+            >
+              {m.nome}
+            </li>
+          ))}
+        </ul>
+      )}
       <button
         type="submit"
         disabled={loading}

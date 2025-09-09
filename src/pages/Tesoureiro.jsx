@@ -7,9 +7,8 @@ const styles = {
   mainContainer: {
     fontFamily:
       '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    maxWidth: "1200px",
-    width: "96%",
-    margin: "2.5rem auto",
+    // maxWidth: "1200px",
+    width: "100%",
     backgroundColor: "#f8f9fa", 
     borderRadius: "18px",
     boxShadow: "0 10px 30px rgba(0, 100, 150, 0.08)",
