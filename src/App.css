@@ -1,0 +1,157 @@
+/* Garantir box-sizing global para evitar overflow */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+body,
+#root {
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+  background: #f6fafd;
+  color: #222;
+}
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  /* Removido display flex para não forçar centralização global */
+}
+
+.login-container,
+.container-principal {
+  width: 100%;
+  max-width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0097d822;
+  padding: 2rem 1.2rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0097d822;
+  padding: 2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.container-principal {
+  width: 100%;
+  max-width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0097d822;
+  padding: 2rem 1.2rem;
+  /* Removido display flex para não interferir em grids internos */
+}
+
+.login-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: small;
+}
+.login-form input {
+  padding: 0.5rem;
+  border: 1px solid #375b6b62;
+  border-radius: 4px;
+  font-size: small;
+  width: 100%;
+  box-sizing: border-box;
+}
+.login-form button {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 4px;
+  background: #0097d8;
+  color: #fff;
+  font-size: small;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+.login-form .error {
+  color: #d8000c;
+  background: #ffd2d2;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  font-size: small;
+}
+.home-container h2 {
+  color: #0097d8;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+.home-container p {
+  font-size: small;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 600px) {
+  .login-container,
+  .home-container {
+    max-width: 98vw;
+    margin: 1rem auto;
+    padding: 1rem 0.3rem;
+  }
+  header {
+    font-size: x-small;
+    padding: 0.3rem;
+  }
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}

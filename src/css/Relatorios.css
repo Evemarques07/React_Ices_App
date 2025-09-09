@@ -1,0 +1,385 @@
+/* --- Estilos da Página de Relatórios (Encapsulados) --- */
+
+/* A classe raiz garante que nada fora dela seja afetado */
+.relatorios-page {
+  width: 100%;
+}
+
+.relatorios-page h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  font-size: 2rem;
+}
+
+/* --- Formulário de Busca --- */
+.relatorios-page .report-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.relatorios-page .form-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.relatorios-page .form-group label {
+  font-weight: 500;
+  color: #555;
+}
+
+.relatorios-page .form-input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 120px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.relatorios-page .form-input:focus {
+  outline: none;
+  border-color: #0097d8;
+  box-shadow: 0 0 0 3px rgba(0, 151, 216, 0.2);
+}
+
+.relatorios-page .form-button {
+  background: #0097d8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.relatorios-page .form-button:hover {
+  background-color: #007ab0;
+  transform: translateY(-2px);
+}
+
+.relatorios-page .form-button:disabled {
+  background-color: #a0a0a0;
+  cursor: not-allowed;
+}
+
+/* --- Conteúdo do Relatório --- */
+.relatorios-page .report-period {
+  text-align: center;
+  color: #4a5568;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* --- Grid de Resumo (Highlights) --- */
+.relatorios-page .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.relatorios-page .summary-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  border-left: 5px solid;
+}
+
+.relatorios-page .summary-card__icon {
+  flex-shrink: 0;
+}
+
+.relatorios-page .summary-card__details {
+  display: flex;
+  flex-direction: column;
+}
+
+.relatorios-page .summary-card__title {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.relatorios-page .summary-card__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+/* Cores dos cards de resumo */
+.relatorios-page .summary-card.income {
+  border-color: #28a745;
+}
+.relatorios-page .summary-card.income .summary-card__icon {
+  color: #28a745;
+}
+
+.relatorios-page .summary-card.expense {
+  border-color: #dc3545;
+}
+.relatorios-page .summary-card.expense .summary-card__icon {
+  color: #dc3545;
+}
+
+.relatorios-page .summary-card.balance.positive {
+  border-color: #17a2b8;
+}
+.relatorios-page .summary-card.balance.positive .summary-card__icon {
+  color: #17a2b8;
+}
+.relatorios-page .summary-card.balance.negative {
+  border-color: #ffc107;
+}
+.relatorios-page .summary-card.balance.negative .summary-card__icon {
+  color: #ffc107;
+}
+
+.relatorios-page .summary-card.final-balance {
+  border-color: #6f42c1;
+}
+.relatorios-page .summary-card.final-balance .summary-card__icon {
+  color: #6f42c1;
+}
+
+/* --- Seções do Relatório (Financeiro, Missões, etc.) --- */
+.relatorios-page .report-section {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.relatorios-page .report-section__header {
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.relatorios-page .report-section__header .section-icon {
+  color: #0097d8;
+}
+.relatorios-page .report-section__header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #343a40;
+}
+.relatorios-page .report-section__header .saldo-anterior {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.relatorios-page .report-section__body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.relatorios-page .details-block h5 {
+  font-size: 1.1rem;
+  color: #495057;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+}
+
+.relatorios-page .breakdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.relatorios-page .breakdown-list li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #555;
+}
+.relatorios-page .breakdown-list li strong {
+  font-weight: 600;
+  color: #333;
+}
+
+/* --- Tabela de Transações (para DESKTOP) --- */
+.relatorios-page .table-container {
+  overflow-x: auto;
+}
+.relatorios-page .transactions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.relatorios-page .transactions-table th,
+.relatorios-page .transactions-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.relatorios-page .transactions-table thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+.relatorios-page .transactions-table tbody tr:nth-of-type(odd) {
+  background-color: #fdfdfe;
+}
+
+.relatorios-page .transactions-table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.relatorios-page .transactions-table .currency {
+  text-align: right;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* --- Lista de Transações em Cards (para MOBILE) --- */
+.relatorios-page .transactions-list-container {
+  display: none; /* ESCONDIDO POR PADRÃO */
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.relatorios-page .transaction-card {
+  background-color: #fdfdfe;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #0097d8;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.relatorios-page .transaction-card__main {
+  display: flex;
+  flex-direction: column;
+}
+
+.relatorios-page .transaction-card__description {
+  font-weight: 600;
+  color: #343a40;
+  font-size: 0.95rem;
+}
+
+.relatorios-page .transaction-card__type {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.relatorios-page .transaction-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.relatorios-page .transaction-card__date {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.relatorios-page .transaction-card__value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #dc3545; /* Cor vermelha para saídas */
+}
+
+/* --- Mensagens e Estados --- */
+.relatorios-page .loading-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #555;
+}
+.relatorios-page .error-message {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #d8000c;
+  background-color: #ffd2d2;
+  border-radius: 8px;
+}
+.relatorios-page .no-data-message {
+  color: #888;
+  font-style: italic;
+}
+
+/* --- Media Queries para Responsividade --- */
+
+/* Ponto de troca: Tabela -> Cards */
+@media (max-width: 820px) {
+  /* Esconde a tabela */
+  .relatorios-page .table-container {
+    display: none;
+  }
+
+  /* Mostra a lista de cards */
+  .relatorios-page .transactions-list-container {
+    display: flex;
+  }
+}
+
+/* Telas de tablet */
+@media (max-width: 992px) {
+  .relatorios-page .report-section__body {
+    grid-template-columns: 1fr; /* Colunas empilhadas */
+  }
+}
+
+/* Telas de celular */
+@media (max-width: 600px) {
+  .relatorios-page h2 {
+    font-size: 1.5rem;
+  }
+  .relatorios-page .report-period {
+    font-size: 1.2rem;
+  }
+  .relatorios-page .report-form {
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: stretch;
+  }
+  .relatorios-page .form-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .relatorios-page .report-section__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  .relatorios-page .report-section__header .saldo-anterior {
+    margin-left: 0;
+  }
+}

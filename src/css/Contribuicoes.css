@@ -1,0 +1,303 @@
+/* Contribuicoes.css */
+
+/* Variáveis CSS para cores e sombras */
+:root {
+  --primary-color: #007bff; /* Azul vibrante */
+  --secondary-color: #6c757d; /* Cinza médio */
+  --text-color: #333;
+  --light-gray: #f8f9fa;
+  --border-color: #dee2e6;
+  --card-bg: #fff;
+  --shadow-sm: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  --shadow-md: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+    rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+
+  /* Cores específicas para tipos de contribuição */
+  --dizimo-color: #28a745; /* Verde */
+  --oferta-comum-color: #ffc107; /* Amarelo */
+  --compromisso-fe-color: #fd7e14; /* Laranja */
+  --nossa-casa-color: #6f42c1; /* Roxo */
+  --oferta-especial-color: #17a2b8; /* Azul claro */
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--light-gray);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.contribuicoes-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+}
+
+.main-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.main-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.loading-message,
+.error-message,
+.no-data-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.8rem;
+  color: var(--secondary-color);
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  color: #dc3545; /* Vermelho para erros */
+  background-color: #fdd;
+  border: 1px solid #dc3545;
+}
+
+.filter-buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.filter-button,
+.clear-filter-button {
+  padding: 10px 20px;
+  border: 2px solid var(--primary-color);
+  border-radius: 25px;
+  background-color: transparent;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-button:hover:not(.active) {
+  background-color: var(--primary-color);
+  color: var(--card-bg);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.filter-button.active {
+  background-color: var(--primary-color);
+  color: var(--card-bg);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.clear-filter-button {
+  background-color: var(--light-gray);
+  color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.clear-filter-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--card-bg);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.contribution-category {
+  margin-bottom: 40px;
+}
+
+.category-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid; /* Cor definida pelas classes de tipo */
+  display: inline-block;
+  color: var(--text-color);
+}
+
+/* Cores dos títulos de categoria */
+.category-title.dizimo {
+  border-color: var(--dizimo-color);
+}
+.category-title.oferta-comum {
+  border-color: var(--oferta-comum-color);
+}
+.category-title.compromisso-fe {
+  border-color: var(--compromisso-fe-color);
+}
+.category-title.nossa-casa {
+  border-color: var(--nossa-casa-color);
+}
+.category-title.oferta-especial {
+  border-color: var(--oferta-especial-color);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border-left: 5px solid; /* Cor definida pelas classes de tipo */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Cores da borda esquerda do card */
+.card.dizimo {
+  border-left-color: var(--dizimo-color);
+}
+.card.oferta-comum {
+  border-left-color: var(--oferta-comum-color);
+}
+.card.compromisso-fe {
+  border-left-color: var(--compromisso-fe-color);
+}
+.card.nossa-casa {
+  border-left-color: var(--nossa-casa-color);
+}
+.card.oferta-especial {
+  border-left-color: var(--oferta-especial-color);
+}
+
+.card-header {
+  padding: 15px 20px;
+  background-color: #e9ecef; /* Um cinza claro para o cabeçalho */
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary-color); /* Cor principal para o valor */
+}
+
+.card.dizimo .card-value {
+  color: var(--dizimo-color);
+}
+.card.oferta-comum .card-value {
+  color: var(--oferta-comum-color);
+}
+.card.compromisso-fe .card-value {
+  color: var(--compromisso-fe-color);
+}
+.card.nossa-casa .card-value {
+  color: var(--nossa-casa-color);
+}
+.card.oferta-especial .card-value {
+  color: var(--oferta-especial-color);
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1; /* Para que o body ocupe o espaço restante */
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--secondary-color);
+}
+
+.meta-icon {
+  color: var(--primary-color); /* Ícones com a cor principal */
+}
+
+.card.dizimo .meta-icon {
+  color: var(--dizimo-color);
+}
+.card.oferta-comum .meta-icon {
+  color: var(--oferta-comum-color);
+}
+.card.compromisso-fe .meta-icon {
+  color: var(--compromisso-fe-color);
+}
+.card.nossa-casa .meta-icon {
+  color: var(--nossa-casa-color);
+}
+.card.oferta-especial .meta-icon {
+  color: var(--oferta-especial-color);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .contribuicoes-container {
+    margin: 20px auto;
+    padding: 20px;
+  }
+
+  .main-title {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+
+  .filter-buttons-container {
+    justify-content: flex-start;
+  }
+
+  .category-title {
+    font-size: 1.5rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr; /* Uma coluna em telas menores */
+  }
+}
+
+@media (max-width: 480px) {
+  .contribuicoes-container {
+    padding: 15px;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  .filter-button,
+  .clear-filter-button {
+    font-size: 0.85rem;
+    padding: 8px 15px;
+  }
+}
