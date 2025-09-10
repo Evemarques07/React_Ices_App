@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { entradasAPI, membrosAPI } from "../services/api";
+import { maskCurrency } from "../utils/format";
 
 const tiposPorCaixa = {
   financeiro: ["DÍZIMO", "OFERTA COMUM", "ENTRADA MEAN"],
@@ -71,7 +72,7 @@ export default function NovaEntrada({ token, onSuccess }) {
       }
       const entrada = {
         tipo,
-        valor: Number(valor),
+        valor: parseFloat(valor) / 100,
         data,
         descricao,
         membro_id: membroId || null,
@@ -104,14 +105,16 @@ export default function NovaEntrada({ token, onSuccess }) {
     <form
       onSubmit={handleSubmit}
       style={{
-        maxWidth: 420,
-        margin: "2rem auto",
+        width: "100vw",
+        maxWidth: "700px",
+        height: "100vh",
+        margin: "0 auto",
         background: "#f7fafc",
-        borderRadius: "16px",
-        boxShadow: "0 10px 30px rgba(0, 123, 182, 0.1)",
-        padding: "2.5rem",
-        border: "1px solid #e2e8f0",
-        maxHeight: "85vh",
+        borderRadius: 0,
+        boxShadow: "none",
+        padding: "0.5rem",
+        border: "none",
+        maxHeight: "100vh",
         overflowY: "auto",
         display: "flex",
         flexDirection: "column",
@@ -196,16 +199,19 @@ export default function NovaEntrada({ token, onSuccess }) {
       </select>
       <label style={{ fontWeight: 600 }}>Valor *</label>
       <input
-        type="number"
-        value={valor}
-        onChange={(e) => setValor(e.target.value)}
+        type="text"
+        value={maskCurrency(valor)}
+        onChange={(e) => {
+          const raw = e.target.value.replace(/\D/g, "");
+          setValor(raw);
+        }}
         style={{
           padding: "0.7rem",
           borderRadius: 8,
           border: "1px solid #ced4da",
         }}
-        min="0"
-        step="0.01"
+        inputMode="numeric"
+        placeholder="R$ 0,00"
       />
       <label style={{ fontWeight: 600 }}>Data *</label>
       <input

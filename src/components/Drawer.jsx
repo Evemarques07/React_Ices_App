@@ -31,7 +31,7 @@ const DrawerContainer = styled.aside`
   padding-top: 70px; /* Ajuste para o Header fixo */
 
   /* Estilos específicos para desktop */
-  @media (min-width: 768px) {
+  @media (min-width: 1020px) {
     left: 0; /* Sempre aberto em desktop */
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra mais sutil em desktop */
     width: 250px;
@@ -104,7 +104,7 @@ const CloseButton = styled.button`
   }
 
   /* Exibe apenas em telas menores */
-  @media (min-width: 768px) {
+  @media (min-width: 1020px) {
     display: none;
   }
 `;
@@ -122,7 +122,7 @@ const DrawerOverlay = styled.div`
   visibility: ${(props) => (props.open ? "visible" : "hidden")};
   transition: opacity 0.4s ease, visibility 0.4s ease;
 
-  @media (min-width: 768px) {
+  @media (min-width: 1020px) {
     display: none; /* Esconde em desktop */
   }
 `;
@@ -137,7 +137,7 @@ export default function Drawer({
   const handleNavigation = (newRoute) => {
     setRoute(newRoute);
     // Em desktop, não fechamos o drawer porque ele está sempre aberto
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 1020) {
       setOpen(false);
     }
   };

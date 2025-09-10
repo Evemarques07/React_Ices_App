@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { entradasAPI, saidasAPI, membrosAPI } from "../services/api";
 import { formatDate, formatCurrency } from "../utils/format";
+import { maskCurrency } from "../utils/format"; // Importa a função de máscara
 
 const styles = {
   container: {
@@ -300,7 +301,7 @@ export default function MovimentacoesFiltradas({ token }) {
       const mov = movimentacoes.find((m) => m.id === id);
       setEditFormData({
         tipo: mov.tipo || "",
-        valor: mov.valor || 0,
+        valor: mov.valor ? String(Math.round(mov.valor * 100)) : "0",
         data: mov.data || "",
         descricao: mov.descricao || "",
         membro_id: mov.membro_id || null,
@@ -749,14 +750,16 @@ export default function MovimentacoesFiltradas({ token }) {
                               <label style={editStyles.label}>Valor</label>
                               <input
                                 style={editStyles.input}
-                                type="number"
-                                value={editFormData.valor}
+                                type="text"
+                                value={maskCurrency(editFormData.valor)}
                                 onChange={(ev) =>
                                   setEditFormData({
                                     ...editFormData,
-                                    valor: ev.target.value,
+                                    valor: ev.target.value.replace(/\D/g, ""),
                                   })
                                 }
+                                inputMode="numeric"
+                                placeholder="R$ 0,00"
                               />
                             </div>
                             <div style={editStyles.formGroup}>

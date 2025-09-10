@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/api";
 import logo from "../assets/logo.png"; // Importe a logo
+import { maskCPF } from "../utils/format";
 
 export default function Login({ onLogin }) {
   const [cpf, setCpf] = useState("");
@@ -13,7 +14,9 @@ export default function Login({ onLogin }) {
     setLoading(true);
     setError("");
     try {
-      const data = await login({ username: cpf, password: senha });
+      // Remove pontos e traços do CPF antes de enviar
+      const cpfLimpo = cpf.replace(/\D/g, "");
+      const data = await login({ username: cpfLimpo, password: senha });
       onLogin(data);
     } catch (err) {
       setError(err.message);
@@ -130,12 +133,11 @@ export default function Login({ onLogin }) {
             <input
               type="text"
               id="cpf"
-              value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
+              value={cpf.length > 3 ? maskCPF(cpf) : cpf}
+              onChange={(e) => setCpf(e.target.value.replace(/\D/g, ""))}
               placeholder="Digite seu CPF (apenas números)"
               required
               minLength={11}
-              maxLength={11}
               style={styles.input}
             />
           </div>

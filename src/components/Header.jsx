@@ -51,7 +51,7 @@ const HamburgerButton = styled.button`
   }
 
   /* Responsividade para o botão do hambúrguer */
-  @media (min-width: 768px) {
+  @media (min-width: 1020px) {
     display: none; /* Esconde em telas maiores */
   }
 `;
@@ -92,7 +92,7 @@ const UserName = styled.div`
   text-overflow: ellipsis; /* Adiciona "..." se o nome for muito longo */
   max-width: 150px; /* Limite de largura para o nome */
 
-  @media (max-width: 480px) {
+  @media (max-width: 370px) {
     max-width: 100px; /* Reduz a largura em telas menores */
     font-size: 0.9rem;
   }
@@ -107,7 +107,7 @@ const UserRole = styled.div`
   text-overflow: ellipsis;
   max-width: 150px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 370px) {
     display: none; /* Esconde o cargo em telas muito pequenas */
   }
 `;
@@ -135,7 +135,7 @@ const LogoutButton = styled.button`
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 370px) {
     span {
       display: none; /* Esconde o texto "Sair" em telas muito pequenas */
     }

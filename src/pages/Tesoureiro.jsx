@@ -9,7 +9,7 @@ const styles = {
       '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     // maxWidth: "1200px",
     width: "100%",
-    backgroundColor: "#f8f9fa", 
+    backgroundColor: "#f8f9fa",
     borderRadius: "18px",
     boxShadow: "0 10px 30px rgba(0, 100, 150, 0.08)",
     padding: "3rem 2.5rem",
@@ -40,7 +40,7 @@ const styles = {
   },
 
   pageTitle: {
-    color: "#0056b3", 
+    color: "#0056b3",
     fontSize: "2.5rem",
     fontWeight: 700,
     textAlign: "center",
@@ -58,7 +58,7 @@ const styles = {
     color: "#6b7280",
     fontSize: "1.05rem",
     textAlign: "center",
-    marginBottom: "2rem", 
+    marginBottom: "2rem",
   },
 
   buttonGroup: {
@@ -105,18 +105,22 @@ const styles = {
 
   // --- Conteúdo do Modal (o formulário) ---
   modalContent: {
-    position: "relative",
-    backgroundColor: "#ffffff", // Fundo branco puro
-    borderRadius: "18px", // Bordas arredondadas
-    boxShadow: "0 15px 50px rgba(0, 0, 0, 0.2)", // Sombra mais intensa para o modal
-    padding: "2rem",
-    width: "90%", // Ocupa 90% da largura do overlay
-    maxWidth: "600px", // Aumenta o maxWidth para o modal
-    minHeight: "fit-content", // Ajusta a altura ao conteúdo
-    maxHeight: "90vh", // Limita a altura do modal para evitar overflow
-    overflowY: "auto", // Adiciona scroll se o conteúdo for muito longo
-    transform: "scale(0.95)", // Começa um pouco menor
-    animation: "modalFadeIn 0.3s forwards ease-out", // Animação de entrada (veja o keyframes no CSS global, se usar)
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    width: "100vw",
+    maxWidth: "700px",
+    margin: "0 auto",
+    minHeight: "100vh",
+    maxHeight: "100vh",
+    backgroundColor: "#fff",
+    borderRadius: 0,
+    boxShadow: "none",
+    padding: 0,
+    overflowY: "auto",
+    zIndex: 2100,
+    animation: "modalFadeIn 0.3s forwards ease-out",
   },
 
   // --- Botão Fechar do Modal ---
@@ -150,7 +154,7 @@ const styles = {
   },
 
   // --- Media Queries para responsividade ---
-  "@media (max-width: 768px)": {
+  "@media (max-width: 1020px)": {
     mainContainer: {
       width: "98%",
       margin: "1.5rem auto",
@@ -226,7 +230,10 @@ export default function Tesoureiro({ user }) {
       </p>
 
       <div style={styles.buttonGroup}>
-        <button onClick={() => openModal("entrada")} style={styles.actionButton}>
+        <button
+          onClick={() => openModal("entrada")}
+          style={styles.actionButton}
+        >
           Nova Entrada
         </button>
         <button onClick={() => openModal("saida")} style={styles.actionButton}>
@@ -241,10 +248,7 @@ export default function Tesoureiro({ user }) {
               &times; {/* Caractere 'X' para fechar */}
             </button>
             {modal === "entrada" && (
-              <NovaEntrada
-                token={user?.access_token}
-                onSuccess={closeModal}
-              />
+              <NovaEntrada token={user?.access_token} onSuccess={closeModal} />
             )}
             {modal === "saida" && (
               <NovaSaida token={user?.access_token} onSuccess={closeModal} />

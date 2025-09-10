@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { saidasAPI } from "../services/api";
+import { maskCurrency } from "../utils/format";
 
 const tiposPorCaixa = {
   financeiro: ["SAÍDA FIXA", "SAÍDA VARIÁVEL"],
@@ -69,7 +70,7 @@ export default function NovaSaida({ token, onSuccess }) {
       }
       const saida = {
         tipo,
-        valor: Number(valor),
+        valor: parseFloat(valor) / 100,
         data,
         descricao,
         membro_id: membroId || null,
@@ -101,15 +102,19 @@ export default function NovaSaida({ token, onSuccess }) {
     <form
       onSubmit={handleSubmit}
       style={{
-        maxWidth: 400,
+        width: "100vw",
+        maxWidth: "700px",
         margin: "0 auto",
-        padding: "2rem",
+        height: "100vh",
+        padding: "0.5rem",
         background: "#f8f9fa",
-        borderRadius: 12,
-        boxShadow: "0 4px 16px rgba(0,0,0,0.07)",
+        borderRadius: 0,
+        boxShadow: "none",
         display: "flex",
         flexDirection: "column",
         gap: "1.2rem",
+        maxHeight: "100vh",
+        overflowY: "auto",
       }}
     >
       <h2 style={{ color: "#005691", fontWeight: 700, fontSize: "1.3rem" }}>
@@ -180,16 +185,19 @@ export default function NovaSaida({ token, onSuccess }) {
       </select>
       <label style={{ fontWeight: 600 }}>Valor *</label>
       <input
-        type="number"
-        value={valor}
-        onChange={(e) => setValor(e.target.value)}
+        type="text"
+        value={maskCurrency(valor)}
+        onChange={(e) => {
+          const raw = e.target.value.replace(/\D/g, "");
+          setValor(raw);
+        }}
         style={{
           padding: "0.7rem",
           borderRadius: 8,
           border: "1px solid #ced4da",
         }}
-        min="0"
-        step="0.01"
+        inputMode="numeric"
+        placeholder="R$ 0,00"
       />
       <label style={{ fontWeight: 600 }}>Data *</label>
       <input
@@ -215,56 +223,62 @@ export default function NovaSaida({ token, onSuccess }) {
         placeholder="Opcional"
       />
       <label style={{ fontWeight: 600 }}>Membro (Opcional)</label>
-      <input
-        type="text"
-        value={membroBusca}
-        onChange={handleBuscaChange}
-        style={{
-          padding: "0.7rem",
-          borderRadius: 8,
-          border: "1px solid #ced4da",
-        }}
-        placeholder="Digite para buscar..."
-      />
-      {membros.length > 0 && (
-        <ul
+      <div style={{ position: "relative" }}>
+        <input
+          type="text"
+          value={membroBusca}
+          onChange={handleBuscaChange}
           style={{
-            listStyle: "none",
-            margin: "0.5rem 0 0 0",
-            padding: 0,
-            background: "#fff",
-            border: "1px solid #e2e8f0",
+            padding: "0.7rem",
             borderRadius: 8,
-            boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
-            maxHeight: 160,
-            overflowY: "auto",
-            zIndex: 1,
+            border: "1px solid #ced4da",
             position: "relative",
           }}
-        >
-          {membros.map((m, idx) => (
-            <li
-              key={m.id}
-              style={{
-                padding: "0.85rem 1.2rem",
-                cursor: "pointer",
-                color: membroId === m.id ? "#0077b6" : "#2d3748",
-                background: membroId === m.id ? "#ebf8ff" : "#fff",
-                fontWeight: membroId === m.id ? "bold" : "normal",
-                borderBottom:
-                  idx === membros.length - 1 ? "none" : "1px solid #f1f5f9",
-              }}
-              onClick={() => {
-                setMembroId(m.id);
-                setMembroBusca(m.nome);
-                setMembros([]);
-              }}
-            >
-              {m.nome}
-            </li>
-          ))}
-        </ul>
-      )}
+          placeholder="Digite para buscar..."
+        />
+        {membros.length > 0 && (
+          <ul
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: "100%",
+              zIndex: 100,
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              background: "#fff",
+              border: "1px solid #e2e8f0",
+              borderRadius: 8,
+              boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
+              maxHeight: 160,
+              overflowY: "auto",
+            }}
+          >
+            {membros.map((m, idx) => (
+              <li
+                key={m.id}
+                style={{
+                  padding: "0.85rem 1.2rem",
+                  cursor: "pointer",
+                  color: membroId === m.id ? "#0077b6" : "#2d3748",
+                  background: membroId === m.id ? "#ebf8ff" : "#fff",
+                  fontWeight: membroId === m.id ? "bold" : "normal",
+                  borderBottom:
+                    idx === membros.length - 1 ? "none" : "1px solid #f1f5f9",
+                }}
+                onClick={() => {
+                  setMembroId(m.id);
+                  setMembroBusca(m.nome);
+                  setMembros([]);
+                }}
+              >
+                {m.nome}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <button
         type="submit"
         disabled={loading}

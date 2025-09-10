@@ -99,7 +99,7 @@ function App() {
         )}
       </main>
       <style>{`
-        @media (min-width: 768px) {
+        @media (min-width: 1020px) {
           .main-content {
             padding-left: 30px;
           }
