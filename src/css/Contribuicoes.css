@@ -171,6 +171,7 @@ body {
   display: flex;
   flex-direction: column;
   border-left: 5px solid; /* Cor definida pelas classes de tipo */
+  min-height: 60px;
 }
 
 .card:hover {
@@ -196,7 +197,7 @@ body {
 }
 
 .card-header {
-  padding: 15px 20px;
+  padding: 8px 14px;
   background-color: #e9ecef; /* Um cinza claro para o cabeçalho */
   display: flex;
   justify-content: flex-end;
@@ -226,11 +227,11 @@ body {
 }
 
 .card-body {
-  padding: 20px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  flex-grow: 1; /* Para que o body ocupe o espaço restante */
+  gap: 6px;
+  flex-grow: 1;
 }
 
 .meta-item {

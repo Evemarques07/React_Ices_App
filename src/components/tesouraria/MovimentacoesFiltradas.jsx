@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { entradasAPI, saidasAPI, membrosAPI } from "../services/api";
-import { formatDate, formatCurrency } from "../utils/format";
-import { maskCurrency } from "../utils/format"; // Importa a função de máscara
+import { entradasAPI, saidasAPI, membrosAPI } from "../../services/api";
+import { formatDate, formatCurrency } from "../../utils/format";
+import { maskCurrency } from "../../utils/format"; // Importa a função de máscara
 
 const styles = {
   container: {
@@ -10,7 +10,7 @@ const styles = {
     background: "transparent", // Removido fundo branco
     borderRadius: 12,
     boxShadow: "none", // Remove sombra para não duplicar efeito
-    padding: "2.5rem 2rem",
+    // padding: "2.5rem 2rem",
     fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     color: "#333333",
   },
@@ -154,7 +154,7 @@ const styles = {
     borderRadius: 8,
     maxHeight: 200,
     overflowY: "auto",
-    marginTop: 4,
+    marginTop: "4.8rem", // Espaço maior abaixo do input
     zIndex: 100,
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
     listStyle: "none",
@@ -228,10 +228,31 @@ export default function MovimentacoesFiltradas({ token }) {
     tipo_movimento: "",
     tipo_caixa: "",
   });
+  const [membros, setMembros] = useState([]); // <-- movido para cima
+  // Ref para input e lista de autocomplete
+  const membroInputRef = useRef(null);
+  const autocompleteListRef = useRef(null);
+  // Fecha autocomplete ao clicar fora
+  useEffect(() => {
+    if (membros.length === 0) return;
+    function handleClickOutside(event) {
+      if (
+        membroInputRef.current &&
+        !membroInputRef.current.contains(event.target) &&
+        autocompleteListRef.current &&
+        !autocompleteListRef.current.contains(event.target)
+      ) {
+        setMembros([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [membros]);
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [membros, setMembros] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100); // You can adjust this
   const [totalItems, setTotalItems] = useState(0);
@@ -507,7 +528,7 @@ export default function MovimentacoesFiltradas({ token }) {
         style={{
           color: "#005691",
           marginBottom: "2rem",
-          fontSize: "1.8rem",
+          fontSize: "1rem",
           fontWeight: "700",
         }}
       >
@@ -532,6 +553,7 @@ export default function MovimentacoesFiltradas({ token }) {
             Membro
           </label>
           <input
+            ref={membroInputRef}
             name="membro_nome"
             id="membro_nome"
             value={filtro.membro_nome || ""}
@@ -556,7 +578,7 @@ export default function MovimentacoesFiltradas({ token }) {
             autoComplete="off"
           />
           {membros.length > 0 && (
-            <ul style={styles.autocompleteList}>
+            <ul style={styles.autocompleteList} ref={autocompleteListRef}>
               {membros.map((m) => (
                 <li
                   key={m.id}

@@ -33,6 +33,37 @@ export async function login({
 }
 
 export const membrosAPI = {
+  async criarMembro(
+    membro: {
+      nome: string;
+      data_nascimento: string;
+      telefone: string;
+      email: string;
+      endereco: string;
+      data_entrada: string;
+      ativo: boolean;
+      cpf: string;
+      foto: string;
+      tipo: string;
+      senha: string;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/membros/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(membro),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar membro");
+    }
+
+    return response.json();
+  },
   async getMembros(token: string, skip = 0, limit = 20) {
     const url = new URL(`${URL_BASE}/membros/`);
     url.searchParams.append("skip", skip.toString());
@@ -48,6 +79,21 @@ export const membrosAPI = {
 
     if (!response.ok) {
       throw new Error("Erro ao buscar membros");
+    }
+
+    return response.json();
+  },
+  async getMembroById(membro_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/membros/${membro_id}`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar membro");
     }
 
     return response.json();
@@ -70,7 +116,39 @@ export const membrosAPI = {
 
     return response.json();
   },
-};
+  async editarMembro(
+    membro_id: number,
+    dadosAtualizados: {
+      nome: string;
+      data_nascimento: string;
+      telefone: string;
+      email: string;
+      endereco: string;
+      data_entrada: string;
+      ativo: boolean;
+      cpf: string;
+      foto: string;
+      tipo: string;
+      senha: string;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/membros/${membro_id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dadosAtualizados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao atualizar membro");
+    }
+
+    return response.json();
+  },
+}
 
 export const entradasAPI = {
   async getEntradasPorMembro(membro_id: number, token: string) {
@@ -648,6 +726,51 @@ export const relatoriosAPI = {
     });
     if (!response.ok) {
       throw new Error("Erro ao buscar relatório financeiro resumido");
+    }
+    return response.json();
+  },
+};
+
+export const eventosAPI = {
+  async criarEvento(
+    evento: {
+      titulo: string;
+      descricao: string;
+      data_inicio: string;
+      data_fim: string;
+      ativo: boolean;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/eventos/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(evento),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar evento");
+    }
+
+    return response.json();
+  },
+  async listarEventos(token: string, skip = 0, limit = 20) {
+    const url = new URL(`${URL_BASE}/eventos/`);
+    url.searchParams.append("skip", skip.toString());
+    url.searchParams.append("limit", limit.toString());
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar eventos");
     }
     return response.json();
   },

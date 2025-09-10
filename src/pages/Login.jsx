@@ -4,6 +4,7 @@ import logo from "../assets/logo.png"; // Importe a logo
 import { maskCPF } from "../utils/format";
 
 export default function Login({ onLogin }) {
+  const [showSenha, setShowSenha] = useState(false);
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
@@ -141,19 +142,90 @@ export default function Login({ onLogin }) {
               style={styles.input}
             />
           </div>
-          <div>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
             <label htmlFor="senha" style={styles.label}>
               Senha
             </label>
             <input
-              type="password"
+              type={showSenha ? "text" : "password"}
               id="senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               placeholder="Digite sua senha"
               required
-              style={styles.input}
+              style={{
+                ...styles.input,
+                paddingRight: "2.7rem",
+                boxSizing: "border-box",
+                height: "48px",
+                lineHeight: "48px",
+                verticalAlign: "middle",
+              }}
             />
+            <button
+              type="button"
+              onClick={() => setShowSenha((v) => !v)}
+              style={{
+                position: "absolute",
+                top: "69%",
+                right: "0.7rem",
+                transform: "translateY(-50%)",
+                height: "32px",
+                width: "32px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 0,
+                margin: 0,
+                color: "#888",
+                opacity: 0.7,
+              }}
+              tabIndex={-1}
+              aria-label={showSenha ? "Ocultar senha" : "Mostrar senha"}
+            >
+              {showSenha ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <ellipse cx="12" cy="12" rx="7" ry="5" />
+                  <circle cx="12" cy="12" r="2.5" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <ellipse cx="12" cy="12" rx="7" ry="5" />
+                  <circle cx="12" cy="12" r="2.5" />
+                  <line x1="3" y1="21" x2="21" y2="3" />
+                </svg>
+              )}
+            </button>
           </div>
           <button type="submit" disabled={loading} style={styles.button}>
             {loading ? "Entrando..." : "Entrar"}

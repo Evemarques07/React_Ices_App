@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Routes from "./routes";
-import Drawer from "./components/Drawer";
-import Header from "./components/Header";
+import Drawer from "./components/utils/Drawer";
+import Header from "./components/utils/Header";
 import "./App.css";
 
 function decodeJWT(token) {
@@ -56,6 +56,9 @@ function App() {
   const autorizadoTesoureiro =
     cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro");
 
+  const autorizadoSecretario = cargos.includes("Secretario") || cargos.includes("Segundo_Secretario");
+
+
   return (
     <div className="app-root">
       {userInfo && (
@@ -72,6 +75,7 @@ function App() {
             open={drawerOpen}
             setOpen={setDrawerOpen}
             autorizadoTesoureiro={autorizadoTesoureiro}
+            autorizadoSecretario={autorizadoSecretario}
           />
         </>
       )}
@@ -94,6 +98,7 @@ function App() {
               route={route}
               setRoute={setRoute}
               autorizadoTesoureiro={autorizadoTesoureiro}
+              autorizadoSecretario={autorizadoSecretario}
             />
           </div>
         )}

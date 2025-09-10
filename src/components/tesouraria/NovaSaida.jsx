@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { saidasAPI } from "../services/api";
-import { maskCurrency } from "../utils/format";
+import { saidasAPI } from "../../services/api";
+import { maskCurrency } from "../../utils/format";
 
 const tiposPorCaixa = {
   financeiro: ["SAÍDA FIXA", "SAÍDA VARIÁVEL"],
@@ -34,7 +34,7 @@ export default function NovaSaida({ token, onSuccess }) {
     setMembros([]);
     if (termo.length > 2 && tokenSalvo) {
       try {
-        const { membrosAPI } = await import("../services/api");
+        const { membrosAPI } = await import("../../services/api");
         const lista = await membrosAPI.filtrarMembros(termo, tokenSalvo);
         setMembros(lista);
       } catch (err) {
@@ -222,7 +222,7 @@ export default function NovaSaida({ token, onSuccess }) {
         }}
         placeholder="Opcional"
       />
-      <label style={{ fontWeight: 600 }}>Membro (Opcional)</label>
+      <label style={{ fontWeight: 600 }}>Contribuinte (Opcional)</label>
       <div style={{ position: "relative" }}>
         <input
           type="text"

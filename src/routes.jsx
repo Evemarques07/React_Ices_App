@@ -2,9 +2,16 @@ import Home from "./pages/Home";
 import Contribuicoes from "./pages/Contribuicoes";
 import Relatorios from "./pages/Relatorios";
 import Tesoureiro from "./pages/Tesoureiro";
+import Secretaria from "./pages/Secretaria";
+import CalendarioEventos from "./pages/CalendarioEventos";
 
-export default function Routes({ user, route, setRoute, autorizadoTesoureiro }) {
-
+export default function Routes({
+  user,
+  route,
+  setRoute,
+  autorizadoTesoureiro,
+  autorizadoSecretario,
+}) {
   if (!user) return null;
 
   return (
@@ -15,6 +22,10 @@ export default function Routes({ user, route, setRoute, autorizadoTesoureiro }) 
       {route === "tesoureiro" && autorizadoTesoureiro && (
         <Tesoureiro user={user} />
       )}
+      {route === "secretaria" && autorizadoSecretario && (
+        <Secretaria user={user} />
+      )}
+      {route === "calendario" && <CalendarioEventos />}
     </>
   );
 }

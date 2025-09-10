@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import NovaEntrada from "../components/NovaEntrada";
-import NovaSaida from "../components/NovaSaida";
-import MovimentacoesFiltradas from "../components/MovimentacoesFiltradas";
+import NovaEntrada from "../components/tesouraria/NovaEntrada";
+import NovaSaida from "../components/tesouraria/NovaSaida";
+import MovimentacoesFiltradas from "../components/tesouraria/MovimentacoesFiltradas";
 
 const styles = {
   mainContainer: {
@@ -12,7 +12,7 @@ const styles = {
     backgroundColor: "#f8f9fa",
     borderRadius: "18px",
     boxShadow: "0 10px 30px rgba(0, 100, 150, 0.08)",
-    padding: "3rem 2.5rem",
+    padding: "3rem 0.8rem",
     display: "flex",
     flexDirection: "column",
     gap: "2.5rem",
@@ -64,8 +64,8 @@ const styles = {
   buttonGroup: {
     display: "flex",
     flexWrap: "wrap",
-    gap: "1.5rem",
-    margin: "2.5rem 0",
+    gap: "0.8rem",
+    margin: "1rem 0",
     justifyContent: "center",
   },
   actionButton: {
@@ -146,11 +146,11 @@ const styles = {
 
   // --- Componentes listados (EntradasFinanceiras, etc.) ---
   sectionContainer: {
-    backgroundColor: "#ffffff",
-    borderRadius: "16px",
-    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.05)",
-    padding: "2.5rem",
-    marginBottom: "2rem", // Espaçamento entre as seções
+    // backgroundColor: "#ffffff",
+    // borderRadius: "16px",
+    // boxShadow: "0 8px 25px rgba(0, 0, 0, 0.05)",
+    // padding: "2.5rem",
+    // marginBottom: "2rem", // Espaçamento entre as seções
   },
 
   // --- Media Queries para responsividade ---
@@ -225,9 +225,9 @@ export default function Tesoureiro({ user }) {
 
   return (
     <div style={styles.mainContainer}>
-      <p style={styles.welcomeText}>
+      {/* <p style={styles.welcomeText}>
         Bem-vindo, {user?.nome_membro?.split(" ").slice(0, 2).join(" ")}!
-      </p>
+      </p> */}
 
       <div style={styles.buttonGroup}>
         <button

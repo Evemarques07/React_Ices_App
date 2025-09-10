@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { FaBars, FaSignOutAlt } from "react-icons/fa"; // Importando ícones do Font Awesome
 
@@ -85,7 +84,7 @@ const UserInfoText = styled.div`
 `;
 
 const UserName = styled.div`
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   white-space: nowrap; /* Evita quebra de linha */
   overflow: hidden;

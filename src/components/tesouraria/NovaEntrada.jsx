@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { entradasAPI, membrosAPI } from "../services/api";
-import { maskCurrency } from "../utils/format";
+import { entradasAPI, membrosAPI } from "../../services/api";
+import { maskCurrency } from "../../utils/format";
 
 const tiposPorCaixa = {
   financeiro: ["DÍZIMO", "OFERTA COMUM", "ENTRADA MEAN"],
@@ -236,7 +236,7 @@ export default function NovaEntrada({ token, onSuccess }) {
         }}
         placeholder="Opcional"
       />
-      <label style={{ fontWeight: 600 }}>Membro (Opcional)</label>
+      <label style={{ fontWeight: 600 }}>Contribuinte (Opcional)</label>
       <input
         type="text"
         value={membroBusca}

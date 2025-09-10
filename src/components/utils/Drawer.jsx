@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import {
   Home,
@@ -7,6 +6,8 @@ import {
   X,
   Wallet,
   TrendingUp,
+  Users,
+  Calendar,
 } from "lucide-react"; // Adicionei Wallet e TrendingUp para melhor representação
 
 // 1. Container principal do Drawer
@@ -29,6 +30,7 @@ const DrawerContainer = styled.aside`
   display: flex;
   flex-direction: column;
   padding-top: 70px; /* Ajuste para o Header fixo */
+  overflow-y: auto; /* Permite rolagem vertical se o conteúdo exceder a altura */
 
   /* Estilos específicos para desktop */
   @media (min-width: 1020px) {
@@ -133,6 +135,7 @@ export default function Drawer({
   open,
   setOpen,
   autorizadoTesoureiro,
+  autorizadoSecretario,
 }) {
   const handleNavigation = (newRoute) => {
     setRoute(newRoute);
@@ -165,6 +168,15 @@ export default function Drawer({
             </MenuItemButton>
           )}
 
+          {autorizadoSecretario && (
+            <MenuItemButton
+              $active={route === "secretaria"}
+              onClick={() => handleNavigation("secretaria")}
+            >
+              <Users size={20} /> Secretaria
+            </MenuItemButton>
+          )}
+
           <MenuItemButton
             $active={route === "contribuicoes"}
             onClick={() => handleNavigation("contribuicoes")}
@@ -178,12 +190,18 @@ export default function Drawer({
           >
             <TrendingUp size={20} /> Relatórios
           </MenuItemButton>
+          <MenuItemButton
+            $active={route === "calendario"}
+            onClick={() => handleNavigation("calendario")}
+          >
+            <Calendar size={20} /> Calendário
+          </MenuItemButton>
         </NavMenu>
 
         {/* Botão fechar para mobile */}
-        <CloseButton onClick={() => setOpen(false)}>
+        {/* <CloseButton onClick={() => setOpen(false)}>
           <X size={20} /> Fechar
-        </CloseButton>
+        </CloseButton> */}
       </DrawerContainer>
     </>
   );

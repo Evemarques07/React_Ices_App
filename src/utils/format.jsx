@@ -41,9 +41,16 @@ export function maskCPF(value) {
 // Função para máscara de telefone no formato (00) 00000-0000
 export function maskPhone(value) {
   if (value == null) return "";
-  // Remove caracteres não numéricos
   const cleaned = value.toString().replace(/\D/g, "");
-  // Formata como telefone
+  if (cleaned.length === 0) return "";
+  if (cleaned.length < 3) return `(${cleaned}`;
+  if (cleaned.length < 7) return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2)}`;
+  if (cleaned.length < 8)
+    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}${cleaned.slice(7)}`;
+  if (cleaned.length < 11)
+    return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
+      7
+    )}`;
   return `(${cleaned.slice(0, 2)}) ${cleaned.slice(2, 7)}-${cleaned.slice(
     7,
     11
