@@ -102,19 +102,20 @@ export default function NovaSaida({ token, onSuccess }) {
     <form
       onSubmit={handleSubmit}
       style={{
-        width: "100vw",
-        maxWidth: "700px",
+        width: "100%",
+        maxWidth: "680px",
         margin: "0 auto",
-        height: "100vh",
-        padding: "0.5rem",
-        background: "#f8f9fa",
         borderRadius: 0,
         boxShadow: "none",
+        padding: "0.5rem",
+        border: "none",
+        minHeight: "auto",
+        maxHeight: "none",
+        overflowY: "visible",
+        overflowX: "hidden",
         display: "flex",
         flexDirection: "column",
         gap: "1.2rem",
-        maxHeight: "100vh",
-        overflowY: "auto",
       }}
     >
       <h2 style={{ color: "#005691", fontWeight: 700, fontSize: "1.3rem" }}>

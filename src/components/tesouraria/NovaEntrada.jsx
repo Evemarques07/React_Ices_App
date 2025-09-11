@@ -105,17 +105,17 @@ export default function NovaEntrada({ token, onSuccess }) {
     <form
       onSubmit={handleSubmit}
       style={{
-        width: "100vw",
-        maxWidth: "700px",
-        height: "100vh",
+        width: "100%",
+        maxWidth: "680px",
         margin: "0 auto",
-        background: "#f7fafc",
         borderRadius: 0,
         boxShadow: "none",
         padding: "0.5rem",
         border: "none",
-        maxHeight: "100vh",
-        overflowY: "auto",
+        minHeight: "auto",
+        maxHeight: "none",
+        overflowY: "visible",
+        overflowX: "hidden",
         display: "flex",
         flexDirection: "column",
         gap: "1.2rem",

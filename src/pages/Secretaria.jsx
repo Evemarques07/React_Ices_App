@@ -129,7 +129,8 @@ const styles = {
     lineHeight: 1,
     padding: "0.6rem",
     borderRadius: "50%",
-    transition: "background-color 0.2s ease, color 0.2s ease, transform 0.2s ease",
+    transition:
+      "background-color 0.2s ease, color 0.2s ease, transform 0.2s ease",
     "&:hover": {
       backgroundColor: "#f0f2f5",
       color: "#6c757d",
@@ -169,12 +170,12 @@ const styles = {
   },
   // Keyframes for animations
   "@keyframes fadeIn": {
-    "from": { opacity: 0 },
-    "to": { opacity: 1 },
+    from: { opacity: 0 },
+    to: { opacity: 1 },
   },
   "@keyframes slideInFromTop": {
-    "from": { transform: "translateY(-50px)", opacity: 0 },
-    "to": { transform: "translateY(0)", opacity: 1 },
+    from: { transform: "translateY(-50px)", opacity: 0 },
+    to: { transform: "translateY(0)", opacity: 1 },
   },
 
   // Responsive adjustments
@@ -278,7 +279,8 @@ export default function Secretaria({ user }) {
       <div style={styles.header}>
         <h1 style={styles.title}>Painel da Secretaria</h1>
         <p style={styles.subtitle}>
-          Gerencie membros, usuários, eventos e escalas da sua organização de forma eficiente.
+          Gerencie membros, usuários, eventos e escalas da sua organização de
+          forma eficiente.
         </p>
       </div>
 
@@ -295,30 +297,42 @@ export default function Secretaria({ user }) {
         >
           Criar Usuário
         </button>
-        <button
-          onClick={() => openModal("evento")}
-          style={styles.actionButton}
-        >
+        <button onClick={() => openModal("evento")} style={styles.actionButton}>
           Novo Evento
         </button>
-        <button
-          onClick={() => openModal("escala")}
-          style={styles.actionButton}
-        >
+        <button onClick={() => openModal("escala")} style={styles.actionButton}>
           Nova Escala
         </button>
       </div>
 
       {modal && (
         <div style={styles.modalOverlay} onClick={closeModal}>
-          <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div
+            style={{
+              ...styles.modalContent,
+              maxWidth: "700px",
+              minWidth: "320px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              overflowX: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "2rem 1.2rem",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button onClick={closeModal} style={styles.modalCloseButton}>
               &times;
             </button>
-            {modal === "novoMembro" && <NovoMembro />}
-            {modal === "evento" && <CriarEvento token={token} />}
-            {modal === "escala" && <CriarEscala token={token} />}
-            {modal === "criarUsuario" && <CriarUsuario token={token} />}
+            <div style={{ width: "100%", maxWidth: 420 }}>
+              {modal === "novoMembro" && <NovoMembro />}
+              {modal === "evento" && <CriarEvento token={token} />}
+              {modal === "escala" && <CriarEscala token={token} />}
+              {modal === "criarUsuario" && <CriarUsuario token={token} />}
+            </div>
           </div>
         </div>
       )}
@@ -328,7 +342,15 @@ export default function Secretaria({ user }) {
           style={styles.collapseBtn}
           onClick={() => setColEscalas((v) => !v)}
         >
-          <span style={{ ...styles.collapseIcon, transform: colEscalas ? "rotate(0deg)" : "rotate(90deg)" }}>▶</span> Lista de Escalas
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colEscalas ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Escalas
         </button>
         {!colEscalas && <ListarEscalas />}
       </div>
@@ -337,7 +359,15 @@ export default function Secretaria({ user }) {
           style={styles.collapseBtn}
           onClick={() => setColEventos((v) => !v)}
         >
-          <span style={{ ...styles.collapseIcon, transform: colEventos ? "rotate(0deg)" : "rotate(90deg)" }}>▶</span> Lista de Eventos
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colEventos ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Eventos
         </button>
         {!colEventos && <ListarEventos />}
       </div>
@@ -346,7 +376,15 @@ export default function Secretaria({ user }) {
           style={styles.collapseBtn}
           onClick={() => setColMembros((v) => !v)}
         >
-          <span style={{ ...styles.collapseIcon, transform: colMembros ? "rotate(0deg)" : "rotate(90deg)" }}>▶</span> Lista de Membros
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colMembros ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Membros
         </button>
         {!colMembros && <ListaMembros />}
       </div>
@@ -355,12 +393,20 @@ export default function Secretaria({ user }) {
           style={styles.collapseBtn}
           onClick={() => setColUsuarios((v) => !v)}
         >
-          <span style={{ ...styles.collapseIcon, transform: colUsuarios ? "rotate(0deg)" : "rotate(90deg)" }}>▶</span> Lista de Usuários
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colUsuarios ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Usuários
         </button>
         {!colUsuarios && <ListarUsuarios />}
       </div>
 
-      <ScrollToTopButton size={60} />
+      {!modal && <ScrollToTopButton size={60} />}
     </div>
   );
 }

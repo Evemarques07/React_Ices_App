@@ -103,21 +103,30 @@ export default function NovoMembro() {
     <form
       onSubmit={handleSubmit}
       style={{
-        width: "100vw",
-        maxWidth: "700px",
-        height: "100vh",
+        width: "100%",
+        maxWidth: "680px",
         margin: "0 auto",
         borderRadius: 0,
         boxShadow: "none",
         padding: "0.5rem",
         border: "none",
-        maxHeight: "100vh",
-        overflowY: "auto",
+        minHeight: "auto",
+        maxHeight: "none",
+        overflowY: "visible",
+        overflowX: "hidden",
         display: "flex",
         flexDirection: "column",
         gap: "1.2rem",
       }}
     >
+      <style>{`
+        @media (max-width: 600px) {
+          form {
+            max-width: 98vw !important;
+            padding: 0.2rem !important;
+          }
+        }
+      `}</style>
       <h3
         style={{
           color: "#343a40",
@@ -329,27 +338,32 @@ export default function NovoMembro() {
           }}
         />
       )}
-      <button
-        type="submit"
-        disabled={loading}
-        style={{
-          width: "100%",
-          background: loading
-            ? "#a0aec0"
-            : "linear-gradient(45deg, #0077b6, #0097d8)",
-          color: "#fff",
-          fontWeight: "bold",
-          border: "none",
-          borderRadius: 8,
-          padding: "1rem 1.5rem",
-          marginTop: "1rem",
-          cursor: loading ? "not-allowed" : "pointer",
-          fontSize: "1.05rem",
-          boxShadow: loading ? "none" : "0 4px 14px 0 rgba(0, 118, 255, 0.39)",
-        }}
-      >
-        {loading ? "Salvando..." : "Cadastrar Membro"}
-      </button>
+      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            width: "100%",
+            maxWidth: "260px",
+            background: loading
+              ? "#a0aec0"
+              : "linear-gradient(45deg, #0077b6, #0097d8)",
+            color: "#fff",
+            fontWeight: "bold",
+            border: "none",
+            borderRadius: 8,
+            padding: "1rem 1.5rem",
+            marginTop: "1rem",
+            cursor: loading ? "not-allowed" : "pointer",
+            fontSize: "1.05rem",
+            boxShadow: loading
+              ? "none"
+              : "0 4px 14px 0 rgba(0, 118, 255, 0.39)",
+          }}
+        >
+          {loading ? "Salvando..." : "Cadastrar Membro"}
+        </button>
+      </div>
       {error && (
         <div
           style={{
