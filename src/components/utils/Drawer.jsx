@@ -9,6 +9,7 @@ import {
   Users,
   Calendar,
 } from "lucide-react"; // Adicionei Wallet e TrendingUp para melhor representação
+import { FaBars, FaSignOutAlt } from "react-icons/fa";
 
 // 1. Container principal do Drawer
 const DrawerContainer = styled.aside`
@@ -129,13 +130,45 @@ const DrawerOverlay = styled.div`
   }
 `;
 
+const LogoutButton = styled.button`
+  background: #fff;
+  color: #007bff; /* Cor combinando com o tema */
+  font-size: 0.9rem;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px; /* Cantos mais arredondados */
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o ícone e o texto */
+
+  &:hover {
+    background: #e9ecef; /* Cor de fundo suave no hover */
+    color: #0056b3; /* Cor do texto mais escura no hover */
+    transform: translateY(-2px); /* Efeito de "levantar" no hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 370px) {
+    span {
+      display: none; /* Esconde o texto "Sair" em telas muito pequenas */
+    }
+    padding: 0.6rem 0.8rem; /* Ajusta o padding para apenas o ícone */
+  }
+`;
+
 export default function Drawer({
+  userInfo,
   route,
   setRoute,
   open,
   setOpen,
   autorizadoTesoureiro,
   autorizadoSecretario,
+  handleLogout,
 }) {
   const handleNavigation = (newRoute) => {
     setRoute(newRoute);
@@ -194,14 +227,12 @@ export default function Drawer({
             $active={route === "calendario"}
             onClick={() => handleNavigation("calendario")}
           >
-            <Calendar size={20} /> Calendário
+            <Calendar size={20} /> Calendário Ices
           </MenuItemButton>
+          <LogoutButton onClick={handleLogout} title="Sair da conta">
+              <FaSignOutAlt /> <span>Sair</span>
+            </LogoutButton>
         </NavMenu>
-
-        {/* Botão fechar para mobile */}
-        {/* <CloseButton onClick={() => setOpen(false)}>
-          <X size={20} /> Fechar
-        </CloseButton> */}
       </DrawerContainer>
     </>
   );

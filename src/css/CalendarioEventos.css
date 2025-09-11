@@ -1,0 +1,323 @@
+
+/* Variáveis CSS para cores */
+:root {
+  --primary-color: #1976d2; /* Azul para destaque do usuário */
+  --secondary-color: #007bff; /* Azul padrão para eventos */
+  --text-color-dark: #333;
+  --text-color-light: #fff;
+  --bg-light: #f8f9fa;
+  --bg-white: #fff;
+  --border-color: #e0e0e0;
+  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.calendario-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-color-dark);
+}
+
+.calendario-titulo {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.loading-message {
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.fullcalendar-wrapper {
+  background-color: var(--bg-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-light);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden; /* Garante que elementos internos não vazem */
+}
+
+/* Estilos do FullCalendar */
+.fc .fc-toolbar-title {
+  font-size: 1.7rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.fc .fc-button {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--text-color-light);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.fc .fc-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.fc .fc-button-active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fc .fc-daygrid-day-number {
+  color: var(--text-color-dark);
+  font-weight: 500;
+  padding: 8px;
+}
+
+.fc .fc-day-other .fc-daygrid-day-number {
+  color: #a0a0a0;
+}
+
+.fc .fc-day-today {
+  background-color: var(--bg-light);
+  border-radius: 8px;
+}
+
+/* Estilos dos eventos */
+.fc-event {
+  border-radius: 6px;
+  padding: 4px 8px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease-in-out;
+  border: none; /* Remover borda padrão */
+}
+
+.fc-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Eventos gerais */
+.evento-geral {
+  background-color: var(--secondary-color);
+  color: var(--text-color-light);
+}
+
+/* Escalas */
+.escala {
+  background-color: #888; /* Cinza para escalas de outros */
+  color: var(--text-color-light);
+}
+
+/* Escala do usuário logado - DESTAQUE */
+.escala-usuario {
+  background-color: var(--primary-color); /* Azul mais forte */
+  font-weight: 700; /* Mais negrito */
+  box-shadow: 0 2px 6px rgba(var(--primary-color), 0.3); /* Sombra para destaque */
+  border: 1px solid rgba(var(--primary-color), 0.5);
+}
+
+.escala-usuario:hover {
+  background-color: #1565c0; /* Escurecer um pouco no hover */
+  transform: scale(1.02); /* Leve aumento de tamanho */
+}
+
+/* Modal de Eventos */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px); /* Efeito de blur no fundo */
+}
+
+.modal-content {
+  background: var(--bg-white);
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  min-width: 320px;
+  max-width: 450px;
+  box-shadow: var(--shadow-medium);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  position: relative;
+  animation: fadeInScale 0.3s ease-out; /* Animação de entrada */
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modal-close-button:hover {
+  color: var(--text-color-dark);
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title-escala {
+  color: var(--primary-color);
+}
+
+.modal-title-evento {
+  color: var(--secondary-color);
+}
+
+.modal-item {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #555;
+}
+
+.modal-item b {
+  color: var(--text-color-dark);
+  margin-right: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color-light);
+}
+
+.status-ativo {
+  background-color: #28a745; /* Verde */
+}
+
+.status-inativo {
+  background-color: #dc3545; /* Vermelho */
+}
+
+/* Responsividade */
+@media (max-width: 800px) {
+  .calendario-container {
+    padding: 1rem;
+  }
+
+  .calendario-titulo {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fullcalendar-wrapper {
+    padding: 1rem;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: block;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .fc .fc-toolbar-chunk:last-child {
+    margin-bottom: 0;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.4rem;
+  }
+
+  .fc .fc-button-group .fc-button {
+    margin: 0 2px;
+  }
+
+  .modal-content {
+    margin: 1rem;
+    min-width: unset;
+    max-width: 90%;
+    padding: 2rem 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.4rem;
+  }
+  .modal-item {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .calendario-titulo {
+    font-size: 1.5rem;
+  }
+
+  .fc .fc-toolbar-chunk {
+    margin-bottom: 1rem;
+  }
+  .fc .fc-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .fc .fc-daygrid-day-number {
+    padding: 4px;
+  }
+}
+
+/* Header do FullCalendar responsivo para botões */
+.fc-header-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+@media (max-width: 400px) {
+  .fc-header-toolbar {
+    font-size: 0.8rem;
+    gap: 4px;
+    padding-bottom: 4px;
+  }
+  .fc .fc-toolbar-title {
+    font-size: 1rem;
+  }
+  .fc .fc-button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}

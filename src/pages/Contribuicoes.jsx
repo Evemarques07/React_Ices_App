@@ -3,6 +3,7 @@ import { Calendar, FileText } from "lucide-react";
 import { entradasAPI } from "../services/api";
 import "../css/Contribuicoes.css"; // Certifique-se de que este arquivo existe e está linkado
 import { formatDate, formatCurrency } from "../utils/format";
+import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 
 export default function Contribuicoes() {
   const [entradas, setEntradas] = useState({});
@@ -126,6 +127,8 @@ export default function Contribuicoes() {
           )}
         </div>
       )}
+      <ScrollToTopButton size={60}/>
     </div>
+    
   );
 }

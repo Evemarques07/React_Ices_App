@@ -146,7 +146,6 @@ export default function Header({
   userInfo,
   drawerOpen,
   setDrawerOpen,
-  handleLogout,
 }) {
   const getInitials = (name) => {
     const names = name?.split(" ") || [];
@@ -172,9 +171,7 @@ export default function Header({
                 <FaBars />
               </HamburgerButton>
             )}
-            <UserAvatar title="Avatar do usuário">
-              {getInitials(userInfo?.nome_membro)}
-            </UserAvatar>
+            
           </LeftGroup>
 
           <RightGroup>
@@ -184,9 +181,12 @@ export default function Header({
                 <UserRole>{userInfo.cargos[0]}</UserRole>
               )}
             </UserInfoText>
-            <LogoutButton onClick={handleLogout} title="Sair da conta">
+            {/* <LogoutButton onClick={handleLogout} title="Sair da conta">
               <FaSignOutAlt /> <span>Sair</span>
-            </LogoutButton>
+            </LogoutButton> */}
+            <UserAvatar title="Avatar do usuário">
+              {getInitials(userInfo?.nome_membro)}
+            </UserAvatar>
           </RightGroup>
         </UserContentWrapper>
       )}

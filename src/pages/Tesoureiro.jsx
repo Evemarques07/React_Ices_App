@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NovaEntrada from "../components/tesouraria/NovaEntrada";
 import NovaSaida from "../components/tesouraria/NovaSaida";
 import MovimentacoesFiltradas from "../components/tesouraria/MovimentacoesFiltradas";
+import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 
 const styles = {
   mainContainer: {
@@ -259,6 +260,7 @@ export default function Tesoureiro({ user }) {
       <div style={styles.sectionContainer}>
         <MovimentacoesFiltradas token={user?.access_token} />
       </div>
+      <ScrollToTopButton size={60}/>
     </div>
   );
 }

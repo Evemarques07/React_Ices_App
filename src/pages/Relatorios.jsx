@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { relatoriosAPI } from "../services/api";
 import { formatCurrency, formatDate } from "../utils/format";
+import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 // Importando ícones para uma UI mais rica
 import {
   ArrowUpCircle,
@@ -248,6 +249,7 @@ export default function Relatorios() {
           </section>
         </div>
       )}
+      <ScrollToTopButton size={60}/>
     </div>
   );
 }

@@ -56,8 +56,8 @@ function App() {
   const autorizadoTesoureiro =
     cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro");
 
-  const autorizadoSecretario = cargos.includes("Secretario") || cargos.includes("Segundo_Secretario");
-
+  const autorizadoSecretario =
+    cargos.includes("Secretario") || cargos.includes("Segundo_Secretario");
 
   return (
     <div className="app-root">
@@ -70,12 +70,14 @@ function App() {
             handleLogout={handleLogout}
           />
           <Drawer
+            userInfo={userInfo}
             route={route}
             setRoute={setRoute}
             open={drawerOpen}
             setOpen={setDrawerOpen}
             autorizadoTesoureiro={autorizadoTesoureiro}
             autorizadoSecretario={autorizadoSecretario}
+            handleLogout={handleLogout}
           />
         </>
       )}
@@ -85,7 +87,7 @@ function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          paddingTop: userInfo ? "64px" : 0, // espaço para o header fixo
+          paddingTop: userInfo ? "2.8rem" : 0, 
         }}
         className={userInfo ? "main-content" : ""}
       >

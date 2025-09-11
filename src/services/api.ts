@@ -497,7 +497,7 @@ export const entradasAPI = {
     skip = 0,
     limit = 20
   ) {
-    const url = new URL(`${URL_BASE}/filtrar`);
+    const url = new URL(`${URL_BASE}/filtrar/geral`);
     if (filtro.descricao) url.searchParams.append("descricao", filtro.descricao);
     if (filtro.membro_id) url.searchParams.append("membro_id", filtro.membro_id.toString());
     if (filtro.data_inicio) url.searchParams.append("data_inicio", filtro.data_inicio);
@@ -757,10 +757,8 @@ export const eventosAPI = {
 
     return response.json();
   },
-  async listarEventos(token: string, skip = 0, limit = 20) {
-    const url = new URL(`${URL_BASE}/eventos/`);
-    url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());
+  async listarEventosAtivos(token: string) {
+    const url = new URL(`${URL_BASE}/eventos/ativos`);
 
     const response = await fetch(url.toString(), {
       method: "GET",
@@ -772,6 +770,174 @@ export const eventosAPI = {
     if (!response.ok) {
       throw new Error("Erro ao buscar eventos");
     }
+    return response.json();
+  },
+  async listarEventos(token: string, skip = 0, limit = 20) {
+    const url = new URL(`${URL_BASE}/eventos/`);
+    url.searchParams.append("skip", skip.toString());
+    url.searchParams.append("limit", limit.toString());   
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar eventos");
+    }
+    return response.json();
+  },
+  async getEventoById(evento_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/eventos/${evento_id}`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar evento");
+    }
+
+    return response.json();
+  },
+  async editarEvento(
+    evento_id: number,
+    dadosAtualizados: {
+      titulo?: string;
+      descricao?: string;
+      data_inicio?: string;
+      data_final?: string;
+      ativo?: boolean;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/eventos/${evento_id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dadosAtualizados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao editar evento");
+    }
+
+    return response.json();
+  },
+  async deletarEvento(evento_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/eventos/${evento_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao deletar evento");
+    }
+
+    return response.json(); 
+  },
+};
+
+export const escalasAPI = {
+  async criarEscala(
+    escala: {
+      membro_id: number;
+      tipo: string;
+      data_escala: string;
+      ativo: boolean;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/escalas/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(escala),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar escala");
+    }
+
+    return response.json();
+  },
+  async listarEscalas(token: string, skip = 0, limit = 20) {
+    const url = new URL(`${URL_BASE}/escalas/`);
+    url.searchParams.append("skip", skip.toString());
+    url.searchParams.append("limit", limit.toString());
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar escalas");
+    }
+    return response.json();
+  },
+  async getEscalaById(escala_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/escalas/${escala_id}`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar escala");
+    }
+
+    return response.json();
+  },
+  async editarEscala(
+    escala_id: number,
+    dadosAtualizados: {
+      membro_id?: number;
+      tipo?: string;
+      data_escala?: string;
+      ativo?: boolean;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/escalas/${escala_id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dadosAtualizados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao editar escala");
+    }
+
+    return response.json();
+  },
+  async deletarEscala(escala_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/escalas/${escala_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao deletar escala");
+    }
+
     return response.json();
   },
 };
