@@ -8,6 +8,7 @@ import ListarEscalas from "../components/escalas/ListarEscalas";
 import ListarEventos from "../components/eventos/ListarEventos";
 import ListarUsuarios from "../components/usuarios/ListarUsuarios";
 import CriarUsuario from "../components/usuarios/CriarUsuario";
+import ListaTodosNomes from "../components/secretaria/ListaTodosNomes";
 
 const commonButtonStyles = {
   background: "linear-gradient(45deg, #0077b6, #00a4eb)",
@@ -370,6 +371,23 @@ export default function Secretaria({ user }) {
           Lista de Eventos
         </button>
         {!colEventos && <ListarEventos />}
+      </div>
+      <div style={styles.sectionContainer}>
+        <button
+          style={styles.collapseBtn}
+          onClick={() => setColMembros((v) => !v)}
+        >
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colMembros ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Contribuintes
+        </button>
+        {!colMembros && <ListaTodosNomes />}
       </div>
       <div style={styles.sectionContainer}>
         <button

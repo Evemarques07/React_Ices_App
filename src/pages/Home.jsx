@@ -16,10 +16,12 @@ export default function Home({ user }) {
       <div className="card-boas-vindas">
         {/* Adicionando a logo aqui */}
         <img src={logo} alt="Logo da Aplicação" className="logo-home" />
-
         <h2>
-          Bem-vindo, {primeiroNome || "usuário"}!
-          {cargo && <span className="cargo-tag">{cargo}</span>}
+          <p>Bem-vindo,</p>
+          <br />
+          <p className="nome-usuario-home" style={{ margin: 0 }}>
+            {primeiroNome || "usuário"}!
+          </p>
         </h2>
         <p className="texto-boas-vindas">
           Estamos felizes em tê-lo(a) conosco. Explore as ferramentas que

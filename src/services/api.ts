@@ -1,6 +1,6 @@
 // Serviço central de requisições à API
-export const URL_BASE = "https://icesiqueira.com"; // Produção
-// export const URL_BASE = "http://localhost:5000"; // Desenvolvimento
+// export const URL_BASE = "https://icesiqueira.com"; // Produção
+export const URL_BASE = "http://localhost:5000"; // Desenvolvimento
 
 export async function login({
   username,
@@ -158,6 +158,25 @@ export const membrosAPI = {
 
     if (!response.ok) {
       throw new Error("Erro ao buscar membros");
+    }
+
+    return response.json();
+  },
+  async listarTodosNomes(token: string, skip = 0, limit = 20) {
+    const url = new URL(`${URL_BASE}/membros/todos/listar`);
+    url.searchParams.append("skip", skip.toString());
+    url.searchParams.append("limit", limit.toString());
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao listar todos os nomes");
     }
 
     return response.json();
