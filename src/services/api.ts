@@ -43,6 +43,7 @@ export const usuariosAPI = {
     if (!response.ok) {
       throw new Error("Erro ao listar usuários");
     }
+    // console.log("Listar usuários response:", response);
 
     return response.json();
   },
