@@ -1,6 +1,6 @@
 // Serviço central de requisições à API
-// export const URL_BASE = "https://icesiqueira.com"; // Produção
-export const URL_BASE = "http://localhost:5000"; // Desenvolvimento
+export const URL_BASE = "https://icesiqueira.com"; // Produção
+// export const URL_BASE = "http://localhost:5000"; // Desenvolvimento
 
 export async function login({
   username,
