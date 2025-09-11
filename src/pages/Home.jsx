@@ -1,24 +1,64 @@
+import {
+  FaChartLine,
+  FaHandHoldingUsd,
+  FaCalendarAlt,
+  FaPrayingHands,
+} from "react-icons/fa";
+import logo from "../assets/logo.png"; // Importando a logo
+import "../css/Home.css";
+
 export default function Home({ user }) {
-  // Pega o primeiro nome
   const primeiroNome = user?.nome_membro?.split(" ")[0] || "";
-  // Pega o cargo (se houver)
   const cargo = user?.cargos && user.cargos.length > 0 ? user.cargos[0] : "";
 
   return (
     <div className="container-principal">
-      <h2>Bem-vindo, {primeiroNome || "usuário"}!</h2>
-      {cargo && (
-        <div
-          style={{ fontSize: "small", color: "#666", marginBottom: "0.5rem" }}
-        >
-          {cargo}
+      <div className="card-boas-vindas">
+        {/* Adicionando a logo aqui */}
+        <img src={logo} alt="Logo da Aplicação" className="logo-home" />
+
+        <h2>
+          Bem-vindo, {primeiroNome || "usuário"}!
+          {cargo && <span className="cargo-tag">{cargo}</span>}
+        </h2>
+        <p className="texto-boas-vindas">
+          Estamos felizes em tê-lo(a) conosco. Explore as ferramentas que
+          preparamos para você!
+        </p>
+        <FaPrayingHands className="icon-boas-vindas-fundo" />{" "}
+        {/* Mudei este ícone para ser um elemento de fundo decorativo */}
+      </div>
+
+      <div className="card-sobre-app">
+        <h3>Sobre o aplicativo</h3>
+        <div className="lista-funcionalidades">
+          <div className="item-funcionalidade">
+            <FaChartLine className="icone-funcionalidade" />
+            <p>
+              Visualize <strong>relatórios financeiros</strong> detalhados por
+              mês.
+            </p>
+          </div>
+          <div className="item-funcionalidade">
+            <FaHandHoldingUsd className="icone-funcionalidade" />
+            <p>
+              Acompanhe <strong>suas próprias contribuições</strong> e histórico
+              financeiro.
+            </p>
+          </div>
+          <div className="item-funcionalidade">
+            <FaCalendarAlt className="icone-funcionalidade" />
+            <p>
+              Consulte o <strong>calendário de eventos</strong> da igreja e
+              fique por dentro da programação.
+            </p>
+          </div>
         </div>
-      )}
-      <p>Seu CPF: {user?.sub}</p>
-      <p>
-        Token válido até:{" "}
-        {user?.exp ? new Date(user.exp * 1000).toLocaleString() : "-"}
-      </p>
+        <p className="texto-final-app">
+          Tudo isso de forma prática, rápida e segura. Explore o menu para
+          acessar as funcionalidades!
+        </p>
+      </div>
     </div>
   );
 }

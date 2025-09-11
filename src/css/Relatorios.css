@@ -7,9 +7,9 @@
 
 .relatorios-page h2 {
   text-align: center;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   color: #2d3748;
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 /* --- Formulário de Busca --- */
@@ -18,7 +18,7 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2.5rem;
+  /* margin-bottom: 2.5rem; */
   flex-wrap: wrap;
   padding: 1rem;
   background-color: #ffffff;
@@ -93,7 +93,7 @@
 .relatorios-page .summary-card {
   background-color: #fff;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 0.4rem;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -274,10 +274,10 @@
   border: 1px solid #e9ecef;
   border-left: 4px solid #0097d8;
   border-radius: 8px;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 0.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  /* gap: 0.5rem; */
 }
 
 .relatorios-page .transaction-card__main {

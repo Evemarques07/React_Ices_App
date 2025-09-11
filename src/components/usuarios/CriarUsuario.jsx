@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { escalasAPI, membrosAPI } from "../../services/api";
+import { usuariosAPI, membrosAPI } from "../../services/api";
 
-export default function CriarEscala({ token, onCriado }) {
+export default function CriarUsuario({ token, onCriado }) {
   const [nomeBusca, setNomeBusca] = useState("");
   const [membros, setMembros] = useState([]);
   const [membroId, setMembroId] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [dataEscala, setDataEscala] = useState("");
-  const [ativo, setAtivo] = useState(true);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -33,25 +30,14 @@ export default function CriarEscala({ token, onCriado }) {
     setSucesso("");
     setLoading(true);
     try {
-      await escalasAPI.criarEscala(
-        {
-          membro_id: membroId,
-          tipo,
-          data_escala: dataEscala,
-          ativo,
-        },
-        token
-      );
-      setSucesso("Escala criada com sucesso!");
+      await usuariosAPI.criarUsuario({ membro_id: membroId }, token);
+      setSucesso("Usuário criado com sucesso!");
       setNomeBusca("");
       setMembroId("");
-      setTipo("");
-      setDataEscala("");
-      setAtivo(true);
       setMembros([]);
       if (onCriado) onCriado();
     } catch (err) {
-      setErro(err.message || "Erro ao criar escala");
+      setErro(err.message || "Erro ao criar usuário");
     } finally {
       setLoading(false);
     }
@@ -86,7 +72,7 @@ export default function CriarEscala({ token, onCriado }) {
           fontWeight: 700,
         }}
       >
-        Criar Escala
+        Criar Usuário
       </h3>
       {erro && (
         <div
@@ -170,38 +156,6 @@ export default function CriarEscala({ token, onCriado }) {
           </ul>
         )}
       </div>
-      <label style={{ fontWeight: 600 }}>Tipo de Escala *</label>
-      <input
-        value={tipo}
-        onChange={(e) => setTipo(e.target.value)}
-        required
-        style={{
-          padding: "0.7rem",
-          borderRadius: 8,
-          border: "1px solid #ced4da",
-        }}
-        placeholder="Tipo da escala"
-      />
-      <label style={{ fontWeight: 600 }}>Data da Escala *</label>
-      <input
-        type="datetime-local"
-        value={dataEscala}
-        onChange={(e) => setDataEscala(e.target.value)}
-        required
-        style={{
-          padding: "0.7rem",
-          borderRadius: 8,
-          border: "1px solid #ced4da",
-        }}
-      />
-      <label style={{ fontWeight: 600 }}>
-        <input
-          type="checkbox"
-          checked={ativo}
-          onChange={(e) => setAtivo(e.target.checked)}
-        />{" "}
-        Ativo
-      </label>
       <button
         type="submit"
         disabled={loading || !membroId}
@@ -222,7 +176,7 @@ export default function CriarEscala({ token, onCriado }) {
           transition: "transform 0.2s ease, box-shadow 0.3s ease",
         }}
       >
-        {loading ? "Salvando..." : "Salvar Escala"}
+        {loading ? "Salvando..." : "Criar Usuário"}
       </button>
     </form>
   );

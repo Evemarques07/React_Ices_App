@@ -6,10 +6,18 @@ import ptLocale from "@fullcalendar/core/locales/pt-br";
 import { eventosAPI, escalasAPI } from "../services/api";
 import "../css/CalendarioEventos.css"; // Importar o arquivo CSS
 
+import { useRef } from "react";
+
 export default function CalendarioEventos() {
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalEvento, setModalEvento] = useState(null);
+
+  // Busca de eventos por título
+  const [busca, setBusca] = useState("");
+  const [sugestoes, setSugestoes] = useState([]);
+  const [buscando, setBuscando] = useState(false);
+  const calendarRef = useRef();
 
   async function fetchEventosEscalas() {
     setLoading(true);
@@ -80,6 +88,63 @@ export default function CalendarioEventos() {
     }
   }
 
+  // Buscar eventos pelo título
+  async function buscarEventosPorTitulo(titulo) {
+    // Só busca se tiver 3 ou mais caracteres
+    if (!titulo || titulo.trim().length < 3) {
+      setSugestoes([]);
+      setBuscando(false);
+      return;
+    }
+    setBuscando(true);
+    try {
+      const user = localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))
+        : null;
+      const token = user?.access_token;
+      const res = await eventosAPI.buscarEventosPeloTitulo(titulo, token);
+      setSugestoes(Array.isArray(res) ? res : []);
+    } catch (err) {
+      setSugestoes([]);
+    } finally {
+      setBuscando(false);
+    }
+  }
+
+  // Selecionar evento da busca
+  async function selecionarEventoBusca(eventoId) {
+    try {
+      const user = localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))
+        : null;
+      const token = user?.access_token;
+      const evento = await eventosAPI.getEventoById(eventoId, token);
+      // Encontrar evento no calendário
+      const eventoCalendario = eventos.find((ev) => {
+        // id pode ser "evento-2" ou ev.id === evento.id
+        return ev.id === "evento-" + evento.id;
+      });
+      if (eventoCalendario && calendarRef.current) {
+        // Rolar até o evento
+        const calendarApi = calendarRef.current.getApi();
+        calendarApi.gotoDate(eventoCalendario.start);
+        // Destacar evento (abre modal)
+        setModalEvento({
+          title: eventoCalendario.title,
+          descricao: eventoCalendario.extendedProps.descricao,
+          ativo: eventoCalendario.extendedProps.ativo,
+          start: eventoCalendario.start,
+          end: eventoCalendario.end,
+          tipo: "evento",
+        });
+      }
+      setBusca("");
+      setSugestoes([]);
+    } catch (err) {
+      // erro
+    }
+  }
+
   useEffect(() => {
     fetchEventosEscalas();
   }, []);
@@ -100,19 +165,70 @@ export default function CalendarioEventos() {
     <div className="calendario-container">
       <h2 className="calendario-titulo">Calendário de Eventos e Escalas</h2>
 
+      {/* Input de busca por título de evento */}
+      <div style={{ marginBottom: 16, maxWidth: 400 }}>
+        <input
+          type="text"
+          placeholder="Buscar evento pelo título..."
+          value={busca}
+          onChange={(e) => {
+            setBusca(e.target.value);
+            buscarEventosPorTitulo(e.target.value);
+          }}
+          style={{
+            width: "100%",
+            padding: 8,
+            borderRadius: 6,
+            border: "1px solid #1976d2",
+          }}
+        />
+        {buscando && (
+          <div style={{ fontSize: 13, color: "#1976d2" }}>Buscando...</div>
+        )}
+        {sugestoes.length > 0 && (
+          <ul
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              background: "#fff",
+              border: "1px solid #1976d2",
+              borderRadius: 6,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              position: "absolute",
+              zIndex: 10,
+              width: "100%",
+            }}
+          >
+            {sugestoes.map((ev) => (
+              <li
+                key={ev.id}
+                style={{ padding: "8px 12px", cursor: "pointer" }}
+                onClick={() => selecionarEventoBusca(ev.id)}
+              >
+                <b>{ev.titulo}</b>
+                <div style={{ fontSize: 13, color: "#555" }}>
+                  {ev.descricao}
+                </div>
+                <div style={{ fontSize: 12, color: "#888" }}>
+                  {formatarData(ev.data_inicio)} - {formatarData(ev.data_final)}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       {loading && <p className="loading-message">Carregando eventos...</p>}
 
       <div className="fullcalendar-wrapper">
         <FullCalendar
+          ref={calendarRef}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           locale={ptLocale}
           events={eventos}
-          height="auto" // Ajusta a altura automaticamente
-          // Opções para responsividade
-          // aspectRatio={1.8}
-          // handleWindowResize={true}
-          // windowResizeDelay={100}
+          height="auto"
           headerToolbar={{
             left: "prev,next today",
             center: "title",
@@ -156,9 +272,6 @@ export default function CalendarioEventos() {
               });
             }
           }}
-          // dateClick={(info) => {
-          //   alert(`Você clicou na data: ${formatarData(info.date)}`);
-          // }}
         />
       </div>
 

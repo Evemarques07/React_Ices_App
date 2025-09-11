@@ -30,7 +30,8 @@ export default function Relatorios() {
       setLoading(false);
       return;
     }
-    relatoriosAPI.getRelatorioFinanceiroResumido(m, a, user.access_token)
+    relatoriosAPI
+      .getRelatorioFinanceiroResumido(m, a, user.access_token)
       .then(setRelatorio)
       .catch(() => setError("Erro ao buscar relatório financeiro"))
       .finally(() => setLoading(false));
@@ -143,6 +144,10 @@ export default function Relatorios() {
                 <span className="summary-card__value">
                   {formatCurrency(saldoMesFinanceiro)}
                 </span>
+                <span className="summary-card__final">
+                  Saldo Final:{" "}
+                  {formatCurrency(relatorio.saldo_atual_financeiro)}
+                </span>
               </div>
             </div>
             <div className="summary-card final-balance">
@@ -165,6 +170,11 @@ export default function Relatorios() {
               <span className="saldo-anterior">
                 Saldo Anterior:{" "}
                 {formatCurrency(relatorio.saldo_anterior_financeiro)}
+                <br />
+                <span className="saldo-final">
+                  Saldo Final:{" "}
+                  {formatCurrency(relatorio.saldo_atual_financeiro)}
+                </span>
               </span>
             </div>
             <div className="report-section__body">
@@ -195,6 +205,10 @@ export default function Relatorios() {
               <span className="saldo-anterior">
                 Saldo Anterior:{" "}
                 {formatCurrency(relatorio.saldo_anterior_missoes)}
+                <br />
+                <span className="saldo-final">
+                  Saldo Final: {formatCurrency(relatorio.saldo_atual_missoes)}
+                </span>
               </span>
             </div>
             <div className="report-section__body">
@@ -225,6 +239,10 @@ export default function Relatorios() {
               <span className="saldo-anterior">
                 Saldo Anterior:{" "}
                 {formatCurrency(relatorio.saldo_anterior_projetos)}
+                <br />
+                <span className="saldo-final">
+                  Saldo Final: {formatCurrency(relatorio.saldo_atual_projetos)}
+                </span>
               </span>
             </div>
             <div className="report-section__body">
@@ -249,7 +267,7 @@ export default function Relatorios() {
           </section>
         </div>
       )}
-      <ScrollToTopButton size={60}/>
+      <ScrollToTopButton size={60} />
     </div>
   );
 }

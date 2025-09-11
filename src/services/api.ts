@@ -2,8 +2,6 @@
 export const URL_BASE = "https://icesiqueira.com"; // Produção
 // export const URL_BASE = "http://localhost:5000"; // Desenvolvimento
 
-
-
 export async function login({
   username,
   password,
@@ -31,6 +29,86 @@ export async function login({
 
   return response.json();
 }
+
+export const usuariosAPI = {
+  async listarUsuarios(token: string) {
+    const response = await fetch(`${URL_BASE}/usuarios/listar`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao listar usuários");
+    }
+
+    return response.json();
+  },
+  async criarUsuario(
+    usuario: {
+      membro_id: number;
+    },
+    token: string
+  ) {
+    // Envia membro_id como query string, sem body
+    const url = new URL(`${URL_BASE}/usuarios/`);
+    url.searchParams.append("membro_id", usuario.membro_id.toString());
+    const response = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: null,
+    });
+
+    if (!response.ok) {
+      // Tenta extrair mensagem detalhada do backend
+      let msg = "Erro ao criar usuário";
+      try {
+        const err = await response.json();
+        if (err.detail) msg = err.detail;
+      } catch {}
+      throw new Error(msg);
+    }
+
+    return response.json();
+  },
+  async alterarSenha(nova_senha: string, token: string) {
+    const url = new URL(`${URL_BASE}/usuarios/senha`);
+    url.searchParams.append("nova_senha", nova_senha);
+
+    const response = await fetch(url.toString(), {
+      method: "PUT",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao alterar senha");
+    }
+
+    return response.json();
+  },
+  async deletarUsuario(usuario_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/usuarios/${usuario_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao deletar usuário");
+    }
+
+    return response.json();
+  },
+};
 
 export const membrosAPI = {
   async criarMembro(
@@ -148,7 +226,7 @@ export const membrosAPI = {
 
     return response.json();
   },
-}
+};
 
 export const entradasAPI = {
   async getEntradasPorMembro(membro_id: number, token: string) {
@@ -181,7 +259,7 @@ export const entradasAPI = {
     const url = new URL(`${URL_BASE}/entradas/filtradas`);
     if (filtro.tipo) url.searchParams.append("tipo", filtro.tipo);
     if (filtro.descricao)
-      url.searchParams.append("descricao", filtro.descricao); 
+      url.searchParams.append("descricao", filtro.descricao);
     if (filtro.nome_membro)
       url.searchParams.append("nome_membro", filtro.nome_membro);
     if (filtro.data_inicio)
@@ -340,13 +418,16 @@ export const entradasAPI = {
     return response.json();
   },
   async getEntradaProjetoById(entrada_id: number, token: string) {
-    const response = await fetch(`${URL_BASE}/entradas/projetos/${entrada_id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/entradas/projetos/${entrada_id}`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erro ao buscar entrada de projeto");
@@ -381,14 +462,17 @@ export const entradasAPI = {
     },
     token: string
   ) {
-    const response = await fetch(`${URL_BASE}/entradas/financeiro/${entrada_id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(dadosAtualizados),
-    });
+    const response = await fetch(
+      `${URL_BASE}/entradas/financeiro/${entrada_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dadosAtualizados),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erro ao editar entrada");
@@ -433,14 +517,17 @@ export const entradasAPI = {
     },
     token: string
   ) {
-    const response = await fetch(`${URL_BASE}/entradas/projetos/${entrada_id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(dadosAtualizados),
-    });
+    const response = await fetch(
+      `${URL_BASE}/entradas/projetos/${entrada_id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(dadosAtualizados),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erro ao editar entrada");
@@ -449,12 +536,15 @@ export const entradasAPI = {
     return response.json();
   },
   async deletarEntradaFinanceira(entrada_id: number, token: string) {
-    const response = await fetch(`${URL_BASE}/entradas/financeiro/${entrada_id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/entradas/financeiro/${entrada_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erro ao deletar entrada");
@@ -471,12 +561,15 @@ export const entradasAPI = {
     });
   },
   async deletarEntradaProjetos(entrada_id: number, token: string) {
-    const response = await fetch(`${URL_BASE}/entradas/projetos/${entrada_id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/entradas/projetos/${entrada_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Erro ao deletar entrada");
@@ -486,24 +579,29 @@ export const entradasAPI = {
   },
   async todasMovimentacoesFiltradas(
     filtro: {
-      descricao?: string,
-      membro_id?: number,
-      data_inicio?: string,
-      data_fim?: string,
-      tipo_movimento?: string,
-      tipo_caixa?: string
+      descricao?: string;
+      membro_id?: number;
+      data_inicio?: string;
+      data_fim?: string;
+      tipo_movimento?: string;
+      tipo_caixa?: string;
     },
     token: string,
     skip = 0,
     limit = 20
   ) {
     const url = new URL(`${URL_BASE}/filtrar/geral`);
-    if (filtro.descricao) url.searchParams.append("descricao", filtro.descricao);
-    if (filtro.membro_id) url.searchParams.append("membro_id", filtro.membro_id.toString());
-    if (filtro.data_inicio) url.searchParams.append("data_inicio", filtro.data_inicio);
+    if (filtro.descricao)
+      url.searchParams.append("descricao", filtro.descricao);
+    if (filtro.membro_id)
+      url.searchParams.append("membro_id", filtro.membro_id.toString());
+    if (filtro.data_inicio)
+      url.searchParams.append("data_inicio", filtro.data_inicio);
     if (filtro.data_fim) url.searchParams.append("data_fim", filtro.data_fim);
-    if (filtro.tipo_movimento) url.searchParams.append("tipo_movimento", filtro.tipo_movimento);
-    if (filtro.tipo_caixa) url.searchParams.append("tipo_caixa", filtro.tipo_caixa);
+    if (filtro.tipo_movimento)
+      url.searchParams.append("tipo_movimento", filtro.tipo_movimento);
+    if (filtro.tipo_caixa)
+      url.searchParams.append("tipo_caixa", filtro.tipo_caixa);
     url.searchParams.append("skip", skip.toString());
     url.searchParams.append("limit", limit.toString());
     const response = await fetch(url.toString(), {
@@ -517,7 +615,7 @@ export const entradasAPI = {
       throw new Error("Erro ao buscar movimentações filtradas");
     }
     return response.json();
-  }
+  },
 };
 
 export const saidasAPI = {
@@ -775,7 +873,22 @@ export const eventosAPI = {
   async listarEventos(token: string, skip = 0, limit = 20) {
     const url = new URL(`${URL_BASE}/eventos/`);
     url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());   
+    url.searchParams.append("limit", limit.toString());
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar eventos");
+    }
+    return response.json();
+  },
+  async buscarEventosPeloTitulo(termo: string, token: string) {
+    const url = new URL(`${URL_BASE}/eventos/buscar`);
+    url.searchParams.append("termo", termo);
     const response = await fetch(url.toString(), {
       method: "GET",
       headers: {
@@ -841,7 +954,7 @@ export const eventosAPI = {
       throw new Error("Erro ao deletar evento");
     }
 
-    return response.json(); 
+    return response.json();
   },
 };
 

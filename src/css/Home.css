@@ -1,0 +1,188 @@
+.container-principal {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card-boas-vindas {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-radius: 15px;
+  padding: 30px;
+  margin-bottom: 30px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-boas-vindas::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: rotate(30deg);
+}
+
+.icon-boas-vindas {
+  font-size: 4rem;
+  margin-bottom: 15px;
+  animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.card-boas-vindas h2 {
+  margin-top: 0;
+  font-size: 2.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cargo-tag {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.texto-boas-vindas {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.card-sobre-app {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+}
+
+.card-sobre-app h3 {
+  color: #007bff;
+  font-size: 1.8rem;
+  margin-top: 0;
+  margin-bottom: 25px;
+  text-align: center;
+  position: relative;
+}
+
+.card-sobre-app h3::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -10px;
+  width: 60px;
+  height: 3px;
+  background-color: #007bff;
+  border-radius: 2px;
+}
+
+.lista-funcionalidades {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.item-funcionalidade {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item-funcionalidade:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.icone-funcionalidade {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-right: 15px;
+  min-width: 40px; /* Garante que o ícone não encolha */
+}
+
+.item-funcionalidade p {
+  margin: 0;
+  color: #333;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.item-funcionalidade strong {
+  color: #0056b3;
+}
+
+.texto-final-app {
+  margin-top: 25px;
+  color: #666;
+  font-size: 0.95rem;
+  text-align: center;
+  padding-top: 15px;
+  border-top: 1px dashed #eee;
+}
+
+/* ... (estilos anteriores) ... */
+
+.logo-home {
+  max-width: 120px; /* Ajuste o tamanho conforme necessário */
+  height: auto;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); /* Adiciona uma sombra à logo */
+}
+
+/* Ajustando o ícone de boas-vindas para ser um fundo */
+.icon-boas-vindas-fundo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 8rem; /* Ícone maior */
+  color: rgba(255, 255, 255, 0.1); /* Bem transparente */
+  z-index: 0; /* Garante que fique atrás do conteúdo */
+  animation: rotateFade 10s infinite linear; /* Uma animação de rotação sutil */
+}
+
+@keyframes rotateFade {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Ajustes para o conteúdo ficar acima do ícone de fundo */
+.card-boas-vindas h2,
+.card-boas-vindas p,
+.logo-home {
+  position: relative;
+  z-index: 1;
+}
+
+/* ... (restante dos estilos) ... */
