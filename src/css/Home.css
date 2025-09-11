@@ -142,7 +142,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 370px) {
+@media (max-width: 450px) {
   .lista-funcionalidades {
     display: flex;
     flex-direction: column;
