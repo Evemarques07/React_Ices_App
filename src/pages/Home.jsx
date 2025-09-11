@@ -21,6 +21,7 @@ export default function Home({ user }) {
           <br />
           <p className="nome-usuario-home" style={{ margin: 0 }}>
             {primeiroNome || "usuário"}!
+            {cargo && <span className="cargo-tag"> {cargo}</span>}
           </p>
         </h2>
         <p className="texto-boas-vindas">

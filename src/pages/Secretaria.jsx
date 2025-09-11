@@ -262,6 +262,7 @@ export default function Secretaria({ user }) {
   const [modal, setModal] = useState(null);
   const [colEscalas, setColEscalas] = useState(true);
   const [colEventos, setColEventos] = useState(true);
+  const [colContribuintes, setColContribuintes] = useState(true);
   const [colMembros, setColMembros] = useState(true);
   const [colUsuarios, setColUsuarios] = useState(true);
 
@@ -375,19 +376,19 @@ export default function Secretaria({ user }) {
       <div style={styles.sectionContainer}>
         <button
           style={styles.collapseBtn}
-          onClick={() => setColMembros((v) => !v)}
+          onClick={() => setColContribuintes((v) => !v)}
         >
           <span
             style={{
               ...styles.collapseIcon,
-              transform: colMembros ? "rotate(0deg)" : "rotate(90deg)",
+              transform: colContribuintes ? "rotate(0deg)" : "rotate(90deg)",
             }}
           >
             ▶
           </span>{" "}
           Lista de Contribuintes
         </button>
-        {!colMembros && <ListaTodosNomes />}
+        {!colContribuintes && <ListaTodosNomes />}
       </div>
       <div style={styles.sectionContainer}>
         <button
