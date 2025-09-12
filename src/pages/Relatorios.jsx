@@ -14,6 +14,10 @@ import {
 import "../css/Relatorios.css";
 
 export default function Relatorios() {
+  // Verifica se o usuário tem cargos
+  const user = JSON.parse(localStorage.getItem("user"));
+  const cargos = user?.cargos || [];
+  const temCargo = Array.isArray(cargos) && cargos.length > 0;
   const now = new Date();
   const [mes, setMes] = useState(now.getMonth() + 1);
   const [ano, setAno] = useState(now.getFullYear());
@@ -30,11 +34,17 @@ export default function Relatorios() {
       setLoading(false);
       return;
     }
-    relatoriosAPI
-      .getRelatorioFinanceiroResumido(m, a, user.access_token)
+    const cargos = user.cargos || [];
+    const temCargo = Array.isArray(cargos) && cargos.length > 0;
+    const apiCall = temCargo
+      ? relatoriosAPI.getRelatorioFinanceiroDetalhado
+      : relatoriosAPI.getRelatorioFinanceiroResumido;
+
+    apiCall(m, a, user.access_token)
       .then(setRelatorio)
       .catch(() => setError("Erro ao buscar relatório financeiro"))
       .finally(() => setLoading(false));
+
   }
 
   useEffect(() => {
@@ -50,9 +60,6 @@ export default function Relatorios() {
   // Cálculos para os cards de resumo
   const saldoMesFinanceiro = relatorio
     ? relatorio.total_entradas - relatorio.total_saidas
-    : 0;
-  const saldoFinalFinanceiro = relatorio
-    ? relatorio.saldo_anterior_financeiro + saldoMesFinanceiro
     : 0;
 
   return (
@@ -114,7 +121,9 @@ export default function Relatorios() {
             Resumo de {String(relatorio.mes).padStart(2, "0")}/{relatorio.ano}
           </h3>
 
+          {/* --- GRID DE RESUMO GERAL --- */}
           <div className="summary-grid">
+            {/* Cards de Resumo (Entradas, Saídas, Saldo do Mês, Saldo Final) */}
             <div className="summary-card income">
               <ArrowUpCircle size={28} className="summary-card__icon" />
               <div className="summary-card__details">
@@ -144,10 +153,6 @@ export default function Relatorios() {
                 <span className="summary-card__value">
                   {formatCurrency(saldoMesFinanceiro)}
                 </span>
-                <span className="summary-card__final">
-                  Saldo Final:{" "}
-                  {formatCurrency(relatorio.saldo_atual_financeiro)}
-                </span>
               </div>
             </div>
             <div className="summary-card final-balance">
@@ -157,114 +162,231 @@ export default function Relatorios() {
                   Saldo Final (Financeiro)
                 </span>
                 <span className="summary-card__value">
-                  {formatCurrency(saldoFinalFinanceiro)}
+                  {formatCurrency(relatorio.saldo_atual_financeiro)}
                 </span>
               </div>
             </div>
           </div>
 
-          <section className="report-section">
-            <div className="report-section__header">
-              <HeartHandshake className="section-icon" size={24} />
-              <h4>Detalhes Financeiros</h4>
-              <span className="saldo-anterior">
-                Saldo Anterior:{" "}
-                {formatCurrency(relatorio.saldo_anterior_financeiro)}
-                <br />
-                <span className="saldo-final">
-                  Saldo Final:{" "}
-                  {formatCurrency(relatorio.saldo_atual_financeiro)}
-                </span>
-              </span>
-            </div>
-            <div className="report-section__body">
-              <div className="details-block">
-                <h5>Entradas</h5>
-                <ul className="breakdown-list">
-                  {Object.entries(relatorio.entradas_por_tipo || {}).map(
-                    ([tipo, valor]) => (
-                      <li key={tipo}>
-                        <span>{tipo}</span>
-                        <strong>{formatCurrency(valor)}</strong>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </div>
-              <div className="details-block">
-                <h5>Saídas</h5>
-                <TransactionList transactions={relatorio.saidas} />
-              </div>
-            </div>
-          </section>
+          {/* --- [VISÃO DETALHADA - APENAS PARA USUÁRIOS COM CARGO] --- */}
+          {temCargo && (
+            <>
+              {/* === DETALHES FINANCEIROS (DETALHADO) === */}
+              <section className="report-section detailed-view">
+                <div className="report-section__header">
+                  <HeartHandshake className="section-icon" size={24} />
+                  <h4>Detalhes Financeiros</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_financeiro)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_financeiro)}
+                    </strong>
+                  </span>
+                </div>
+                {/* Entradas Financeiras */}
+                <div className="details-block-header">
+                  <h5>Entradas Financeiras</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionTable
+                    transactions={relatorio.entradas}
+                    type="entrada"
+                  />
+                </div>
+                {/* Saídas Financeiras */}
+                <div className="details-block-header">
+                  <h5>Saídas Financeiras</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionList transactions={relatorio.saidas} />
+                </div>
+              </section>
 
-          <section className="report-section">
-            <div className="report-section__header">
-              <Rocket className="section-icon" size={24} />
-              <h4>Detalhes de Missões</h4>
-              <span className="saldo-anterior">
-                Saldo Anterior:{" "}
-                {formatCurrency(relatorio.saldo_anterior_missoes)}
-                <br />
-                <span className="saldo-final">
-                  Saldo Final: {formatCurrency(relatorio.saldo_atual_missoes)}
-                </span>
-              </span>
-            </div>
-            <div className="report-section__body">
-              <div className="details-block">
-                <h5>Entradas</h5>
-                <ul className="breakdown-list">
-                  {Object.entries(
-                    relatorio.entradas_missoes_por_tipo || {}
-                  ).map(([tipo, valor]) => (
-                    <li key={tipo}>
-                      <span>{tipo}</span>
-                      <strong>{formatCurrency(valor)}</strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="details-block">
-                <h5>Saídas</h5>
-                <TransactionList transactions={relatorio.saidas_missoes} />
-              </div>
-            </div>
-          </section>
+              {/* === DETALHES DE MISSÕES (DETALHADO) === */}
+              <section className="report-section detailed-view">
+                <div className="report-section__header">
+                  <Rocket className="section-icon" size={24} />
+                  <h4>Detalhes de Missões</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_missoes)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_missoes)}
+                    </strong>
+                  </span>
+                </div>
+                {/* Entradas de Missões */}
+                <div className="details-block-header">
+                  <h5>Entradas de Missões</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionTable
+                    transactions={relatorio.entradas_missoes}
+                    type="entrada"
+                  />
+                </div>
+                {/* Saídas de Missões */}
+                <div className="details-block-header">
+                  <h5>Saídas de Missões</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionList transactions={relatorio.saidas_missoes} />
+                </div>
+              </section>
 
-          <section className="report-section">
-            <div className="report-section__header">
-              <Landmark className="section-icon" size={24} />
-              <h4>Detalhes de Projetos</h4>
-              <span className="saldo-anterior">
-                Saldo Anterior:{" "}
-                {formatCurrency(relatorio.saldo_anterior_projetos)}
-                <br />
-                <span className="saldo-final">
-                  Saldo Final: {formatCurrency(relatorio.saldo_atual_projetos)}
-                </span>
-              </span>
-            </div>
-            <div className="report-section__body">
-              <div className="details-block">
-                <h5>Entradas</h5>
-                <ul className="breakdown-list">
-                  {Object.entries(
-                    relatorio.entradas_projetos_por_tipo || {}
-                  ).map(([tipo, valor]) => (
-                    <li key={tipo}>
-                      <span>{tipo}</span>
-                      <strong>{formatCurrency(valor)}</strong>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="details-block">
-                <h5>Saídas</h5>
-                <TransactionList transactions={relatorio.saidas_projetos} />
-              </div>
-            </div>
-          </section>
+              {/* === DETALHES DE PROJETOS (DETALHADO) === */}
+              <section className="report-section detailed-view">
+                <div className="report-section__header">
+                  <Landmark className="section-icon" size={24} />
+                  <h4>Detalhes de Projetos</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_projetos)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_projetos)}
+                    </strong>
+                  </span>
+                </div>
+                {/* Entradas de Projetos */}
+                <div className="details-block-header">
+                  <h5>Entradas de Projetos</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionTable
+                    transactions={relatorio.entradas_projetos}
+                    type="entrada"
+                  />
+                </div>
+                {/* Saídas de Projetos */}
+                <div className="details-block-header">
+                  <h5>Saídas de Projetos</h5>
+                </div>
+                <div className="report-section__body full-width">
+                  <TransactionList transactions={relatorio.saidas_projetos} />
+                </div>
+              </section>
+            </>
+          )}
+
+          {/* --- [VISÃO RESUMIDA - PARA TODOS OS USUÁRIOS (NÃO ADMINISTRADORES)] --- */}
+          {!temCargo && (
+            <>
+              {/* Detalhes Financeiros (Resumido) */}
+              <section className="report-section">
+                <div className="report-section__header">
+                  <HeartHandshake className="section-icon" size={24} />
+                  <h4>Detalhes Financeiros</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_financeiro)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_financeiro)}
+                    </strong>
+                  </span>
+                </div>
+                <div className="report-section__body">
+                  <div className="details-block">
+                    <h5>Entradas por Tipo</h5>
+                    <ul className="breakdown-list">
+                      {Object.entries(relatorio.entradas_por_tipo || {}).map(
+                        ([tipo, valor]) => (
+                          <li key={tipo}>
+                            <span>{tipo}</span>
+                            <strong>{formatCurrency(valor)}</strong>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                  <div className="details-block">
+                    <h5>Saídas</h5>
+                    <TransactionList transactions={relatorio.saidas} />
+                  </div>
+                </div>
+              </section>
+
+              {/* Detalhes de Missões (Resumido) */}
+              <section className="report-section">
+                <div className="report-section__header">
+                  <Rocket className="section-icon" size={24} />
+                  <h4>Detalhes de Missões</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_missoes)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_missoes)}
+                    </strong>
+                  </span>
+                </div>
+                <div className="report-section__body">
+                  <div className="details-block">
+                    <h5>Entradas por Tipo</h5>
+                    <ul className="breakdown-list">
+                      {Object.entries(
+                        relatorio.entradas_missoes_por_tipo || {}
+                      ).map(([tipo, valor]) => (
+                        <li key={tipo}>
+                          <span>{tipo}</span>
+                          <strong>{formatCurrency(valor)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="details-block">
+                    <h5>Saídas</h5>
+                    <TransactionList transactions={relatorio.saidas_missoes} />
+                  </div>
+                </div>
+              </section>
+
+              {/* Detalhes de Projetos (Resumido) */}
+              <section className="report-section">
+                <div className="report-section__header">
+                  <Landmark className="section-icon" size={24} />
+                  <h4>Detalhes de Projetos</h4>
+                  <span className="saldo-info">
+                    Saldo Anterior:{" "}
+                    {formatCurrency(relatorio.saldo_anterior_projetos)}
+                    <br />
+                    <strong>
+                      Saldo Final:{" "}
+                      {formatCurrency(relatorio.saldo_atual_projetos)}
+                    </strong>
+                  </span>
+                </div>
+                <div className="report-section__body">
+                  <div className="details-block">
+                    <h5>Entradas por Tipo</h5>
+                    <ul className="breakdown-list">
+                      {Object.entries(
+                        relatorio.entradas_projetos_por_tipo || {}
+                      ).map(([tipo, valor]) => (
+                        <li key={tipo}>
+                          <span>{tipo}</span>
+                          <strong>{formatCurrency(valor)}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="details-block">
+                    <h5>Saídas</h5>
+                    <TransactionList transactions={relatorio.saidas_projetos} />
+                  </div>
+                </div>
+              </section>
+            </>
+          )}
         </div>
       )}
       <ScrollToTopButton size={60} />
@@ -272,8 +394,72 @@ export default function Relatorios() {
   );
 }
 
-// Componente auxiliar que renderiza a tabela E a lista responsiva.
-// O CSS controlará qual deles é exibido.
+// Componente para a tabela detalhada (visão de administrador)
+const TransactionTable = ({ transactions, type = "entrada" }) => {
+  if (!transactions || transactions.length === 0) {
+    return <p className="no-data-message">Nenhuma transação no período.</p>;
+  }
+  return (
+    <>
+      {/* Tabela para telas grandes */}
+      <div className="table-container">
+        <table className="transactions-table">
+          <thead>
+            <tr>
+              <th>Valor</th>
+              <th>Tipo</th>
+              <th>Descrição</th>
+              <th>Data</th>
+              {type === "entrada" && <th>Membro</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((e) => (
+              <tr key={e.id}>
+                <td className={`currency ${type}`}>
+                  {formatCurrency(e.valor)}
+                </td>
+                <td>{e.tipo}</td>
+                <td>{e.descricao}</td>
+                <td>{formatDate(e.data)}</td>
+                {type === "entrada" && <td>{e.membro_nome || "-"}</td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Cards para telas pequenas */}
+      <div className="transactions-list-container">
+        {transactions.map((e) => (
+          <div key={e.id} className="transaction-card">
+            <div className="transaction-card__main">
+              <span className="transaction-card__description">
+                {e.descricao}
+              </span>
+              <span className="transaction-card__type">{e.tipo}</span>
+              {type === "entrada" && (
+                <span className="transaction-card__member">
+                  {e.membro_nome || "-"}
+                </span>
+              )}
+            </div>
+            <div className="transaction-card__meta">
+              <span className="transaction-card__date">
+                {formatDate(e.data)}
+              </span>
+              <span className={`transaction-card__value ${type}`}>
+                {formatCurrency(e.valor)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+// Componente auxiliar para Saídas (resumo e detalhado) que renderiza tabela ou cards
 const TransactionList = ({ transactions }) => {
   if (!transactions || transactions.length === 0) {
     return <p className="no-data-message">Nenhuma transação no período.</p>;
@@ -288,7 +474,7 @@ const TransactionList = ({ transactions }) => {
               <th>Descrição</th>
               <th>Tipo</th>
               <th>Data</th>
-              <th>Valor</th>
+              <th style={{ textAlign: "right" }}>Valor</th>
             </tr>
           </thead>
           <tbody>
@@ -297,7 +483,7 @@ const TransactionList = ({ transactions }) => {
                 <td>{s.descricao}</td>
                 <td>{s.tipo}</td>
                 <td>{formatDate(s.data)}</td>
-                <td className="currency">{formatCurrency(s.valor)}</td>
+                <td className="currency saida">{formatCurrency(s.valor)}</td>
               </tr>
             ))}
           </tbody>
@@ -318,7 +504,7 @@ const TransactionList = ({ transactions }) => {
               <span className="transaction-card__date">
                 {formatDate(s.data)}
               </span>
-              <span className="transaction-card__value">
+              <span className="transaction-card__value saida">
                 {formatCurrency(s.valor)}
               </span>
             </div>

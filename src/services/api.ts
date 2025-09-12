@@ -847,6 +847,24 @@ export const relatoriosAPI = {
     }
     return response.json();
   },
+  async getRelatorioFinanceiroDetalhado(
+    mes: number,
+    ano: number,
+    token: string
+  ) {
+    const url = `${URL_BASE}/relatorios/financeiro?mes=${mes}&ano=${ano}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar relatório financeiro detalhado");
+    }
+    return response.json();
+  },
 };
 
 export const eventosAPI = {
