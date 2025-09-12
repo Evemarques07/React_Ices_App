@@ -1,200 +1,139 @@
-.container-principal {
-  padding: 20px;
-  max-width: 900px;
-  margin: 0 auto;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+:root {
+  --primary-color: #4a90e2; /* Um azul mais vibrante */
+  --primary-dark: #357bd8;
+  --secondary-color: #f0f4f8; /* Um cinza claro para fundos */
+  --text-color: #333333;
+  --text-light: #666666;
+  --card-background: #ffffff;
+  --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --gradient-blue: linear-gradient(135deg, #4a90e2, #2e7ad6);
 }
 
+body {
+  margin: 0;
+  background-color: var(--secondary-color);
+  font-family: "Poppins", sans-serif; /* Fonte moderna e legível */
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.logo-home-bg {
+  background: rgb(255, 255, 255);
+  border-radius: 22px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 25px;
+  z-index: 1;
+}
+.container-principal {
+  padding: 20px;
+  max-width: 1000px; /* Aumenta um pouco a largura máxima */
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espaçamento entre os cards */
+}
+
+/* Card de Boas-Vindas */
 .card-boas-vindas {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: var(--gradient-blue);
   color: white;
-  border-radius: 15px;
-  padding: 30px;
-  margin-bottom: 30px;
+  border-radius: 20px; /* Bordas mais arredondadas */
+  padding: 40px 30px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada */
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-boas-vindas::before {
   content: "";
   position: absolute;
-  top: -50px;
-  left: -50px;
-  width: 150px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.1);
+  top: -60px;
+  left: -60px;
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.08); /* Mais sutil */
   border-radius: 50%;
-  transform: rotate(30deg);
+  transform: rotate(45deg);
+  z-index: 0;
 }
 
-.icon-boas-vindas {
-  font-size: 4rem;
-  margin-bottom: 15px;
-  animation: bounce 2s infinite ease-in-out;
+.logo-home {
+  max-width: 150px; /* Logo um pouco maior */
+  height: auto;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+  z-index: 1;
 }
 
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.card-boas-vindas h2 {
-  margin-top: 0;
-  font-size: 1.8rem;
-  font-weight: 600;
+.titulo-boas-vindas {
+  margin: 0;
+  font-size: 2.2rem; /* Título maior */
+  font-weight: 700;
   display: flex;
+  flex-direction: column; /* Para empilhar "Bem-vindo" e o nome */
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 5px;
+  z-index: 1;
+  line-height: 1.2;
 }
 
-.cargo-tag {
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-
-.texto-boas-vindas {
-  font-size: 1.1rem;
-  line-height: 1.6;
+.saudacao {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
   opacity: 0.9;
 }
 
-.card-sobre-app {
-  background: #ffffff;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e0e0e0;
-}
-
-.card-sobre-app h3 {
-  color: #007bff;
-  font-size: 1.8rem;
-  margin-top: 0;
-  margin-bottom: 25px;
-  text-align: center;
-  position: relative;
-}
-
-.card-sobre-app h3::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -10px;
-  width: 60px;
-  height: 3px;
-  background-color: #007bff;
-  border-radius: 2px;
-}
-
-.lista-funcionalidades {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  margin-bottom: 25px;
-}
-
-.item-funcionalidade {
-  display: flex;
-  align-items: center;
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.item-funcionalidade:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.icone-funcionalidade {
-  font-size: 2.5rem;
-  color: #007bff;
-  margin-right: 15px;
-  min-width: 40px; /* Garante que o ícone não encolha */
-}
-
-.item-funcionalidade p {
+.nome-usuario-home {
   margin: 0;
-  color: #333;
-  font-size: 1.05rem;
-  line-height: 1.5;
-}
-
-.item-funcionalidade strong {
-  color: #0056b3;
-}
-
-.bemvindo-nowrap {
-  white-space: nowrap;
-}
-
-@media (max-width: 450px) {
-  .lista-funcionalidades {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-  .item-funcionalidade {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-  .icone-funcionalidade {
-    margin-right: 0;
-    margin-bottom: 8px;
-    font-size: 2rem;
-  }
-  .item-funcionalidade p {
-    font-size: 0.95rem;
-  }
-}
-
-.texto-final-app {
-  margin-top: 25px;
-  color: #666;
-  font-size: 0.95rem;
+  font-size: 2.8rem; /* Nome do usuário em destaque */
+  font-weight: 800;
   text-align: center;
-  padding-top: 15px;
-  border-top: 1px dashed #eee;
 }
 
-/* ... (estilos anteriores) ... */
-
-.logo-home {
-  max-width: 120px; /* Ajuste o tamanho conforme necessário */
-  height: auto;
-  margin-bottom: 20px;
-  filter: drop-shadow(
-    0 4px 8px rgba(0, 0, 0, 0.2)
-  ); /* Adiciona uma sombra à logo */
+.cargo-tag {
+  background-color: rgba(255, 255, 255, 0.25);
+  padding: 7px 15px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-left: 15px; /* Espaço maior */
+  transition: all 0.3s ease;
 }
 
-/* Ajustando o ícone de boas-vindas para ser um fundo */
+.cargo-tag:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.texto-boas-vindas {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  opacity: 0.95;
+  margin-top: 20px;
+  max-width: 600px;
+  z-index: 1;
+}
+
+/* Ícone de Fundo */
 .icon-boas-vindas-fundo {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 8rem; /* Ícone maior */
-  color: rgba(255, 255, 255, 0.1); /* Bem transparente */
-  z-index: 0; /* Garante que fique atrás do conteúdo */
-  animation: rotateFade 10s infinite linear; /* Uma animação de rotação sutil */
+  font-size: 12rem; /* Ícone muito maior */
+  color: rgba(255, 255, 255, 0.05); /* Mais transparente ainda */
+  z-index: 0;
+  animation: rotateFade 20s infinite linear; /* Animação mais lenta */
 }
 
 @keyframes rotateFade {
@@ -206,12 +145,234 @@
   }
 }
 
-/* Ajustes para o conteúdo ficar acima do ícone de fundo */
-.card-boas-vindas h2,
-.card-boas-vindas p,
-.logo-home {
-  position: relative;
-  z-index: 1;
+/* Card Sobre o App */
+.card-sobre-app {
+  background: var(--card-background);
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: var(--shadow-light);
+  border: none; /* Remove a borda padrão */
 }
 
-/* ... (restante dos estilos) ... */
+.card-sobre-app h3 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 35px;
+  text-align: center;
+  position: relative;
+  font-weight: 700;
+}
+
+.card-sobre-app h3::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -15px;
+  width: 80px; /* Linha um pouco maior */
+  height: 4px; /* Linha mais grossa */
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.lista-funcionalidades {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* Mais flexível */
+  gap: 30px; /* Mais espaçamento */
+  margin-bottom: 35px;
+}
+
+.item-funcionalidade {
+  display: flex;
+  align-items: flex-start; /* Alinha o texto com o topo do ícone */
+  background: var(--secondary-color); /* Fundo mais claro para os itens */
+  padding: 25px;
+  border-radius: 15px; /* Bordas mais suaves */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
+  min-height: 120px; /* Garante altura mínima para uniformidade */
+}
+
+.item-funcionalidade:hover {
+  transform: translateY(-8px); /* Efeito de elevação maior */
+  box-shadow: var(--shadow-hover);
+  background-color: #e6eff7; /* Levemente mais escuro no hover */
+}
+
+.icone-funcionalidade {
+  font-size: 3rem; /* Ícones maiores */
+  color: #fff;
+  margin-right: 20px;
+  min-width: 50px;
+}
+
+.item-funcionalidade p {
+  margin: 0;
+  color: #fff;
+  font-size: 1.1rem; /* Texto um pouco maior */
+  line-height: 1.6;
+}
+
+.item-funcionalidade strong {
+  color: #fff;
+}
+
+.texto-final-app {
+  margin-top: 30px;
+  color: var(--text-light);
+  font-size: 1rem;
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0; /* Linha mais sólida */
+  opacity: 0.9;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .container-principal {
+    padding: 15px;
+    gap: 25px;
+  }
+
+  .card-boas-vindas {
+    padding: 30px 20px;
+  }
+
+  .titulo-boas-vindas {
+    font-size: 1.8rem;
+  }
+
+  .saudacao {
+    font-size: 1.2rem;
+  }
+
+  .nome-usuario-home {
+    font-size: 2.2rem;
+  }
+
+  .cargo-tag {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    margin-left: 10px;
+  }
+
+  .texto-boas-vindas {
+    font-size: 1rem;
+    margin-top: 15px;
+  }
+
+  .icon-boas-vindas-fundo {
+    font-size: 9rem;
+  }
+
+  .card-sobre-app {
+    padding: 30px 20px;
+  }
+
+  .card-sobre-app h3 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+
+  .lista-funcionalidades {
+    grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    gap: 20px;
+  }
+
+  .item-funcionalidade {
+    padding: 20px;
+    flex-direction: row; /* Mantém ícone e texto lado a lado */
+    align-items: center;
+    min-height: auto;
+  }
+
+  .icone-funcionalidade {
+    font-size: 2.5rem;
+    margin-right: 15px;
+    min-width: 40px;
+  }
+
+  .item-funcionalidade p {
+    font-size: 1rem;
+  }
+
+  .texto-final-app {
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-principal {
+    padding: 10px;
+    gap: 20px;
+  }
+
+  .card-boas-vindas {
+    padding: 25px 15px;
+  }
+
+  .logo-home {
+    max-width: 100px;
+    margin-bottom: 15px;
+  }
+
+  .titulo-boas-vindas {
+    font-size: 1.6rem;
+  }
+
+  .saudacao {
+    font-size: 1rem;
+  }
+
+  .nome-usuario-home {
+    font-size: 1.8rem;
+  }
+
+  .cargo-tag {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    margin-left: 8px;
+    display: block; /* Quebra de linha para o cargo em telas muito pequenas */
+    margin-top: 5px;
+  }
+
+  .texto-boas-vindas {
+    font-size: 0.9rem;
+  }
+
+  .icon-boas-vindas-fundo {
+    font-size: 7rem;
+  }
+
+  .card-sobre-app {
+    padding: 25px 15px;
+  }
+
+  .card-sobre-app h3 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+  }
+
+  .item-funcionalidade {
+    flex-direction: column; /* Empilha ícone e texto em telas muito pequenas */
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .icone-funcionalidade {
+    margin-right: 0;
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+  }
+
+  .item-funcionalidade p {
+    font-size: 0.9rem;
+  }
+}

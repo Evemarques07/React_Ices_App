@@ -4,7 +4,7 @@ import {
   FaCalendarAlt,
   FaPrayingHands,
 } from "react-icons/fa";
-import logo from "../assets/logo.png"; // Importando a logo
+import logo from "../assets/iceslogo12.png";
 import "../css/Home.css";
 
 export default function Home({ user }) {
@@ -14,13 +14,13 @@ export default function Home({ user }) {
   return (
     <div className="container-principal">
       <div className="card-boas-vindas">
-        {/* Adicionando a logo aqui */}
-        <img src={logo} alt="Logo da Aplicação" className="logo-home" />
-        <h2>
-          <p>Bem-vindo,</p>
-          <br />
-          <p className="nome-usuario-home" style={{ margin: 0 }}>
-            {primeiroNome || "usuário"}!
+        <div className="logo-home-bg">
+          <img src={logo} alt="Logo da Aplicação" className="logo-home" />
+        </div>
+        <h2 className="titulo-boas-vindas">
+          <p className="saudacao">Bem-vindo,</p>
+          <p className="nome-usuario-home">
+            {primeiroNome || "usuário"}
             {cargo && <span className="cargo-tag"> {cargo}</span>}
           </p>
         </h2>
@@ -28,12 +28,11 @@ export default function Home({ user }) {
           Estamos felizes em tê-lo(a) conosco. Explore as ferramentas que
           preparamos para você!
         </p>
-        <FaPrayingHands className="icon-boas-vindas-fundo" />{" "}
-        {/* Mudei este ícone para ser um elemento de fundo decorativo */}
+        <FaPrayingHands className="icon-boas-vindas-fundo" />
       </div>
 
       <div className="card-sobre-app">
-        <h3>Sobre o aplicativo</h3>
+        <h3>Sobre o Aplicativo</h3>
         <div className="lista-funcionalidades">
           <div className="item-funcionalidade">
             <FaChartLine className="icone-funcionalidade" />

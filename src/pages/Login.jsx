@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/api";
-import logo from "../assets/logo.png"; // Importe a logo
+import logo from "../assets/iceslogo12.png"; // Importe a logo
 import { maskCPF } from "../utils/format";
 
 export default function Login({ onLogin }) {
