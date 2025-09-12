@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import Routes from "./routes";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
+import { PWAInstallPrompt } from "./components/utils/PWAInstallPrompt";
 import "./App.css";
 
 function decodeJWT(token) {
@@ -59,6 +60,8 @@ function App() {
   const autorizadoSecretario =
     cargos.includes("Secretario") || cargos.includes("Segundo_Secretario");
 
+  const autorizadoPastor = cargos.includes("Pastor");
+
   return (
     <div className="app-root">
       {userInfo && (
@@ -75,19 +78,20 @@ function App() {
             setRoute={setRoute}
             open={drawerOpen}
             setOpen={setDrawerOpen}
-            autorizadoTesoureiro={autorizadoTesoureiro}
-            autorizadoSecretario={autorizadoSecretario}
+            autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
+            autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
             handleLogout={handleLogout}
           />
         </>
       )}
+      <PWAInstallPrompt />
       <main
         style={{
           minHeight: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          paddingTop: userInfo ? "2.8rem" : 0, 
+          paddingTop: userInfo ? "2.8rem" : 0,
         }}
         className={userInfo ? "main-content" : ""}
       >
@@ -99,12 +103,13 @@ function App() {
               user={userInfo}
               route={route}
               setRoute={setRoute}
-              autorizadoTesoureiro={autorizadoTesoureiro}
-              autorizadoSecretario={autorizadoSecretario}
+              autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
+              autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
             />
           </div>
         )}
       </main>
+
       <style>{`
         @media (min-width: 1020px) {
           .main-content {
@@ -128,58 +133,58 @@ function App() {
   );
 }
 
-function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [show, setShow] = useState(false);
+// function InstallPrompt() {
+//   const [deferredPrompt, setDeferredPrompt] = useState(null);
+//   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShow(true);
-    });
-  }, []);
+//   useEffect(() => {
+//     window.addEventListener("beforeinstallprompt", (e) => {
+//       e.preventDefault();
+//       setDeferredPrompt(e);
+//       setShow(true);
+//     });
+//   }, []);
 
-  const handleInstall = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === "accepted") setShow(false);
-    }
-  };
+//   const handleInstall = async () => {
+//     if (deferredPrompt) {
+//       deferredPrompt.prompt();
+//       const { outcome } = await deferredPrompt.userChoice;
+//       if (outcome === "accepted") setShow(false);
+//     }
+//   };
 
-  if (!show) return null;
-  return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 20,
-        right: 20,
-        background: "#0097d8",
-        color: "#fff",
-        padding: "0.7rem 1.2rem",
-        borderRadius: 8,
-        fontSize: "small",
-        zIndex: 1000,
-      }}
-    >
-      <span>Instale o app para acesso rápido!</span>
-      <button
-        onClick={handleInstall}
-        style={{
-          marginLeft: 10,
-          background: "#fff",
-          color: "#0097d8",
-          border: "none",
-          borderRadius: 4,
-          padding: "0.3rem 0.7rem",
-          fontSize: "small",
-        }}
-      >
-        Instalar
-      </button>
-    </div>
-  );
-}
+//   if (!show) return null;
+//   return (
+//     <div
+//       style={{
+//         position: "fixed",
+//         bottom: 20,
+//         right: 20,
+//         background: "#0097d8",
+//         color: "#fff",
+//         padding: "0.7rem 1.2rem",
+//         borderRadius: 8,
+//         fontSize: "small",
+//         zIndex: 1000,
+//       }}
+//     >
+//       <span>Instale o app para acesso rápido!</span>
+//       <button
+//         onClick={handleInstall}
+//         style={{
+//           marginLeft: 10,
+//           background: "#fff",
+//           color: "#0097d8",
+//           border: "none",
+//           borderRadius: 4,
+//           padding: "0.3rem 0.7rem",
+//           fontSize: "small",
+//         }}
+//       >
+//         Instalar
+//       </button>
+//     </div>
+//   );
+// }
 
 export default App;

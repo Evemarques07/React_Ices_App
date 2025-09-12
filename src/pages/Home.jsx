@@ -6,6 +6,7 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/iceslogo12.png";
 import "../css/Home.css";
+import logoInstafran from "../assets/instagram.png";
 
 export default function Home({ user }) {
   const primeiroNome = user?.nome_membro?.split(" ")[0] || "";
@@ -60,6 +61,34 @@ export default function Home({ user }) {
           Tudo isso de forma prática, rápida e segura. Explore o menu para
           acessar as funcionalidades!
         </p>
+        <div style={{ textAlign: "center", marginTop: 18 }}>
+          <a
+            href="https://www.instagram.com/icesiqueiraice?utm_source=ig_web_button_share_sheet&igsh=MWljbnBxbW9qemc2Zg=="
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              background: "#24181cff",
+              color: "#fff",
+              padding: "8px 18px",
+              borderRadius: 22,
+              fontWeight: 600,
+              textDecoration: "none",
+              fontSize: "1rem",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              transition: "background 0.2s",
+            }}
+          >
+            <img
+              src={logoInstafran}
+              alt="Instagram"
+              style={{ width: 22, height: 22, borderRadius: 6 }}
+            />
+            Instagram da Igreja
+          </a>
+        </div>
       </div>
     </div>
   );

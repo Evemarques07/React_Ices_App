@@ -206,7 +206,7 @@ export default function Tesoureiro({ user }) {
 
   const cargos = user?.cargos || [];
   const autorizado =
-    cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro");
+    cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro") || cargos.includes("Pastor");
 
   if (!autorizado) {
     return (
