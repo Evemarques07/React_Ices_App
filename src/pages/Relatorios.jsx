@@ -180,6 +180,13 @@ export default function Relatorios() {
                     Saldo Anterior:{" "}
                     {formatCurrency(relatorio.saldo_anterior_financeiro)}
                     <br />
+                    Total de Entradas:{" "}
+                    {formatCurrency(relatorio.total_entradas)}
+                    <br />
+                    Total de Saídas:{" "}
+                    {formatCurrency(relatorio.total_saidas)}
+                    <br />
+                    <br />
                     <strong>
                       Saldo Final:{" "}
                       {formatCurrency(relatorio.saldo_atual_financeiro)}
@@ -214,6 +221,13 @@ export default function Relatorios() {
                     Saldo Anterior:{" "}
                     {formatCurrency(relatorio.saldo_anterior_missoes)}
                     <br />
+                    Total de Entradas:{" "}
+                    {formatCurrency(relatorio.total_entradas_missoes)}
+                    <br />
+                    Total de Saídas:{" "}
+                    {formatCurrency(relatorio.total_saidas_missoes)}
+                    <br />
+                    <br />
                     <strong>
                       Saldo Final:{" "}
                       {formatCurrency(relatorio.saldo_atual_missoes)}
@@ -247,6 +261,13 @@ export default function Relatorios() {
                   <span className="saldo-info">
                     Saldo Anterior:{" "}
                     {formatCurrency(relatorio.saldo_anterior_projetos)}
+                    <br />
+                    Total de Entradas:{" "}
+                    {formatCurrency(relatorio.total_entradas_projetos)}
+                    <br />
+                    Total de Saídas:{" "}
+                    {formatCurrency(relatorio.total_saidas_projetos)}
+                    <br />
                     <br />
                     <strong>
                       Saldo Final:{" "}
