@@ -39,19 +39,17 @@ function App() {
   // Removido estado route, agora navegação é por rotas
   const navigate = useNavigate();
 
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [pendingPop, setPendingPop] = useState(false);
+
   // Intercepta navegação para login (sair do app)
   useEffect(() => {
     if (!userInfo) return;
     const handlePopState = () => {
       const path = window.location.pathname;
       if (path === "/login") {
-        const confirmExit = window.confirm("Deseja realmente sair do aplicativo?");
-        if (!confirmExit) {
-          // Volta para a última rota
-          navigate(-1);
-        } else {
-          handleLogout();
-        }
+        setShowExitModal(true);
+        setPendingPop(true);
       }
     };
     window.addEventListener("popstate", handlePopState);
@@ -96,7 +94,17 @@ function App() {
     setUser(null);
     setUserInfo(null);
     localStorage.removeItem("user");
+    setShowExitModal(false);
+    setPendingPop(false);
     navigate("/login"); // volta para tela de login
+  };
+
+  const handleCancelExit = () => {
+    setShowExitModal(false);
+    if (pendingPop) {
+      navigate(-1);
+      setPendingPop(false);
+    }
   };
 
   const cargos = userInfo?.cargos || [];
@@ -128,6 +136,73 @@ function App() {
             navigate={navigate}
           />
         </>
+      )}
+
+      {/* Modal de confirmação de saída */}
+      {showExitModal && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "rgba(0,0,0,0.25)",
+          zIndex: 99999,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <div style={{
+            background: "#fff",
+            borderRadius: 12,
+            minWidth: 320,
+            maxWidth: 400,
+            padding: "2rem 1.5rem 1.5rem 1.5rem",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+            position: "relative",
+            textAlign: "center",
+          }}>
+            <h3 style={{ marginBottom: 18, color: "#007bff" }}>
+              Deseja realmente sair do aplicativo?
+            </h3>
+            <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+              <button
+                style={{
+                  background: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "0.7rem 1.2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+                  transition: "background 0.2s",
+                }}
+                onClick={handleLogout}
+              >
+                Sim, quero sair
+              </button>
+              <button
+                style={{
+                  background: "#e9ecef",
+                  color: "#007bff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "0.7rem 1.2rem",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                  transition: "background 0.2s",
+                }}
+                onClick={handleCancelExit}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
       <PWAInstallPrompt />

@@ -140,6 +140,7 @@ export default function Login({ onLogin }) {
               required
               minLength={11}
               style={styles.input}
+              autoComplete="username"
             />
           </div>
           <div
@@ -168,6 +169,7 @@ export default function Login({ onLogin }) {
                 lineHeight: "48px",
                 verticalAlign: "middle",
               }}
+              autoComplete="current-password"
             />
             <button
               type="button"
