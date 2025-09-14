@@ -4,6 +4,11 @@ import { Routes as RouterRoutes, Route, useNavigate } from "react-router-dom";
 import Routes from "./routes";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Contribuicoes from "./pages/Contribuicoes";
+import Relatorios from "./pages/Relatorios";
+import Tesoureiro from "./pages/Tesoureiro";
+import Secretaria from "./pages/Secretaria";
+import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
 import { PWAInstallPrompt } from "./components/utils/PWAInstallPrompt";
@@ -32,10 +37,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [route, setRoute] = useState(() => {
-    // Recupera rota do localStorage ou usa 'home' como padrão
-    return localStorage.getItem("route") || "home";
-  });
+  // Removido estado route, agora navegação é por rotas
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,10 +60,7 @@ function App() {
     }
   }, []);
 
-  // Salva a rota atual no localStorage sempre que mudar
-  useEffect(() => {
-    localStorage.setItem("route", route);
-  }, [route]);
+  // Removido persistência manual de rota
 
   const handleLogin = (data) => {
     setUser(data);
@@ -101,13 +100,12 @@ function App() {
           />
           <Drawer
             userInfo={userInfo}
-            route={route}
-            setRoute={setRoute}
             open={drawerOpen}
             setOpen={setDrawerOpen}
             autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
             autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
             handleLogout={handleLogout}
+            navigate={navigate}
           />
         </>
       )}
@@ -129,13 +127,18 @@ function App() {
           </RouterRoutes>
         ) : (
           <div className="drawer-content" style={{ width: "100%" }}>
-            <Routes
-              user={user}
-              route={route}
-              setRoute={setRoute}
-              autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
-              autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
-            />
+            <RouterRoutes>
+              <Route path="/" element={<Home user={user} />} />
+              <Route path="/contribuicoes" element={<Contribuicoes />} />
+              <Route path="/relatorios" element={<Relatorios />} />
+              {autorizadoTesoureiro || autorizadoPastor ? (
+                <Route path="/tesoureiro" element={<Tesoureiro user={user} />} />
+              ) : null}
+              {autorizadoSecretario || autorizadoPastor ? (
+                <Route path="/secretaria" element={<Secretaria user={user} />} />
+              ) : null}
+              <Route path="/calendario" element={<CalendarioEventos />} />
+            </RouterRoutes>
           </div>
         )}
       </main>

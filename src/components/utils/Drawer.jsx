@@ -162,17 +162,15 @@ const LogoutButton = styled.button`
 
 export default function Drawer({
   userInfo,
-  route,
-  setRoute,
   open,
   setOpen,
   autorizadoTesoureiro,
   autorizadoSecretario,
   handleLogout,
+  navigate,
 }) {
-  const handleNavigation = (newRoute) => {
-    setRoute(newRoute);
-    // Em desktop, não fechamos o drawer porque ele está sempre aberto
+  const handleNavigation = (path) => {
+    navigate(path);
     if (window.innerWidth < 1020) {
       setOpen(false);
     }
@@ -186,16 +184,14 @@ export default function Drawer({
       <DrawerContainer open={open}>
         <NavMenu>
           <MenuItemButton
-            $active={route === "home"}
-            onClick={() => handleNavigation("home")}
+            onClick={() => handleNavigation("/")}
           >
             <Home size={20} /> Home
           </MenuItemButton>
 
           {autorizadoTesoureiro && (
             <MenuItemButton
-              $active={route === "tesoureiro"}
-              onClick={() => handleNavigation("tesoureiro")}
+              onClick={() => handleNavigation("/tesoureiro")}
             >
               <Wallet size={20} /> Tesouraria
             </MenuItemButton>
@@ -203,29 +199,25 @@ export default function Drawer({
 
           {autorizadoSecretario && (
             <MenuItemButton
-              $active={route === "secretaria"}
-              onClick={() => handleNavigation("secretaria")}
+              onClick={() => handleNavigation("/secretaria")}
             >
               <Users size={20} /> Secretaria
             </MenuItemButton>
           )}
 
           <MenuItemButton
-            $active={route === "contribuicoes"}
-            onClick={() => handleNavigation("contribuicoes")}
+            onClick={() => handleNavigation("/contribuicoes")}
           >
             <HandCoins size={20} /> Minhas Contribuições
           </MenuItemButton>
 
           <MenuItemButton
-            $active={route === "relatorios"}
-            onClick={() => handleNavigation("relatorios")}
+            onClick={() => handleNavigation("/relatorios")}
           >
             <TrendingUp size={20} /> Relatórios
           </MenuItemButton>
           <MenuItemButton
-            $active={route === "calendario"}
-            onClick={() => handleNavigation("calendario")}
+            onClick={() => handleNavigation("/calendario")}
           >
             <Calendar size={20} /> Calendário Ices
           </MenuItemButton>

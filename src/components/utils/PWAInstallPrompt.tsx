@@ -14,7 +14,7 @@ export function PWAInstallPrompt() {
   const styles = {
     wrapper: {
       position: "fixed" as const,
-      top: 16,
+      top: 80,
       right: 16,
       zIndex: 50,
       width: 320,
