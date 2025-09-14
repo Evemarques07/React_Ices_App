@@ -1,7 +1,6 @@
 // src/App.jsx
 import { useState, useEffect } from "react";
 import { Routes as RouterRoutes, Route, useNavigate } from "react-router-dom";
-import Routes from "./routes";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Contribuicoes from "./pages/Contribuicoes";
@@ -39,6 +38,27 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   // Removido estado route, agora navegação é por rotas
   const navigate = useNavigate();
+
+  // Intercepta navegação para login (sair do app)
+  useEffect(() => {
+    if (!userInfo) return;
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path === "/login") {
+        const confirmExit = window.confirm("Deseja realmente sair do aplicativo?");
+        if (!confirmExit) {
+          // Volta para a última rota
+          navigate(-1);
+        } else {
+          handleLogout();
+        }
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [userInfo]);
 
   useEffect(() => {
     // Recupera usuário do localStorage se existir
@@ -124,6 +144,7 @@ function App() {
         {!userInfo ? (
           <RouterRoutes>
             <Route path="/*" element={<Login onLogin={handleLogin} />} />
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
           </RouterRoutes>
         ) : (
           <div className="drawer-content" style={{ width: "100%" }}>
@@ -138,6 +159,7 @@ function App() {
                 <Route path="/secretaria" element={<Secretaria user={user} />} />
               ) : null}
               <Route path="/calendario" element={<CalendarioEventos />} />
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
             </RouterRoutes>
           </div>
         )}

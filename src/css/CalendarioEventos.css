@@ -14,7 +14,7 @@
 
 .calendario-container {
   padding: 2rem;
-  max-width: 1200px;
+  max-width: "96%";
   margin: 0 auto;
   font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--text-color-dark);

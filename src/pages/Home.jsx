@@ -10,7 +10,19 @@ import logoInstafran from "../assets/instagram.png";
 
 export default function Home({ user }) {
   const primeiroNome = user?.nome_membro?.split(" ")[0] || "";
-  const cargo = user?.cargos && user.cargos.length > 0 ? user.cargos[0] : "";
+    const cargoRaw = user?.cargos && user.cargos.length > 0 ? user.cargos[0] : "";
+    const cargoMap = {
+      Diacono: "Diácono",
+      Diretor_Patrimonio: "Diretor de Patrimônio",
+      Pastor: "Pastor",
+      Presbitero: "Presbítero",
+      primeiro_usuario: "Primeiro Usuário",
+      Secretario: "Secretário",
+      Segundo_Secretario: "Segundo Secretário",
+      Segundo_Tesoureiro: "Segundo Tesoureiro",
+      Tesoureiro: "Tesoureiro",
+    };
+    const getCargoName = (cargo) => cargoMap[cargo] || cargo;
 
   return (
     <div className="container-principal">
@@ -22,7 +34,7 @@ export default function Home({ user }) {
           <p className="saudacao">Bem-vindo,</p>
           <p className="nome-usuario-home">
             {primeiroNome || "usuário"}
-            {cargo && <span className="cargo-tag"> {cargo}</span>}
+              {cargoRaw && <span className="cargo-tag"> {getCargoName(cargoRaw)}</span>}
           </p>
         </h2>
         <p className="texto-boas-vindas">
@@ -61,35 +73,39 @@ export default function Home({ user }) {
           Tudo isso de forma prática, rápida e segura. Explore o menu para
           acessar as funcionalidades!
         </p>
-        <div style={{ textAlign: "center", marginTop: 18 }}>
-          <a
-            href="https://www.instagram.com/icesiqueiraice?utm_source=ig_web_button_share_sheet&igsh=MWljbnBxbW9qemc2Zg=="
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              background: "#24181cff",
-              color: "#fff",
-              padding: "8px 18px",
-              borderRadius: 22,
-              fontWeight: 600,
-              textDecoration: "none",
-              fontSize: "1rem",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              transition: "background 0.2s",
-            }}
-          >
-            <img
-              src={logoInstafran}
-              alt="Instagram"
-              style={{ width: 22, height: 22, borderRadius: 6 }}
-            />
-            Instagram da Igreja
-          </a>
-        </div>
       </div>
+
+      {/* Botão flutuante do Instagram */}
+      <a
+        href="https://www.instagram.com/icesiqueiraice?utm_source=ig_web_button_share_sheet&igsh=MWljbnBxbW9qemc2Zg=="
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          position: "fixed",
+          bottom: 24,
+          right: 24,
+          zIndex: 1000,
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          background: "#24181cff",
+          color: "#fff",
+          padding: "12px 22px",
+          borderRadius: 28,
+          fontWeight: 600,
+          textDecoration: "none",
+          fontSize: "1rem",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.18)",
+          transition: "background 0.2s",
+        }}
+      >
+        <img
+          src={logoInstafran}
+          alt="Instagram"
+          style={{ width: 26, height: 26, borderRadius: 6 }}
+        />
+        Instagram da Igreja
+      </a>
     </div>
   );
 }
