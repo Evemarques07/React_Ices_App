@@ -8,7 +8,6 @@
   --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
   --gradient-blue: linear-gradient(135deg, #4a90e2, #2e7ad6);
-}
 
 body {
   margin: 0;
@@ -188,38 +187,42 @@ body {
 
 .item-funcionalidade {
   display: flex;
-  align-items: flex-start; /* Alinha o texto com o topo do ícone */
-  background: var(--secondary-color); /* Fundo mais claro para os itens */
+  align-items: flex-start;
+  background: var(--secondary-color);
   padding: 25px;
-  border-radius: 15px; /* Bordas mais suaves */
+  border-radius: 15px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease,
-    background-color 0.3s ease;
-  min-height: 120px; /* Garante altura mínima para uniformidade */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  min-height: 120px;
+  color: var(--text-color); /* Texto escuro */
+  border: none;
+  outline: none;
+}
 }
 
 .item-funcionalidade:hover {
-  transform: translateY(-8px); /* Efeito de elevação maior */
+  transform: translateY(-8px);
   box-shadow: var(--shadow-hover);
-  background-color: #e6eff7; /* Levemente mais escuro no hover */
+  background-color: #e6eff7;
+  color: var(--primary-color); /* Destaca texto no hover */
 }
 
 .icone-funcionalidade {
-  font-size: 3rem; /* Ícones maiores */
-  color: #fff;
+  font-size: 3rem;
+  color: var(--primary-color);
   margin-right: 20px;
   min-width: 50px;
 }
 
 .item-funcionalidade p {
   margin: 0;
-  color: #fff;
-  font-size: 1.1rem; /* Texto um pouco maior */
+  color: var(--text-color);
+  font-size: 1.1rem;
   line-height: 1.6;
 }
 
 .item-funcionalidade strong {
-  color: #fff;
+  color: var(--primary-dark);
 }
 
 .texto-final-app {

@@ -4,7 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import ptLocale from "@fullcalendar/core/locales/pt-br";
 import { eventosAPI, escalasAPI } from "../services/api";
-import "../css/CalendarioEventos.css"; // Importar o arquivo CSS
+import "../css/CalendarioEventos.css"; 
 
 import { useRef } from "react";
 
@@ -13,7 +13,6 @@ export default function CalendarioEventos() {
   const [loading, setLoading] = useState(false);
   const [modalEvento, setModalEvento] = useState(null);
 
-  // Busca de eventos por título
   const [busca, setBusca] = useState("");
   const [sugestoes, setSugestoes] = useState([]);
   const [buscando, setBuscando] = useState(false);
@@ -36,7 +35,7 @@ export default function CalendarioEventos() {
         title: ev.titulo,
         start: ev.data_inicio,
         end: ev.data_final,
-        classNames: ["evento-geral"], // Classe para eventos gerais
+        classNames: ["evento-geral"],
         extendedProps: {
           descricao: ev.descricao,
           ativo: ev.ativo,
@@ -44,19 +43,16 @@ export default function CalendarioEventos() {
         },
       }));
 
-      // Escalas agrupadas por data
       const resEscalas = await escalasAPI.listarEscalas(token);
       const listaEscalas = Array.isArray(resEscalas) ? resEscalas : [];
-      // Agrupar por data (YYYY-MM-DD)
       const grupos = {};
       listaEscalas.forEach((esc) => {
-        const data = esc.data_escala.slice(0, 10); // Pega só a data
+        const data = esc.data_escala.slice(0, 10); 
         if (!grupos[data]) grupos[data] = [];
         grupos[data].push(esc);
       });
 
       const escalasAgrupadas = Object.entries(grupos).map(([data, escalas]) => {
-        // Se o usuário tem escala nesse dia, destaca
         const usuarioTemEscala = escalas.some(
           (esc) => esc.membro_id === membroId
         );
@@ -88,9 +84,7 @@ export default function CalendarioEventos() {
     }
   }
 
-  // Buscar eventos pelo título
   async function buscarEventosPorTitulo(titulo) {
-    // Só busca se tiver 3 ou mais caracteres
     if (!titulo || titulo.trim().length < 3) {
       setSugestoes([]);
       setBuscando(false);
@@ -111,7 +105,6 @@ export default function CalendarioEventos() {
     }
   }
 
-  // Selecionar evento da busca
   async function selecionarEventoBusca(eventoId) {
     try {
       const user = localStorage.getItem("user")
@@ -119,16 +112,12 @@ export default function CalendarioEventos() {
         : null;
       const token = user?.access_token;
       const evento = await eventosAPI.getEventoById(eventoId, token);
-      // Encontrar evento no calendário
       const eventoCalendario = eventos.find((ev) => {
-        // id pode ser "evento-2" ou ev.id === evento.id
         return ev.id === "evento-" + evento.id;
       });
       if (eventoCalendario && calendarRef.current) {
-        // Rolar até o evento
         const calendarApi = calendarRef.current.getApi();
         calendarApi.gotoDate(eventoCalendario.start);
-        // Destacar evento (abre modal)
         setModalEvento({
           title: eventoCalendario.title,
           descricao: eventoCalendario.extendedProps.descricao,
@@ -141,7 +130,6 @@ export default function CalendarioEventos() {
       setBusca("");
       setSugestoes([]);
     } catch (err) {
-      // erro
     }
   }
 
@@ -161,11 +149,46 @@ export default function CalendarioEventos() {
     }).format(d);
   };
 
+  const [intervaloMes, setIntervaloMes] = useState({ start: null, end: null });
+  const eventosDoMes = eventos.filter((ev) => {
+    const inicio = new Date(ev.start);
+    if (!intervaloMes.start || !intervaloMes.end) return false;
+    return inicio >= intervaloMes.start && inicio < intervaloMes.end;
+  });
+
+
+  function capitalizarMesTitulo(titulo) {
+    if (!titulo) return "";
+    return titulo.replace(/^(\w)/, (l) => l.toUpperCase());
+  }
+
+  const [tituloCalendario, setTituloCalendario] = useState("");
+
+  const handleDatesSet = (info) => {
+    if (info.view && info.view.title) {
+      setTituloCalendario(capitalizarMesTitulo(info.view.title));
+    }
+    // Atualiza intervalo do mês para filtrar eventos/escalas
+    const dataCentral = info.start;
+    const ano = dataCentral.getFullYear();
+    const mes = dataCentral.getMonth() + 1;
+    let inicioMes, fimMes;
+    if (info.view && info.view.currentStart && info.view.currentEnd) {
+      inicioMes = new Date(info.view.currentStart);
+      fimMes = new Date(info.view.currentEnd);
+    } else {
+      inicioMes = new Date(ano, mes - 1, 1, 0, 0, 0);
+      fimMes = new Date(ano, mes, 1, 0, 0, 0);
+    }
+    setIntervaloMes({ start: inicioMes, end: fimMes });
+  };
+
   return (
     <div className="calendario-container">
-      <h2 className="calendario-titulo">Calendário de Eventos e Escalas</h2>
+      <h2 className="calendario-titulo">
+        {tituloCalendario || "Calendário de Eventos e Escalas"}
+      </h2>
 
-      {/* Input de busca por título de evento */}
       <div style={{ marginBottom: 16, maxWidth: 400 }}>
         <input
           type="text"
@@ -231,7 +254,7 @@ export default function CalendarioEventos() {
           height="auto"
           headerToolbar={{
             left: "prev,next today",
-            center: "title",
+            center: "", // Remove o título central
             right: "dayGridMonth,dayGridWeek,dayGridDay",
           }}
           buttonText={{
@@ -272,7 +295,45 @@ export default function CalendarioEventos() {
               });
             }
           }}
+          datesSet={handleDatesSet}
         />
+      </div>
+
+      <div style={{ marginTop: 32 }}>
+        <h3 style={{ color: "#1976d2", fontSize: "1.3rem", marginBottom: 12 }}>
+          Eventos e Escalas do Mês
+        </h3>
+        {eventosDoMes.length === 0 ? (
+          <div style={{ color: "#888", fontSize: 15 }}>Nenhum evento ou escala neste mês.</div>
+        ) : (
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            {eventosDoMes.map((ev) => (
+              <li
+                key={ev.id}
+                style={{
+                  background: "#f3f4f6",
+                  borderRadius: 8,
+                  marginBottom: 8,
+                  padding: "10px 16px",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                }}
+              >
+                <span style={{ fontWeight: 600, color: "#1976d2" }}>{ev.title}</span>
+                <span style={{ fontSize: 14, color: "#555" }}>
+                  Início: {formatarData(ev.start)}
+                  {ev.end && (
+                    <>
+                      {" | "}Fim: {formatarData(ev.end)}
+                    </>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {modalEvento && (

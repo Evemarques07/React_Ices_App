@@ -10,7 +10,7 @@ import Secretaria from "./pages/Secretaria";
 import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
-import { PWAInstallPrompt } from "./components/utils/PWAInstallPrompt";
+import PWAInstallPrompt from "./components/utils/PWAInstallPrompt";
 import "./App.css";
 
 function decodeJWT(token) {

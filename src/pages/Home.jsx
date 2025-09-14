@@ -7,8 +7,10 @@ import {
 import logo from "../assets/iceslogo12.png";
 import "../css/Home.css";
 import logoInstafran from "../assets/instagram.png";
+import { useNavigate } from "react-router-dom";
 
 export default function Home({ user }) {
+  const navigate = useNavigate();
   const primeiroNome = user?.nome_membro?.split(" ")[0] || "";
     const cargoRaw = user?.cargos && user.cargos.length > 0 ? user.cargos[0] : "";
     const cargoMap = {
@@ -47,27 +49,36 @@ export default function Home({ user }) {
       <div className="card-sobre-app">
         <h3>Sobre o Aplicativo</h3>
         <div className="lista-funcionalidades">
-          <div className="item-funcionalidade">
+          <button
+            className="item-funcionalidade"
+            style={{ cursor: "pointer", background: "none", border: "none", textAlign: "left", width: "100%" }}
+            onClick={() => navigate("/relatorios")}
+          >
             <FaChartLine className="icone-funcionalidade" />
             <p>
-              Visualize <strong>relatórios financeiros</strong> detalhados por
-              mês.
+              Visualize <strong>relatórios financeiros</strong> detalhados por mês.
             </p>
-          </div>
-          <div className="item-funcionalidade">
+          </button>
+          <button
+            className="item-funcionalidade"
+            style={{ cursor: "pointer", background: "none", border: "none", textAlign: "left", width: "100%" }}
+            onClick={() => navigate("/contribuicoes")}
+          >
             <FaHandHoldingUsd className="icone-funcionalidade" />
             <p>
-              Acompanhe <strong>suas próprias contribuições</strong> e histórico
-              financeiro.
+              Acompanhe <strong>suas próprias contribuições</strong> e histórico financeiro.
             </p>
-          </div>
-          <div className="item-funcionalidade">
+          </button>
+          <button
+            className="item-funcionalidade"
+            style={{ cursor: "pointer", background: "none", border: "none", textAlign: "left", width: "100%" }}
+            onClick={() => navigate("/calendario")}
+          >
             <FaCalendarAlt className="icone-funcionalidade" />
             <p>
-              Consulte o <strong>calendário de eventos</strong> da igreja e
-              fique por dentro da programação.
+              Consulte o <strong>calendário de eventos</strong> da igreja e fique por dentro da programação.
             </p>
-          </div>
+          </button>
         </div>
         <p className="texto-final-app">
           Tudo isso de forma prática, rápida e segura. Explore o menu para
