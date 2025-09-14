@@ -1,3 +1,4 @@
+// src/routes.jsx
 import Home from "./pages/Home";
 import Contribuicoes from "./pages/Contribuicoes";
 import Relatorios from "./pages/Relatorios";

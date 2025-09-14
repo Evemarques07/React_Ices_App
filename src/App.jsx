@@ -1,6 +1,9 @@
+// src/App.jsx
 import { useState, useEffect } from "react";
-import Login from "./pages/Login";
+import { Routes as RouterRoutes, Route, useNavigate } from "react-router-dom";
 import Routes from "./routes";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
 import { PWAInstallPrompt } from "./components/utils/PWAInstallPrompt";
@@ -19,24 +22,46 @@ function decodeJWT(token) {
   }
 }
 
+function isTokenExpired(decoded) {
+  if (!decoded || !decoded.exp) return true;
+  // exp é em segundos, Date.now() em ms
+  return Date.now() >= decoded.exp * 1000;
+}
+
 function App() {
   const [user, setUser] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [route, setRoute] = useState("home");
+  const [route, setRoute] = useState(() => {
+    // Recupera rota do localStorage ou usa 'home' como padrão
+    return localStorage.getItem("route") || "home";
+  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Recupera usuário do localStorage se existir
     const saved = localStorage.getItem("user");
     if (saved) {
       const obj = JSON.parse(saved);
-      setUser(obj);
       if (obj.access_token) {
         const info = decodeJWT(obj.access_token);
+        // Se o token expirou, desloga
+        if (isTokenExpired(info)) {
+          handleLogout();
+          return;
+        }
+        setUser(obj);
         setUserInfo(info);
+      } else {
+        setUser(obj);
       }
     }
   }, []);
+
+  // Salva a rota atual no localStorage sempre que mudar
+  useEffect(() => {
+    localStorage.setItem("route", route);
+  }, [route]);
 
   const handleLogin = (data) => {
     setUser(data);
@@ -44,6 +69,7 @@ function App() {
     if (data.access_token) {
       const info = decodeJWT(data.access_token);
       setUserInfo(info);
+      navigate("/"); // redireciona para Home após login
     }
   };
 
@@ -51,6 +77,7 @@ function App() {
     setUser(null);
     setUserInfo(null);
     localStorage.removeItem("user");
+    navigate("/login"); // volta para tela de login
   };
 
   const cargos = userInfo?.cargos || [];
@@ -84,6 +111,7 @@ function App() {
           />
         </>
       )}
+
       <PWAInstallPrompt />
       <main
         style={{
@@ -96,11 +124,13 @@ function App() {
         className={userInfo ? "main-content" : ""}
       >
         {!userInfo ? (
-          <Login onLogin={handleLogin} />
+          <RouterRoutes>
+            <Route path="/*" element={<Login onLogin={handleLogin} />} />
+          </RouterRoutes>
         ) : (
           <div className="drawer-content" style={{ width: "100%" }}>
             <Routes
-              user={userInfo}
+              user={user}
               route={route}
               setRoute={setRoute}
               autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
@@ -132,59 +162,5 @@ function App() {
     </div>
   );
 }
-
-// function InstallPrompt() {
-//   const [deferredPrompt, setDeferredPrompt] = useState(null);
-//   const [show, setShow] = useState(false);
-
-//   useEffect(() => {
-//     window.addEventListener("beforeinstallprompt", (e) => {
-//       e.preventDefault();
-//       setDeferredPrompt(e);
-//       setShow(true);
-//     });
-//   }, []);
-
-//   const handleInstall = async () => {
-//     if (deferredPrompt) {
-//       deferredPrompt.prompt();
-//       const { outcome } = await deferredPrompt.userChoice;
-//       if (outcome === "accepted") setShow(false);
-//     }
-//   };
-
-//   if (!show) return null;
-//   return (
-//     <div
-//       style={{
-//         position: "fixed",
-//         bottom: 20,
-//         right: 20,
-//         background: "#0097d8",
-//         color: "#fff",
-//         padding: "0.7rem 1.2rem",
-//         borderRadius: 8,
-//         fontSize: "small",
-//         zIndex: 1000,
-//       }}
-//     >
-//       <span>Instale o app para acesso rápido!</span>
-//       <button
-//         onClick={handleInstall}
-//         style={{
-//           marginLeft: 10,
-//           background: "#fff",
-//           color: "#0097d8",
-//           border: "none",
-//           borderRadius: 4,
-//           padding: "0.3rem 0.7rem",
-//           fontSize: "small",
-//         }}
-//       >
-//         Instalar
-//       </button>
-//     </div>
-//   );
-// }
 
 export default App;
