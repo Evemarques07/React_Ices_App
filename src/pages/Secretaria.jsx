@@ -3,12 +3,14 @@ import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 import ListaMembros from "../components/secretaria/ListaMembros";
 import NovoMembro from "../components/secretaria/NovoMembro";
 import CriarEvento from "../components/eventos/CriarEvento";
-import CriarEscala from "../components/escalas/CriarEscala";
-import ListarEscalas from "../components/escalas/ListarEscalas";
+import CriarCargo from "../components/cargos/CriarCargo";
+import ListarCargos from "../components/cargos/ListarCargos";
+import ListarLideranca from "../components/cargos/ListarLideranca";
 import ListarEventos from "../components/eventos/ListarEventos";
 import ListarUsuarios from "../components/usuarios/ListarUsuarios";
 import CriarUsuario from "../components/usuarios/CriarUsuario";
 import ListaTodosNomes from "../components/secretaria/ListaTodosNomes";
+import ListaFilhos from "../components/secretaria/ListaFilhos";
 
 const commonButtonStyles = {
   background: "linear-gradient(45deg, #0077b6, #00a4eb)",
@@ -45,11 +47,31 @@ const styles = {
     padding: "3.5rem 1.5rem",
     display: "flex",
     flexDirection: "column",
-    gap: "1.8rem",
-    maxWidth: "1000px",
+    gap: "0.8rem",
+    maxWidth: "98%",
     margin: "2rem auto",
     position: "relative",
     overflow: "hidden",
+  },
+  acessoRestrito: {
+    maxWidth: "800px",
+    margin: "4rem auto",
+    textAlign: "center",
+    background: "#fff",
+    borderRadius: "18px",
+    boxShadow: "0 10px 30px rgba(0, 100, 150, 0.08)",
+    padding: "3rem 2rem",
+  },
+  acessoRestritoTitle: {
+    color: "#e53e3e",
+    fontSize: "2.2rem",
+    marginBottom: "1rem",
+    fontWeight: 700,
+  },
+  acessoRestritoText: {
+    color: "#4a5568",
+    fontSize: "1.1rem",
+    lineHeight: "1.6",
   },
   header: {
     textAlign: "center",
@@ -260,11 +282,31 @@ const styles = {
 
 export default function Secretaria({ user }) {
   const [modal, setModal] = useState(null);
-  const [colEscalas, setColEscalas] = useState(true);
+  const [colCargos, setColCargos] = useState(true);
   const [colEventos, setColEventos] = useState(true);
+  const [colLideranca, setColLideranca] = useState(true);
+  const [colFilhos, setColFilhos] = useState(true);
   const [colContribuintes, setColContribuintes] = useState(true);
   const [colMembros, setColMembros] = useState(true);
   const [colUsuarios, setColUsuarios] = useState(true);
+
+  const cargos = user?.cargos || [];
+  const autorizado =
+    cargos.includes("Secretario") ||
+    cargos.includes("Segundo_Secretario") ||
+    cargos.includes("Pastor") ||
+    cargos.includes("primeiro_usuario");
+
+  if (!autorizado) {
+    return (
+      <div style={styles.acessoRestrito}>
+        <h2 style={styles.acessoRestritoTitle}>Acesso Restrito</h2>
+        <p style={styles.acessoRestritoText}>
+          Esta área é exclusiva para Secretarios e Segundo Secretarios.
+        </p>
+      </div>
+    );
+  }
 
   // Recupera token do usuário logado
   const token =
@@ -278,20 +320,20 @@ export default function Secretaria({ user }) {
 
   return (
     <div style={styles.mainContainer}>
-      <div style={styles.header}>
+      {/* <div style={styles.header}>
         <h1 style={styles.title}>Painel da Secretaria</h1>
         <p style={styles.subtitle}>
           Gerencie membros, usuários, eventos e escalas da sua organização de
           forma eficiente.
         </p>
-      </div>
+      </div> */}
 
       <div style={styles.buttonGroup}>
         <button
           onClick={() => openModal("novoMembro")}
           style={styles.actionButton}
         >
-          Novo Membro
+          Novo Membro / Contribuinte
         </button>
         <button
           onClick={() => openModal("criarUsuario")}
@@ -302,8 +344,11 @@ export default function Secretaria({ user }) {
         <button onClick={() => openModal("evento")} style={styles.actionButton}>
           Novo Evento
         </button>
-        <button onClick={() => openModal("escala")} style={styles.actionButton}>
+        {/* <button onClick={() => openModal("escala")} style={styles.actionButton}>
           Nova Escala
+        </button> */}
+        <button onClick={() => openModal("cargo")} style={styles.actionButton}>
+          Novo Cargo
         </button>
       </div>
 
@@ -332,7 +377,7 @@ export default function Secretaria({ user }) {
             <div style={{ width: "100%", maxWidth: 420 }}>
               {modal === "novoMembro" && <NovoMembro />}
               {modal === "evento" && <CriarEvento token={token} />}
-              {modal === "escala" && <CriarEscala token={token} />}
+              {modal === "cargo" && <CriarCargo token={token} />}
               {modal === "criarUsuario" && <CriarUsuario token={token} />}
             </div>
           </div>
@@ -342,19 +387,91 @@ export default function Secretaria({ user }) {
       <div style={styles.sectionContainer}>
         <button
           style={styles.collapseBtn}
-          onClick={() => setColEscalas((v) => !v)}
+          onClick={() => setColCargos((v) => !v)}
         >
           <span
             style={{
               ...styles.collapseIcon,
-              transform: colEscalas ? "rotate(0deg)" : "rotate(90deg)",
+              transform: colCargos ? "rotate(0deg)" : "rotate(90deg)",
             }}
           >
             ▶
           </span>{" "}
-          Lista de Escalas
+          Lista de Cargos 
         </button>
-        {!colEscalas && <ListarEscalas />}
+        {!colCargos && <ListarCargos />}
+      </div>
+      
+      <div style={styles.sectionContainer}>
+        <button
+          style={styles.collapseBtn}
+          onClick={() => setColLideranca((v) => !v)}
+        >
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colLideranca ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Liderança
+        </button>
+        {!colLideranca && <ListarLideranca token={token} />}
+      </div>
+
+      <div style={styles.sectionContainer}>
+        <button
+          style={styles.collapseBtn}
+          onClick={() => setColMembros((v) => !v)}
+        >
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colMembros ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Membros
+        </button>
+        {!colMembros && <ListaMembros />}
+      </div>
+      
+      <div style={styles.sectionContainer}>
+        <button
+          style={styles.collapseBtn}
+          onClick={() => setColContribuintes((v) => !v)}
+        >
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colContribuintes ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Contribuintes
+        </button>
+        {!colContribuintes && <ListaTodosNomes />}
+      </div>
+      
+      <div style={styles.sectionContainer}>
+        <button
+          style={styles.collapseBtn}
+          onClick={() => setColUsuarios((v) => !v)}
+        >
+          <span
+            style={{
+              ...styles.collapseIcon,
+              transform: colUsuarios ? "rotate(0deg)" : "rotate(90deg)",
+            }}
+          >
+            ▶
+          </span>{" "}
+          Lista de Usuários
+        </button>
+        {!colUsuarios && <ListarUsuarios />}
       </div>
       <div style={styles.sectionContainer}>
         <button
@@ -373,56 +490,23 @@ export default function Secretaria({ user }) {
         </button>
         {!colEventos && <ListarEventos />}
       </div>
+
       <div style={styles.sectionContainer}>
         <button
           style={styles.collapseBtn}
-          onClick={() => setColContribuintes((v) => !v)}
+          onClick={() => setColFilhos((v) => !v)}
         >
           <span
             style={{
               ...styles.collapseIcon,
-              transform: colContribuintes ? "rotate(0deg)" : "rotate(90deg)",
+              transform: colFilhos ? "rotate(0deg)" : "rotate(90deg)",
             }}
           >
             ▶
           </span>{" "}
-          Lista de Contribuintes
+          Lista de Pais e Filhos
         </button>
-        {!colContribuintes && <ListaTodosNomes />}
-      </div>
-      <div style={styles.sectionContainer}>
-        <button
-          style={styles.collapseBtn}
-          onClick={() => setColMembros((v) => !v)}
-        >
-          <span
-            style={{
-              ...styles.collapseIcon,
-              transform: colMembros ? "rotate(0deg)" : "rotate(90deg)",
-            }}
-          >
-            ▶
-          </span>{" "}
-          Lista de Membros
-        </button>
-        {!colMembros && <ListaMembros />}
-      </div>
-      <div style={styles.sectionContainer}>
-        <button
-          style={styles.collapseBtn}
-          onClick={() => setColUsuarios((v) => !v)}
-        >
-          <span
-            style={{
-              ...styles.collapseIcon,
-              transform: colUsuarios ? "rotate(0deg)" : "rotate(90deg)",
-            }}
-          >
-            ▶
-          </span>{" "}
-          Lista de Usuários
-        </button>
-        {!colUsuarios && <ListarUsuarios />}
+        {!colFilhos && <ListaFilhos token={token} />}
       </div>
 
       {!modal && <ScrollToTopButton size={60} />}

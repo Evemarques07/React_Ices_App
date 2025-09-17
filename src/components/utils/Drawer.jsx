@@ -1,43 +1,67 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   Home,
   HandCoins,
-  BarChart2,
-  X,
   Wallet,
   TrendingUp,
   Users,
   Calendar,
-} from "lucide-react"; // Adicionei Wallet e TrendingUp para melhor representação
-import { FaBars, FaSignOutAlt } from "react-icons/fa";
+  X,
+} from "lucide-react";
+import { FaSignOutAlt } from "react-icons/fa";
+
+// Paleta de cores para consistência
+const colors = {
+  primary: "#007bff",
+  primaryDark: "#0056b3",
+  background: "rgba(0, 0, 0, 0.4)",
+  white: "#fff",
+  textActive: "#007bff",
+  textInactive: "#fff",
+  hoverInactive: "rgba(255, 255, 255, 0.15)",
+  hoverActive: "#e9ecef",
+  accent: "#e91e63", // Cor de destaque para o botão de sair
+  accentHover: "#c2185b",
+};
+
+// Transições e efeitos comuns
+const transitions = {
+  smooth: "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)",
+};
 
 // 1. Container principal do Drawer
 const DrawerContainer = styled.aside`
   position: fixed;
   top: 0;
-  left: ${(props) =>
-    props.open ? "0" : "-250px"}; /* Aumentei a largura para 250px */
-  width: 250px; /* Largura fixa */
+  left: ${(props) => (props.$open ? "0" : "-280px")};
+  width: 280px;
   height: 100vh;
   background: linear-gradient(
     to bottom,
-    #007bff,
-    #0056b3
-  ); /* Gradiente azul para combinar com o Header */
-  color: #fff;
-  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2); /* Sombra mais pronunciada e elegante */
-  transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transição mais suave e profissional */
+    ${colors.primary},
+    ${colors.primaryDark}
+  );
+  color: ${colors.white};
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  transition: ${transitions.smooth};
   z-index: 1099;
   display: flex;
   flex-direction: column;
-  padding-top: 70px; /* Ajuste para o Header fixo */
-  overflow-y: auto; /* Permite rolagem vertical se o conteúdo exceder a altura */
+  padding-top: 70px;
+  overflow-y: auto;
 
-  /* Estilos específicos para desktop */
+  ${(props) =>
+    props.$open &&
+    css`
+      /* Animação de entrada suave */
+      transform: translateX(0);
+    `}
+
+  /* Estilos para desktop */
   @media (min-width: 1020px) {
-    left: 0; /* Sempre aberto em desktop */
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1); /* Sombra mais sutil em desktop */
-    width: 250px;
+    left: 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    transform: translateX(0);
   }
 `;
 
@@ -45,70 +69,56 @@ const DrawerContainer = styled.aside`
 const NavMenu = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Mais espaço entre os itens do menu */
-  padding: 1.5rem 1rem; /* Mais padding para um visual espaçoso */
+  flex: 1; /* Permite que o menu ocupe o espaço restante */
+  gap: 8px;
+  padding: 1.5rem 1rem;
 `;
 
 // 3. Estilo para os botões do menu
 const MenuItemButton = styled.button`
-  background: ${(props) =>
-    props.$active ? "#fff" : "transparent"}; /* Fundo branco para ativo */
+  background: ${(props) => (props.$active ? colors.white : "transparent")};
   color: ${(props) =>
-    props.$active ? "#007bff" : "#fff"}; /* Cor do texto combinando */
+    props.$active ? colors.textActive : colors.textInactive};
   border: none;
-  border-radius: 8px; /* Cantos mais arredondados */
-  padding: 0.8rem 1.2rem; /* Mais padding */
-  font-size: 1rem; /* Fonte um pouco maior */
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  font-size: 1rem;
   text-align: left;
   cursor: pointer;
   font-weight: ${(props) => (props.$active ? "bold" : "normal")};
-  transition: all 0.3s ease; /* Transição suave para hover e ativo */
+  transition: ${transitions.smooth};
   display: flex;
   align-items: center;
-  gap: 12px; /* Espaço entre ícone e texto */
+  gap: 15px;
 
   &:hover {
     background: ${(props) =>
-      props.$active
-        ? "#e9ecef"
-        : "rgba(255, 255, 255, 0.15)"}; /* Efeito hover mais distinto */
-    color: ${(props) => (props.$active ? "#0056b3" : "#fff")};
-    transform: translateX(5px); /* Pequeno deslocamento no hover */
+      props.$active ? colors.hoverActive : colors.hoverInactive};
+    color: ${(props) =>
+      props.$active ? colors.primaryDark : colors.textInactive};
   }
 
   svg {
-    stroke-width: 2.5; /* Deixa os ícones um pouco mais robustos */
+    stroke-width: 2.5;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover svg {
+    transform: scale(1.1);
   }
 `;
 
 // 4. Botão de fechar (apenas para mobile)
-const CloseButton = styled.button`
-  background: #fff;
-  color: #007bff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.8rem 1.2rem;
-  font-size: 1rem;
-  margin: 20px 1rem; /* Mais margem */
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Centraliza o conteúdo */
-  gap: 10px;
+const CloseButton = styled(MenuItemButton)`
+  margin: 1rem;
+  background: ${colors.white};
+  color: ${colors.primary};
   font-weight: bold;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: #e9ecef;
-    color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Exibe apenas em telas menores */
-  @media (min-width: 1020px) {
-    display: none;
+    background: ${colors.hoverActive};
+    color: ${colors.primaryDark};
   }
 `;
 
@@ -119,44 +129,29 @@ const DrawerOverlay = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.4); /* Fundo semi-transparente */
-  z-index: 1098; /* Abaixo do Drawer */
-  opacity: ${(props) => (props.open ? 1 : 0)};
-  visibility: ${(props) => (props.open ? "visible" : "hidden")};
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  background: ${(props) => (props.$open ? colors.background : "transparent")};
+  backdrop-filter: ${(props) => (props.$open ? "blur(2px)" : "none")};
+  z-index: 1098;
+  visibility: ${(props) => (props.$open ? "visible" : "hidden")};
+  transition: background 0.4s ease, backdrop-filter 0.4s ease,
+    visibility 0.4s ease;
 
   @media (min-width: 1020px) {
-    display: none; /* Esconde em desktop */
+    display: none;
   }
 `;
 
-const LogoutButton = styled.button`
-  background: #fff;
-  color: #007bff; /* Cor combinando com o tema */
-  font-size: 0.9rem;
-  border: none;
-  padding: 0.6rem 1.3rem;
-  border-radius: 8px; /* Cantos mais arredondados */
+// 6. Botão de Logout com estilo diferenciado
+const LogoutButton = styled(MenuItemButton)`
+  margin: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: ${colors.white};
   font-weight: bold;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Espaço entre o ícone e o texto */
+  border: 1px solid rgba(255, 255, 255, 0.3);
 
   &:hover {
-    background: #e9ecef; /* Cor de fundo suave no hover */
-    color: #0056b3; /* Cor do texto mais escura no hover */
-    transform: translateY(-2px); /* Efeito de "levantar" no hover */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  @media (max-width: 370px) {
-    span {
-      display: none; /* Esconde o texto "Sair" em telas muito pequenas */
-    }
-    padding: 0.6rem 0.8rem; /* Ajusta o padding para apenas o ícone */
+    background: rgba(255, 255, 255, 0.3);
+    color: ${colors.white};
   }
 `;
 
@@ -166,6 +161,7 @@ export default function Drawer({
   setOpen,
   autorizadoTesoureiro,
   autorizadoSecretario,
+  autorizadoDiacono,
   handleLogout,
   navigate,
 }) {
@@ -176,14 +172,15 @@ export default function Drawer({
     }
   };
 
+  const currentPath = window.location.pathname;
+
   return (
     <>
-      {/* O Overlay só é visível em mobile quando o drawer está aberto */}
-      <DrawerOverlay open={open} onClick={() => setOpen(false)} />
-
-      <DrawerContainer open={open}>
+      <DrawerOverlay $open={open} onClick={() => setOpen(false)} />
+      <DrawerContainer $open={open}>
         <NavMenu>
           <MenuItemButton
+            $active={currentPath === "/"}
             onClick={() => handleNavigation("/")}
           >
             <Home size={20} /> Home
@@ -191,6 +188,7 @@ export default function Drawer({
 
           {autorizadoTesoureiro && (
             <MenuItemButton
+              $active={currentPath === "/tesoureiro"}
               onClick={() => handleNavigation("/tesoureiro")}
             >
               <Wallet size={20} /> Tesouraria
@@ -199,32 +197,46 @@ export default function Drawer({
 
           {autorizadoSecretario && (
             <MenuItemButton
+              $active={currentPath === "/secretaria"}
               onClick={() => handleNavigation("/secretaria")}
             >
               <Users size={20} /> Secretaria
             </MenuItemButton>
           )}
 
+          {autorizadoDiacono && (
+            <MenuItemButton
+              $active={currentPath === "/diacono"}
+              onClick={() => handleNavigation("/diacono")}
+            >
+              <Users size={20} /> Diácono
+            </MenuItemButton>
+          )}
+
           <MenuItemButton
+            $active={currentPath === "/contribuicoes"}
             onClick={() => handleNavigation("/contribuicoes")}
           >
             <HandCoins size={20} /> Minhas Contribuições
           </MenuItemButton>
 
           <MenuItemButton
+            $active={currentPath === "/relatorios"}
             onClick={() => handleNavigation("/relatorios")}
           >
             <TrendingUp size={20} /> Relatórios
           </MenuItemButton>
+
           <MenuItemButton
+            $active={currentPath === "/calendario"}
             onClick={() => handleNavigation("/calendario")}
           >
             <Calendar size={20} /> Calendário Ices
           </MenuItemButton>
-          <LogoutButton onClick={handleLogout} title="Sair da conta">
-              <FaSignOutAlt /> <span>Sair</span>
-            </LogoutButton>
         </NavMenu>
+        <LogoutButton onClick={handleLogout} title="Sair da conta">
+          <FaSignOutAlt /> Sair
+        </LogoutButton>
       </DrawerContainer>
     </>
   );

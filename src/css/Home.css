@@ -30,7 +30,7 @@ body {
 }
 .container-principal {
   padding: 20px;
-  max-width: 1000px; /* Aumenta um pouco a largura máxima */
+  /* max-width: 1000px; */
   margin: 20px auto;
   display: flex;
   flex-direction: column;
@@ -95,7 +95,7 @@ body {
 
 .nome-usuario-home {
   margin: 0;
-  font-size: 2.8rem; /* Nome do usuário em destaque */
+  font-size: 1.4rem; /* Nome do usuário em destaque */
   font-weight: 800;
   text-align: center;
 }
@@ -104,7 +104,7 @@ body {
   background-color: rgba(255, 255, 255, 0.25);
   padding: 7px 15px;
   border-radius: 25px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 500;
   margin-left: 15px; /* Espaço maior */
   transition: all 0.3s ease;

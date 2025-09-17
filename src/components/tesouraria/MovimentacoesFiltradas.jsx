@@ -373,7 +373,7 @@ export default function MovimentacoesFiltradas({ token }) {
         ...editFormData,
         tipo: (editFormData.tipo || "").trim(),
         descricao: (editFormData.descricao || "").trim(),
-        valor: Number(editFormData.valor),
+        valor: Number(editFormData.valor) / 100,
       };
       let fn;
       if (mov.movimento === "entrada") {

@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
-import { eventosAPI } from "../../services/api";
+import { eventosAPI } from "../../services/api"; // Assumindo que este caminho está correto
 
+// Função para formatar a data (mantida a original, mas pode ser melhorada se necessário)
 function formatarData(data) {
   if (!data) return "-";
   const d = new Date(data);
-  return d.toLocaleString();
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+  return d.toLocaleString("pt-BR", options).replace(",", "");
 }
 
 export default function ListarEventos() {
@@ -26,6 +35,17 @@ export default function ListarEventos() {
     ativo: true,
   });
   const limit = 20;
+
+  // Cores e estilos consistentes
+  const primaryColor = "#2c3e50"; // Azul escuro para títulos e elementos principais
+  const accentColor = "#3498db"; // Azul mais claro para detalhes e hover
+  const successColor = "#2ecc71"; // Verde para sucesso
+  const errorColor = "#e74c3c"; // Vermelho para erro/exclusão
+  const borderColor = "#ecf0f1"; // Cinza claro para bordas
+  const textColor = "#34495e"; // Cinza escuro para texto
+  const lightBg = "#fdfdfe"; // Fundo leve para cards/tabela
+  const grayText = "#7f8c8d"; // Texto cinza para descrições
+  const whiteBg = "#ffffff"; // Fundo branco puro
 
   useEffect(() => {
     async function fetchEventos() {
@@ -50,7 +70,7 @@ export default function ListarEventos() {
           setTotal(0);
         }
       } catch (err) {
-        setError(err.message || "Erro ao buscar eventos");
+        setError(err.message || "Erro ao buscar eventos.");
         setEventos([]);
       } finally {
         setLoading(false);
@@ -73,8 +93,13 @@ export default function ListarEventos() {
       setEditForm({
         titulo: dados.titulo || "",
         descricao: dados.descricao || "",
-        data_inicio: dados.data_inicio ? dados.data_inicio.slice(0, 16) : "",
-        data_final: dados.data_final ? dados.data_final.slice(0, 16) : "",
+        // Ajuste para garantir o formato 'YYYY-MM-DDTHH:MM'
+        data_inicio: dados.data_inicio
+          ? new Date(dados.data_inicio).toISOString().slice(0, 16)
+          : "",
+        data_final: dados.data_final
+          ? new Date(dados.data_final).toISOString().slice(0, 16)
+          : "",
         ativo: !!dados.ativo,
       });
     } catch (err) {
@@ -111,7 +136,7 @@ export default function ListarEventos() {
           data_final: "",
           ativo: true,
         });
-      }, 1200);
+      }, 2000); // Aumentei o tempo para ver a mensagem
     } catch (err) {
       setEditError(err.message || "Erro ao atualizar evento.");
     } finally {
@@ -144,86 +169,151 @@ export default function ListarEventos() {
     { key: "descricao", label: "Descrição" },
     { key: "data_inicio", label: "Início" },
     { key: "data_final", label: "Fim" },
-    { key: "ativo", label: "Ativo" },
+    { key: "ativo", label: "Status" }, // Renomeado para 'Status'
   ];
 
   return (
-    <div style={{ padding: "2rem 0", position: "relative" }}>
-      <h3
-        style={{
-          color: "#007bff",
-          fontWeight: 600,
-          fontSize: "1.3rem",
-          marginBottom: 24,
-        }}
-      >
-        Lista de Eventos
-      </h3>
-      {loading && <div>Carregando eventos...</div>}
-      {error && <div style={{ color: "#c53030", marginTop: 12 }}>{error}</div>}
+    <div
+      style={{
+        paddingTop: "2rem",
+        maxWidth: "1200px",
+        margin: "0 auto",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      }}
+    >
+
+      {loading && (
+        <div
+          style={{
+            textAlign: "center",
+            color: grayText,
+            fontSize: "1.1rem",
+            padding: "20px 0",
+          }}
+        >
+          Carregando eventos...
+        </div>
+      )}
+      {error && (
+        <div
+          style={{
+            color: errorColor,
+            marginTop: 12,
+            padding: "10px",
+            background: "#ffe9e8",
+            borderRadius: 8,
+          }}
+        >
+          {error}
+        </div>
+      )}
+
       {/* Tabela para telas maiores */}
-      <div className="eventos-tabela" style={{ display: "none" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+      <div className="eventos-tabela-container" style={{ display: "none" }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "separate",
+            borderSpacing: "0 10px",
+          }}
+        >
           <thead>
-            <tr style={{ background: "#f8f9fa" }}>
+            <tr style={{ background: lightBg }}>
               {campos.map((c) => (
                 <th
                   key={c.key}
                   style={{
                     textAlign: "left",
-                    padding: "8px",
-                    borderBottom: "2px solid #e9ecef",
+                    padding: "12px 15px",
+                    borderBottom: `2px solid ${borderColor}`,
+                    color: primaryColor,
+                    fontSize: "1rem",
+                    fontWeight: 600,
                   }}
                 >
                   {c.label}
                 </th>
               ))}
-              <th>Ações</th>
+              <th
+                style={{
+                  textAlign: "center",
+                  padding: "12px 15px",
+                  borderBottom: `2px solid ${borderColor}`,
+                  color: primaryColor,
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                }}
+              >
+                Ações
+              </th>
             </tr>
           </thead>
           <tbody>
             {eventos.map((e) => (
-              <tr key={e.id} style={{ borderBottom: "1px solid #e9ecef" }}>
+              <tr
+                key={e.id}
+                style={{
+                  background: lightBg,
+                  borderRadius: 8,
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
+                  transition: "transform 0.2s ease-in-out",
+                }}
+                onMouseEnter={(el) => (el.currentTarget.style.transform = "translateY(-3px)")}
+                onMouseLeave={(el) => (el.currentTarget.style.transform = "translateY(0)")}
+              >
                 {campos.map((c) => (
-                  <td key={c.key} style={{ padding: "8px" }}>
+                  <td
+                    key={c.key}
+                    style={{
+                      padding: "12px 15px",
+                      color: textColor,
+                      fontSize: "0.95rem",
+                    }}
+                  >
                     {c.key === "data_inicio" || c.key === "data_final"
                       ? formatarData(e[c.key])
                       : c.key === "ativo"
                       ? e.ativo
-                        ? "Sim"
-                        : "Não"
+                        ? <span style={{ color: successColor, fontWeight: 600 }}>Ativo</span>
+                        : <span style={{ color: errorColor, fontWeight: 600 }}>Inativo</span>
                       : e[c.key] || "-"}
                   </td>
                 ))}
-                <td style={{ padding: "8px" }}>
+                <td style={{ padding: "12px 15px", textAlign: "center" }}>
                   <button
                     onClick={() => handleEdit(e.id)}
                     style={{
-                      background: "#007bff",
-                      color: "#fff",
+                      background: accentColor,
+                      color: whiteBg,
                       border: "none",
                       borderRadius: 6,
-                      padding: "0.4rem 1rem",
+                      padding: "0.6rem 1.2rem",
                       fontWeight: 600,
                       cursor: "pointer",
-                      fontSize: "0.95rem",
+                      fontSize: "0.9rem",
                       marginRight: 8,
+                      transition: "background-color 0.2s ease",
                     }}
+                    onMouseEnter={(el) => (el.currentTarget.style.backgroundColor = "#2980b9")}
+                    onMouseLeave={(el) => (el.currentTarget.style.backgroundColor = accentColor)}
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => handleDelete(e.id)}
                     style={{
-                      background: "#c53030",
-                      color: "#fff",
+                      background: errorColor,
+                      color: whiteBg,
                       border: "none",
                       borderRadius: 6,
-                      padding: "0.4rem 1rem",
+                      padding: "0.6rem 1.2rem",
                       fontWeight: 600,
                       cursor: "pointer",
-                      fontSize: "0.95rem",
+                      fontSize: "0.9rem",
+                      transition: "background-color 0.2s ease",
                     }}
+                    onMouseEnter={(el) => (el.currentTarget.style.backgroundColor = "#c0392b")}
+                    onMouseLeave={(el) => (el.currentTarget.style.backgroundColor = errorColor)}
                   >
                     Excluir
                   </button>
@@ -233,109 +323,122 @@ export default function ListarEventos() {
           </tbody>
         </table>
       </div>
+
       {/* Cards para telas menores */}
-      <div className="eventos-cards" style={{ display: "block" }}>
+      <div className="eventos-cards-container" style={{ display: "block" }}>
         {eventos.map((e) => (
           <div
             key={e.id}
             style={{
-              background: "#f8f9fa",
+              background: lightBg,
               borderRadius: 10,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
-              padding: "1.2rem 1rem",
-              marginBottom: "1.2rem",
-              border: "1px solid #e9ecef",
+              boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+              padding: "1.5rem",
+              marginBottom: "1.5rem",
+              border: `1px solid ${borderColor}`,
               position: "relative",
+              transition: "transform 0.2s ease-in-out",
             }}
+            onMouseEnter={(el) => (el.currentTarget.style.transform = "translateY(-5px)")}
+            onMouseLeave={(el) => (el.currentTarget.style.transform = "translateY(0)")}
           >
+            <div
+              style={{
+                fontWeight: 700,
+                color: primaryColor,
+                fontSize: "1.3rem",
+                marginBottom: "0.8rem",
+              }}
+            >
+              {e.titulo || "-"}
+            </div>
+            <div style={{ color: textColor, fontSize: "1rem", marginBottom: "0.4rem" }}>
+              <b style={{ color: grayText }}>Descrição:</b> {e.descricao || "-"}
+            </div>
+            <div style={{ color: textColor, fontSize: "1rem", marginBottom: "0.4rem" }}>
+              <b style={{ color: grayText }}>Início:</b> {formatarData(e.data_inicio)}
+            </div>
+            <div style={{ color: textColor, fontSize: "1rem", marginBottom: "0.8rem" }}>
+              <b style={{ color: grayText }}>Fim:</b> {formatarData(e.data_final)}
+            </div>
+            <div
+              style={{ color: e.ativo ? successColor : errorColor, fontSize: "1rem", fontWeight: 600, marginBottom: "1rem" }}
+            >
+              <b style={{ color: grayText }}>Status:</b> {e.ativo ? "Ativo" : "Inativo"}
+            </div>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
-                gap: "1.2rem",
-                alignItems: "center",
+                gap: "0.8rem",
+                justifyContent: "flex-end", // Alinha botões à direita
               }}
             >
-              <div
-                style={{
-                  fontWeight: 700,
-                  color: "#005691",
-                  fontSize: "1.1rem",
-                }}
-              >
-                {e.titulo || "-"}
-              </div>
-              <div style={{ color: "#333" }}>
-                <b>Descrição:</b> {e.descricao || "-"}
-              </div>
               <button
                 onClick={() => handleEdit(e.id)}
                 style={{
-                  marginLeft: "auto",
-                  background: "#007bff",
-                  color: "#fff",
+                  background: accentColor,
+                  color: whiteBg,
                   border: "none",
                   borderRadius: 6,
-                  padding: "0.4rem 1rem",
+                  padding: "0.6rem 1.2rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   fontSize: "0.95rem",
-                  marginRight: 8,
+                  transition: "background-color 0.2s ease",
                 }}
+                onMouseEnter={(el) => (el.currentTarget.style.backgroundColor = "#2980b9")}
+                onMouseLeave={(el) => (el.currentTarget.style.backgroundColor = accentColor)}
               >
                 Editar
               </button>
               <button
                 onClick={() => handleDelete(e.id)}
                 style={{
-                  background: "#c53030",
-                  color: "#fff",
+                  background: errorColor,
+                  color: whiteBg,
                   border: "none",
                   borderRadius: 6,
-                  padding: "0.4rem 1rem",
+                  padding: "0.6rem 1.2rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   fontSize: "0.95rem",
+                  transition: "background-color 0.2s ease",
                 }}
+                onMouseEnter={(el) => (el.currentTarget.style.backgroundColor = "#c0392b")}
+                onMouseLeave={(el) => (el.currentTarget.style.backgroundColor = errorColor)}
               >
                 Excluir
               </button>
             </div>
-            <div style={{ color: "#333", marginTop: 6 }}>
-              <b>Início:</b> {formatarData(e.data_inicio)}
-            </div>
-            <div style={{ color: "#333", marginTop: 6 }}>
-              <b>Fim:</b> {formatarData(e.data_final)}
-            </div>
-            <div
-              style={{ color: e.ativo ? "#28a745" : "#c53030", marginTop: 6 }}
-            >
-              <b>Status:</b> {e.ativo ? "Ativo" : "Inativo"}
-            </div>
           </div>
         ))}
       </div>
+
       <div
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           gap: "1rem",
-          marginTop: "1.5rem",
+          marginTop: "2rem",
         }}
       >
         <button
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1 || loading}
           style={{
-            padding: "0.5rem 1.2rem",
-            borderRadius: 6,
-            border: "1px solid #007bff",
-            background: page === 1 ? "#e9ecef" : "#fff",
-            color: "#007bff",
+            padding: "0.7rem 1.5rem",
+            borderRadius: 8,
+            border: `1px solid ${accentColor}`,
+            background: page === 1 ? borderColor : whiteBg,
+            color: accentColor,
             fontWeight: 600,
             cursor: page === 1 ? "not-allowed" : "pointer",
+            transition: "background-color 0.2s ease, transform 0.2s ease",
           }}
+          onMouseEnter={(el) => { if (page !== 1) el.currentTarget.style.transform = "translateY(-2px)"; }}
+          onMouseLeave={(el) => { if (page !== 1) el.currentTarget.style.transform = "translateY(0)"; }}
         >
           Anterior
         </button>
@@ -343,18 +446,22 @@ export default function ListarEventos() {
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           disabled={page === totalPages || loading}
           style={{
-            padding: "0.5rem 1.2rem",
-            borderRadius: 6,
-            border: "1px solid #007bff",
-            background: page === totalPages ? "#e9ecef" : "#fff",
-            color: "#007bff",
+            padding: "0.7rem 1.5rem",
+            borderRadius: 8,
+            border: `1px solid ${accentColor}`,
+            background: page === totalPages ? borderColor : whiteBg,
+            color: accentColor,
             fontWeight: 600,
             cursor: page === totalPages ? "not-allowed" : "pointer",
+            transition: "background-color 0.2s ease, transform 0.2s ease",
           }}
+          onMouseEnter={(el) => { if (page !== totalPages) el.currentTarget.style.transform = "translateY(-2px)"; }}
+          onMouseLeave={(el) => { if (page !== totalPages) el.currentTarget.style.transform = "translateY(0)"; }}
         >
           Próxima
         </button>
       </div>
+
       {/* Modal de edição */}
       {editModal && (
         <div
@@ -364,12 +471,13 @@ export default function ListarEventos() {
             left: 0,
             width: "100vw",
             height: "100vh",
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(0,0,0,0.6)", // Fundo mais escuro
             zIndex: 3000,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             overflow: "auto",
+            padding: "1rem",
           }}
           onClick={() => setEditModal(false)}
         >
@@ -377,15 +485,15 @@ export default function ListarEventos() {
             onClick={(e) => e.stopPropagation()}
             onSubmit={handleEditSubmit}
             style={{
-              background: "#fff",
-              borderRadius: 10,
-              boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
-              padding: "2rem 1.5rem",
-              maxWidth: 420,
+              background: whiteBg,
+              borderRadius: 12,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.25)", // Sombra mais pronunciada
+              padding: "2.5rem 2rem",
+              maxWidth: 480, // Ligeiramente mais largo
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: "1rem",
+              gap: "1.2rem", // Aumentar o espaçamento entre campos
               position: "relative",
               maxHeight: "90vh",
               overflowY: "auto",
@@ -396,27 +504,58 @@ export default function ListarEventos() {
               onClick={() => setEditModal(false)}
               style={{
                 position: "absolute",
-                top: 12,
-                right: 16,
+                top: 15,
+                right: 20,
                 background: "none",
                 border: "none",
-                fontSize: "1.7rem",
-                color: "#888",
+                fontSize: "2rem", // Tamanho maior
+                color: grayText,
                 cursor: "pointer",
+                transition: "color 0.2s ease",
               }}
+              onMouseEnter={(el) => (el.currentTarget.style.color = primaryColor)}
+              onMouseLeave={(el) => (el.currentTarget.style.color = grayText)}
             >
               &times;
             </button>
             <h3
               style={{
-                color: "#007bff",
+                color: primaryColor,
                 fontWeight: 700,
-                fontSize: "1.2rem",
-                marginBottom: 8,
+                fontSize: "1.5rem", // Título maior
+                marginBottom: 10,
+                borderBottom: `1px solid ${borderColor}`,
+                paddingBottom: 8,
               }}
             >
               Editar Evento
             </h3>
+
+            {editError && (
+              <div
+                style={{
+                  color: errorColor,
+                  background: "#ffe9e8",
+                  padding: "10px",
+                  borderRadius: 8,
+                }}
+              >
+                {editError}
+              </div>
+            )}
+            {editSuccess && (
+              <div
+                style={{
+                  color: successColor,
+                  background: "#e8fff2",
+                  padding: "10px",
+                  borderRadius: 8,
+                }}
+              >
+                {editSuccess}
+              </div>
+            )}
+
             <input
               name="titulo"
               value={editForm.titulo}
@@ -426,9 +565,12 @@ export default function ListarEventos() {
               placeholder="Título*"
               required
               style={{
-                padding: "0.7rem",
-                borderRadius: 6,
-                border: "1px solid #ced4da",
+                padding: "0.8rem",
+                borderRadius: 8,
+                border: `1px solid ${borderColor}`,
+                fontSize: "1rem",
+                color: textColor,
+                outlineColor: accentColor,
               }}
             />
             <textarea
@@ -438,12 +580,18 @@ export default function ListarEventos() {
                 setEditForm((f) => ({ ...f, descricao: e.target.value }))
               }
               placeholder="Descrição"
+              rows="4" // Mais linhas para descrição
               style={{
-                padding: "0.7rem",
-                borderRadius: 6,
-                border: "1px solid #ced4da",
+                padding: "0.8rem",
+                borderRadius: 8,
+                border: `1px solid ${borderColor}`,
+                fontSize: "1rem",
+                color: textColor,
+                outlineColor: accentColor,
+                resize: "vertical", // Permite redimensionar verticalmente
               }}
             />
+            <label style={{ color: grayText, fontSize: "0.9rem" }}>Data de Início:</label>
             <input
               name="data_inicio"
               type="datetime-local"
@@ -453,11 +601,15 @@ export default function ListarEventos() {
               }
               required
               style={{
-                padding: "0.7rem",
-                borderRadius: 6,
-                border: "1px solid #ced4da",
+                padding: "0.8rem",
+                borderRadius: 8,
+                border: `1px solid ${borderColor}`,
+                fontSize: "1rem",
+                color: textColor,
+                outlineColor: accentColor,
               }}
             />
+            <label style={{ color: grayText, fontSize: "0.9rem" }}>Data Final:</label>
             <input
               name="data_final"
               type="datetime-local"
@@ -467,9 +619,12 @@ export default function ListarEventos() {
               }
               required
               style={{
-                padding: "0.7rem",
-                borderRadius: 6,
-                border: "1px solid #ced4da",
+                padding: "0.8rem",
+                borderRadius: 8,
+                border: `1px solid ${borderColor}`,
+                fontSize: "1rem",
+                color: textColor,
+                outlineColor: accentColor,
               }}
             />
             <div
@@ -482,44 +637,43 @@ export default function ListarEventos() {
                   setEditForm((f) => ({ ...f, ativo: e.target.checked }))
                 }
                 id="editAtivoEvento"
+                style={{ transform: "scale(1.2)" }} // Checkbox um pouco maior
               />
-              <label htmlFor="editAtivoEvento">Ativo</label>
+              <label htmlFor="editAtivoEvento" style={{ color: textColor, fontSize: "1rem" }}>
+                Evento Ativo
+              </label>
             </div>
             <button
               type="submit"
               disabled={editLoading}
               style={{
-                padding: "0.8rem",
-                borderRadius: 6,
+                padding: "0.9rem",
+                borderRadius: 8,
                 border: "none",
-                background: "#007bff",
-                color: "#fff",
+                background: accentColor,
+                color: whiteBg,
                 fontWeight: 600,
-                fontSize: "1rem",
+                fontSize: "1.1rem",
                 cursor: editLoading ? "not-allowed" : "pointer",
+                transition: "background-color 0.2s ease, transform 0.2s ease",
+                marginTop: "1rem",
               }}
+              onMouseEnter={(el) => { if (!editLoading) el.currentTarget.style.backgroundColor = "#2980b9"; el.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={(el) => { if (!editLoading) el.currentTarget.style.backgroundColor = accentColor; el.currentTarget.style.transform = "translateY(0)"; }}
             >
               {editLoading ? "Salvando..." : "Salvar Alterações"}
             </button>
-            {editError && (
-              <div style={{ color: "#c53030", marginTop: 8 }}>{editError}</div>
-            )}
-            {editSuccess && (
-              <div style={{ color: "#28a745", marginTop: 8 }}>
-                {editSuccess}
-              </div>
-            )}
           </form>
         </div>
       )}
       <style>{`
         @media (min-width: 1080px) {
-          .eventos-tabela { display: block !important; }
-          .eventos-cards { display: none !important; }
+          .eventos-tabela-container { display: block !important; }
+          .eventos-cards-container { display: none !important; }
         }
         @media (max-width: 1079px) {
-          .eventos-tabela { display: none !important; }
-          .eventos-cards { display: block !important; }
+          .eventos-tabela-container { display: none !important; }
+          .eventos-cards-container { display: block !important; }
         }
       `}</style>
     </div>

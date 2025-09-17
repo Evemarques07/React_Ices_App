@@ -124,6 +124,14 @@ export const membrosAPI = {
       cpf: string;
       foto: string;
       tipo: string;
+      sexo: string;
+      nome_pai: string;
+      nome_mae: string;
+      estado_civil: string;
+      data_casamento: string;
+      nome_conjuge: string;
+      data_nascimento_conjuge: string;
+      data_batismo: string;
       senha: string;
     },
     token: string
@@ -214,6 +222,24 @@ export const membrosAPI = {
 
     return response.json();
   },
+  async filtrarApenasMembros(nome: string, token: string) {
+    const url = new URL(`${URL_BASE}/membros/filtrar/nome`);
+    url.searchParams.append("nome", nome);
+
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao filtrar membros");
+    }
+
+    return response.json();
+  },
   async editarMembro(
     membro_id: number,
     dadosAtualizados: {
@@ -227,6 +253,14 @@ export const membrosAPI = {
       cpf: string;
       foto: string;
       tipo: string;
+      sexo: string;
+      nome_pai: string;
+      nome_mae: string;
+      estado_civil: string;
+      data_casamento: string;
+      nome_conjuge: string;
+      data_nascimento_conjuge: string;
+      data_batismo: string;
       senha: string;
     },
     token: string
@@ -242,6 +276,62 @@ export const membrosAPI = {
 
     if (!response.ok) {
       throw new Error("Erro ao atualizar membro");
+    }
+
+    return response.json();
+  },
+  async criarFilho(
+    dados: {
+      nome: string;
+      data_nascimento: string;
+      batizado: boolean;
+      membro_id: number;
+      mae: number;
+      pai: number;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/filhos/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dados),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar filho");
+    }
+
+    return response.json();
+  },
+  async listarNomesFilhos(token: string) {
+    const response = await fetch(`${URL_BASE}/filhos/nomes`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao listar nomes dos filhos");
+    }
+
+    return response.json();
+  },
+  async listarPaisOuMaes(sexo: string, token: string) {
+    const response = await fetch(`${URL_BASE}/filhos/pais?sexo=${sexo}`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao listar pais ou mães");
     }
 
     return response.json();
@@ -262,41 +352,6 @@ export const entradasAPI = {
       throw new Error("Erro ao buscar entradas do membro");
     }
 
-    return response.json();
-  },
-  async listarEntradasFiltradas(
-    filtro: {
-      tipo?: string;
-      descricao?: string;
-      nome_membro?: string;
-      data_inicio?: string;
-      data_fim?: string;
-    },
-    token: string,
-    skip = 0,
-    limit = 10
-  ) {
-    const url = new URL(`${URL_BASE}/entradas/filtradas`);
-    if (filtro.tipo) url.searchParams.append("tipo", filtro.tipo);
-    if (filtro.descricao)
-      url.searchParams.append("descricao", filtro.descricao);
-    if (filtro.nome_membro)
-      url.searchParams.append("nome_membro", filtro.nome_membro);
-    if (filtro.data_inicio)
-      url.searchParams.append("data_inicio", filtro.data_inicio);
-    if (filtro.data_fim) url.searchParams.append("data_fim", filtro.data_fim);
-    url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Erro ao buscar entradas filtradas");
-    }
     return response.json();
   },
   async criarEntrada(
@@ -372,103 +427,6 @@ export const entradasAPI = {
       throw new Error("Erro ao criar entrada");
     }
 
-    return response.json();
-  },
-  async getEntradaById(entrada_id: number, token: string) {
-    const response = await fetch(`${URL_BASE}/entradas/${entrada_id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao buscar entrada");
-    }
-
-    return response.json();
-  },
-  async listarEntradasFinanceiras(token: string, skip = 0, limit = 20) {
-    const url = new URL(`${URL_BASE}/entradas/`);
-    url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());
-
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Erro ao buscar últimas entradas");
-    }
-    return response.json();
-  },
-  async getEntradaMissionariaById(entrada_id: number, token: string) {
-    const response = await fetch(`${URL_BASE}/entradas/missoes/${entrada_id}`, {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao buscar entrada missionária");
-    }
-
-    return response.json();
-  },
-  async listarEntradasMissionarias(token: string, skip = 0, limit = 20) {
-    const url = new URL(`${URL_BASE}/entradas/listar/missoes`);
-    url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Erro ao buscar últimas entradas missionárias");
-    }
-    return response.json();
-  },
-  async getEntradaProjetoById(entrada_id: number, token: string) {
-    const response = await fetch(
-      `${URL_BASE}/entradas/projetos/${entrada_id}`,
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Erro ao buscar entrada de projeto");
-    }
-
-    return response.json();
-  },
-  async listarEntradasProjetos(token: string, skip = 0, limit = 20) {
-    const url = new URL(`${URL_BASE}/entradas/listar/projetos`);
-    url.searchParams.append("skip", skip.toString());
-    url.searchParams.append("limit", limit.toString());
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Erro ao buscar últimas entradas de projetos");
-    }
     return response.json();
   },
   async editarEntradaFinanceira(
@@ -1092,3 +1050,99 @@ export const escalasAPI = {
     return response.json();
   },
 };
+
+export const cargosAPI = {
+  async listarCargos(token: string) {
+    const response = await fetch(`${URL_BASE}/cargos/`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar cargos");
+    }
+    return response.json();
+  },
+  async criarCargo(
+    cargo: {
+      nome: string;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/cargos/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(cargo),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao criar cargo");
+    }
+
+    return response.json();
+  },
+  async vincularMembroCargo(
+    membro_id: number,
+    cargo_id: number,
+    token: string
+  ) {
+    const url = new URL(`${URL_BASE}/cargos/vincular`);
+    url.searchParams.append("membro_id", membro_id.toString());
+    url.searchParams.append("cargo_id", cargo_id.toString());
+
+    const response = await fetch(url.toString(), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao vincular membro ao cargo");
+    }
+
+    return response.json();
+  },
+  async desvincularMembroCargo(
+    membro_id: number,
+    cargo_id: number,
+    token: string
+  ) {
+    const url = new URL(`${URL_BASE}/cargos/desvincular`);
+    url.searchParams.append("membro_id", membro_id.toString());
+    url.searchParams.append("cargo_id", cargo_id.toString());
+
+    const response = await fetch(url.toString(), {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao desvincular membro do cargo");
+    }
+
+    return response.json();
+  },
+  async listarMembrosComCargos(token: string) {
+    const response = await fetch(`${URL_BASE}/cargos/membros`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar membros com cargos");
+    }
+    return response.json();
+  },
+};
+
+

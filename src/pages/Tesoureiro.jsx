@@ -8,15 +8,18 @@ const styles = {
   mainContainer: {
     fontFamily:
       '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    // maxWidth: "1200px",
     width: "100%",
-    backgroundColor: "#f8f9fa",
-    borderRadius: "18px",
-    boxShadow: "0 10px 30px rgba(0, 100, 150, 0.08)",
-    padding: "3rem 0.8rem",
+    backgroundColor: "#f0f2f5", // Light gray background for a clean look
+    borderRadius: "20px",
+    boxShadow: "0 15px 40px rgba(0, 0, 0, 0.08)",
+    padding: "3.5rem 2.5rem",
     display: "flex",
     flexDirection: "column",
-    gap: "2.5rem",
+    gap: "0.8rem",
+    maxWidth: "98%",
+    margin: "2rem auto",
+    position: "relative",
+    overflow: "hidden",
   },
 
   acessoRestrito: {
@@ -206,7 +209,7 @@ export default function Tesoureiro({ user }) {
 
   const cargos = user?.cargos || [];
   const autorizado =
-    cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro") || cargos.includes("Pastor");
+    cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro") || cargos.includes("Pastor") || cargos.includes("primeiro_usuario");
 
   if (!autorizado) {
     return (

@@ -7,6 +7,7 @@ import Contribuicoes from "./pages/Contribuicoes";
 import Relatorios from "./pages/Relatorios";
 import Tesoureiro from "./pages/Tesoureiro";
 import Secretaria from "./pages/Secretaria";
+import Diacono from "./pages/Diacono";
 import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
@@ -56,6 +57,17 @@ function App() {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
+  }, [userInfo]);
+
+  // Verifica periodicamente se o token expirou e faz logout automático
+  useEffect(() => {
+    if (!userInfo) return;
+    const interval = setInterval(() => {
+      if (isTokenExpired(userInfo)) {
+        handleLogout();
+      }
+    }, 30000); // verifica a cada 30 segundos
+    return () => clearInterval(interval);
   }, [userInfo]);
 
   useEffect(() => {
@@ -109,12 +121,19 @@ function App() {
 
   const cargos = userInfo?.cargos || [];
   const autorizadoTesoureiro =
-    cargos.includes("Tesoureiro") || cargos.includes("Segundo_Tesoureiro");
+    cargos.includes("Tesoureiro") ||
+    cargos.includes("Segundo_Tesoureiro") ||
+    cargos.includes("primeiro_usuario");
 
   const autorizadoSecretario =
-    cargos.includes("Secretario") || cargos.includes("Segundo_Secretario");
+    cargos.includes("Secretario") ||
+    cargos.includes("Segundo_Secretario") ||
+    cargos.includes("primeiro_usuario");
 
   const autorizadoPastor = cargos.includes("Pastor");
+
+  const autorizadoDiacono =
+    cargos.includes("Diacono") || cargos.includes("primeiro_usuario");
 
   return (
     <div className="app-root">
@@ -132,6 +151,7 @@ function App() {
             setOpen={setDrawerOpen}
             autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
             autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
+            autorizadoDiacono={autorizadoDiacono || autorizadoPastor}
             handleLogout={handleLogout}
             navigate={navigate}
           />
@@ -140,28 +160,32 @@ function App() {
 
       {/* Modal de confirmação de saída */}
       {showExitModal && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          background: "rgba(0,0,0,0.25)",
-          zIndex: 99999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
-          <div style={{
-            background: "#fff",
-            borderRadius: 12,
-            minWidth: 320,
-            maxWidth: 400,
-            padding: "2rem 1.5rem 1.5rem 1.5rem",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
-            position: "relative",
-            textAlign: "center",
-          }}>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.25)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 12,
+              minWidth: 320,
+              maxWidth: 400,
+              padding: "2rem 1.5rem 1.5rem 1.5rem",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+              position: "relative",
+              textAlign: "center",
+            }}
+          >
             <h3 style={{ marginBottom: 18, color: "#007bff" }}>
               Deseja realmente sair do aplicativo?
             </h3>
@@ -228,12 +252,21 @@ function App() {
               <Route path="/contribuicoes" element={<Contribuicoes />} />
               <Route path="/relatorios" element={<Relatorios />} />
               {autorizadoTesoureiro || autorizadoPastor ? (
-                <Route path="/tesoureiro" element={<Tesoureiro user={user} />} />
+                <Route
+                  path="/tesoureiro"
+                  element={<Tesoureiro user={user} />}
+                />
               ) : null}
               {autorizadoSecretario || autorizadoPastor ? (
-                <Route path="/secretaria" element={<Secretaria user={user} />} />
+                <Route
+                  path="/secretaria"
+                  element={<Secretaria user={user} />}
+                />
               ) : null}
               <Route path="/calendario" element={<CalendarioEventos />} />
+              {autorizadoDiacono || autorizadoPastor ? (
+                <Route path="/diacono" element={<Diacono user={user} />} />
+              ) : null}
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
             </RouterRoutes>
           </div>
