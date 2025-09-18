@@ -230,6 +230,7 @@ export default function ListaTodosNomes() {
           alignItems: "center",
           gap: "1rem",
           marginBottom: 24,
+          flexWrap: "wrap",
         }}
       >
         <input

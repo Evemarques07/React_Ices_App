@@ -42,7 +42,6 @@ export default function NovoMembro() {
       setForm((prev) => ({ ...prev, ativo: value === "membro" }));
     }
   }
-
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
@@ -57,15 +56,24 @@ export default function NovoMembro() {
         telefone: form.telefone ? form.telefone : null,
         email: form.email ? form.email : null,
         endereco: form.endereco ? form.endereco : null,
+        data_entrada: form.data_entrada ? form.data_entrada : null,
         ativo: form.tipo === "membro",
         tipo: form.tipo,
+        cpf: form.cpf.replace(/[^\d]/g, ""), // CPF sem máscara
+        sexo: form.sexo === "" ? null : form.sexo,
+        nome_pai: form.nome_pai === "" ? null : form.nome_pai,
+        nome_mae: form.nome_mae === "" ? null : form.nome_mae,
+        estado_civil: form.estado_civil === "" ? null : form.estado_civil,
+        data_casamento: form.data_casamento === "" ? null : form.data_casamento,
+        nome_conjuge: form.nome_conjuge === "" ? null : form.nome_conjuge,
+        data_nascimento_conjuge:
+          form.data_nascimento_conjuge === ""
+            ? null
+            : form.data_nascimento_conjuge,
+        data_batismo: form.data_batismo === "" ? null : form.data_batismo,
       };
-      if (
-        !body.nome ||
-        !body.data_nascimento ||
-        !body.data_entrada ||
-        !body.cpf
-      ) {
+      console.log("Dados enviados:", body);
+      if (!body.nome || !body.data_nascimento || !body.cpf || !body.data_entrada) {
         setError("Preencha todos os campos obrigatórios, incluindo CPF.");
         setLoading(false);
         return;
@@ -77,12 +85,10 @@ export default function NovoMembro() {
           return;
         }
         if (!body.senha) {
-          setError("Informe a senha para criar usuário.");
-          setLoading(false);
-          return;
+          body.senha = null;
         }
       } else {
-        body.senha = "";
+        body.senha = null;
       }
       await membrosAPI.criarMembro(body, token);
       setSuccess("Membro cadastrado com sucesso!");
@@ -161,9 +167,7 @@ export default function NovoMembro() {
           Novo Membro / Contribuinte
         </h3>
 
-        <div
-          style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-        >
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <input
             name="nome"
             value={form.nome}
@@ -458,7 +462,6 @@ export default function NovoMembro() {
                     }}
                   />
                 </div>
-                
               </div>
               <input
                 name="nome_conjuge"

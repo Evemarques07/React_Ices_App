@@ -158,7 +158,7 @@ export default function ListaMembros() {
         endereco: endereco ? endereco : null,
         data_entrada,
         ativo: !!ativo,
-        cpf: maskCPF(cpf),
+        cpf: cpf.replace(/[^\d]/g, ""),
         tipo,
         sexo: sexo === "" ? null : sexo,
         nome_pai: nome_pai === "" ? null : nome_pai,
@@ -230,6 +230,7 @@ export default function ListaMembros() {
           alignItems: "center",
           gap: "1rem",
           marginBottom: 24,
+          flexWrap: "wrap",
         }}
       >
         <input

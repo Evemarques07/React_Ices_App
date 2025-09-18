@@ -14,7 +14,7 @@ export default function CriarEscala({ token, onCriado }) {
 
   async function buscarMembros(e) {
     setNomeBusca(e.target.value);
-    setMembroId(""); 
+    setMembroId("");
     if (e.target.value.length < 2) {
       setMembros([]);
       return;
@@ -171,7 +171,7 @@ export default function CriarEscala({ token, onCriado }) {
         )}
       </div>
       <label style={{ fontWeight: 600 }}>Tipo de Escala *</label>
-      <input
+      <select
         value={tipo}
         onChange={(e) => setTipo(e.target.value)}
         required
@@ -180,8 +180,16 @@ export default function CriarEscala({ token, onCriado }) {
           borderRadius: 8,
           border: "1px solid #ced4da",
         }}
-        placeholder="Tipo da escala"
-      />
+      >
+        <option value="">Selecione o tipo</option>
+        <option value="Limpeza">Limpeza</option>
+        <option value="Direção">Direção</option>
+        <option value="Mesa">Mesa</option>
+        <option value="Som">Som</option>
+        <option value="Projetor">Projetor</option>
+        <option value="Portão">Portão</option>
+        <option value="Crianças">Crianças</option>
+      </select>
       <label style={{ fontWeight: 600 }}>Data da Escala *</label>
       <input
         type="datetime-local"
