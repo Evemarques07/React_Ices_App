@@ -1,5 +1,4 @@
 import { useState } from "react";
-// Importe sua API de cargos
 import { cargosAPI } from "../../services/api";
 
 function CriarCargo({ token, onCriado }) {
@@ -16,9 +15,7 @@ function CriarCargo({ token, onCriado }) {
     setSucesso("");
     setLoading(true);
     try {
-      // Ajuste conforme sua API espera os dados
       await cargosAPI.criarCargo({ nome, descricao, ativo }, token);
-      // Simulação de sucesso
       setTimeout(() => {
         setSucesso("Cargo criado com sucesso!");
         setNome("");

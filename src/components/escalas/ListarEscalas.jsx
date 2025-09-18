@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { escalasAPI, membrosAPI } from "../../services/api"; // Assumindo que este caminho está correto
+import { escalasAPI, membrosAPI } from "../../services/api"; 
 
-// Função para formatar a data
 function formatarData(data) {
   if (!data) return "-";
   const d = new Date(data);
@@ -37,16 +36,15 @@ export default function ListarEscalas() {
   const [membros, setMembros] = useState([]);
   const limit = 20;
 
-  // Cores e estilos consistentes
-  const primaryColor = "#2c3e50"; // Azul escuro para títulos e elementos principais
-  const accentColor = "#3498db"; // Azul mais claro para detalhes e hover
-  const successColor = "#2ecc71"; // Verde para sucesso
-  const errorColor = "#e74c3c"; // Vermelho para erro/exclusão
-  const borderColor = "#ecf0f1"; // Cinza claro para bordas
-  const textColor = "#34495e"; // Cinza escuro para texto
-  const lightBg = "#fdfdfe"; // Fundo leve para cards/tabela
-  const grayText = "#7f8c8d"; // Texto cinza para descrições
-  const whiteBg = "#ffffff"; // Fundo branco puro
+  const primaryColor = "#2c3e50"; 
+  const accentColor = "#3498db"; 
+  const successColor = "#2ecc71"; 
+  const errorColor = "#e74c3c"; 
+  const borderColor = "#ecf0f1"; 
+  const textColor = "#34495e"; 
+  const lightBg = "#fdfdfe"; 
+  const grayText = "#7f8c8d"; 
+  const whiteBg = "#ffffff"; 
 
   useEffect(() => {
     async function fetchEscalas() {
@@ -86,8 +84,8 @@ export default function ListarEscalas() {
     setEditError("");
     setEditSuccess("");
     setEditId(id);
-    setMembroBusca(""); // Limpar busca
-    setMembros([]); // Limpar lista de membros
+    setMembroBusca(""); 
+    setMembros([]); 
     try {
       const token = localStorage.getItem("user")
         ? JSON.parse(localStorage.getItem("user")).access_token
@@ -101,7 +99,6 @@ export default function ListarEscalas() {
           : "",
         ativo: !!dados.ativo,
       });
-      // Busca nome do membro para exibir no input de busca
       if (dados.nome_membro) setMembroBusca(dados.nome_membro);
     } catch (err) {
       setEditError("Erro ao carregar dados da escala.");
@@ -121,7 +118,6 @@ export default function ListarEscalas() {
         : null;
       const { membro_id, tipo, data_escala, ativo } = editForm;
 
-      // Validação simples: verificar se um membro_id foi selecionado
       if (!membro_id) {
         setEditError("Por favor, selecione um membro da lista.");
         return;
@@ -138,7 +134,7 @@ export default function ListarEscalas() {
         setEditModal(false);
         setEditId(null);
         setEditForm({ membro_id: "", tipo: "", data_escala: "", ativo: true });
-        setMembroBusca(""); // Limpa o campo de busca
+        setMembroBusca(""); 
       }, 2000);
     } catch (err) {
       setEditError(err.message || "Erro ao atualizar escala.");
@@ -184,12 +180,11 @@ export default function ListarEscalas() {
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  // Campos para mostrar
   const campos = [
     { key: "nome_membro", label: "Membro" },
     { key: "tipo", label: "Tipo" },
     { key: "data_escala", label: "Data" },
-    { key: "ativo", label: "Status" }, // Renomeado para 'Status'
+    { key: "ativo", label: "Status" }, 
   ];
 
   return (
@@ -240,7 +235,6 @@ export default function ListarEscalas() {
         </div>
       )}
 
-      {/* Tabela para telas maiores */}
       <div className="escalas-tabela-container" style={{ display: "none" }}>
         <table
           style={{
@@ -356,7 +350,6 @@ export default function ListarEscalas() {
         </table>
       </div>
 
-      {/* Cards para telas menores */}
       <div className="escalas-cards-container" style={{ display: "block" }}>
         {escalas.map((e) => (
           <div
@@ -491,7 +484,6 @@ export default function ListarEscalas() {
         </button>
       </div>
 
-      {/* Modal de edição */}
       {editModal && (
         <div
           style={{
@@ -656,7 +648,7 @@ export default function ListarEscalas() {
                     border: `1px solid ${borderColor}`,
                     borderRadius: 8,
                     boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
-                    maxHeight: 180, // Aumentei um pouco a altura
+                    maxHeight: 180, 
                     overflowY: "auto",
                     marginTop: "4px",
                   }}
@@ -670,7 +662,7 @@ export default function ListarEscalas() {
                         color:
                           editForm.membro_id === m.id ? accentColor : textColor,
                         background:
-                          editForm.membro_id === m.id ? "#e6f2fa" : whiteBg, // Fundo levemente azul para selecionado
+                          editForm.membro_id === m.id ? "#e6f2fa" : whiteBg, 
                         fontWeight:
                           editForm.membro_id === m.id ? 600 : "normal",
                         borderBottom:
@@ -684,7 +676,7 @@ export default function ListarEscalas() {
                       onClick={() => {
                         setEditForm((f) => ({ ...f, membro_id: m.id }));
                         setMembroBusca(m.nome);
-                        setMembros([]); // Fechar a lista após seleção
+                        setMembros([]); 
                       }}
                     >
                       {m.nome}

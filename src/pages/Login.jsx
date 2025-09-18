@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../services/api";
-import logo from "../assets/iceslogo12.png"; // Importe a logo
+import logo from "../assets/iceslogo12.png"; 
 import { maskCPF } from "../utils/format";
 
 export default function Login({ onLogin }) {
@@ -15,7 +15,6 @@ export default function Login({ onLogin }) {
     setLoading(true);
     setError("");
     try {
-      // Remove pontos e traços do CPF antes de enviar
       const cpfLimpo = cpf.replace(/\D/g, "");
       const data = await login({ username: cpfLimpo, password: senha });
       onLogin(data);
@@ -26,7 +25,6 @@ export default function Login({ onLogin }) {
     }
   };
 
-  // Estilos inline
   const styles = {
     root: {
       minWidth: "100vw",

@@ -26,7 +26,6 @@ export default function NovaSaida({ token, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  // Busca membros conforme digitação
   const handleBuscaChange = async (e) => {
     const termo = e.target.value;
     setMembroBusca(termo);

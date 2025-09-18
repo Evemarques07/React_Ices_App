@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Calendar, FileText } from "lucide-react";
 import { entradasAPI } from "../services/api";
-import "../css/Contribuicoes.css"; // Certifique-se de que este arquivo existe e está linkado
+import "../css/Contribuicoes.css"; 
 import { formatDate, formatCurrency } from "../utils/format";
 import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 
@@ -26,14 +26,12 @@ export default function Contribuicoes() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Função ATUALIZADA para gerar classes CSS
   const getCssClassFromType = (tipo) => {
     const tipoNormalizado = tipo.toUpperCase();
     if (tipoNormalizado === "DÍZIMO") return "dizimo";
     if (tipoNormalizado === "OFERTA COMUM") return "oferta-comum";
     if (tipoNormalizado === "COMPROMISSO DE FÉ") return "compromisso-fe";
     if (tipoNormalizado === "NOSSA CASA") return "nossa-casa";
-    // Cor padrão para outros tipos
     return "oferta-especial";
   };
 
@@ -52,7 +50,6 @@ export default function Contribuicoes() {
             </div>
           ) : (
             <>
-              {/* Filtros de tipo */}
               <div className="filter-buttons-container">
                 {Object.entries(entradas).map(([key]) => {
                   const tipo = key.split("_").slice(1).join(" ");
@@ -79,7 +76,6 @@ export default function Contribuicoes() {
                   </button>
                 )}
               </div>
-              {/* Cards filtrados */}
               {Object.entries(entradas)
                 .filter(([key]) => {
                   const tipo = key.split("_").slice(1).join(" ");

@@ -6,6 +6,20 @@ export function formatDate(dateStr) {
   return `${day}/${month}/${year}`;
 }
 
+export function formatarData(data) {
+  if (!data) return "-";
+  const d = new Date(data);
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+  return d.toLocaleString("pt-BR", options).replace(",", "");
+}
+
 // Função para formatar valores numéricos para moeda brasileira
 export function formatCurrency(value) {
   if (value == null || isNaN(value)) return "";
@@ -20,9 +34,7 @@ export function formatCurrency(value) {
 // Função de máscara para campos de valor monetário
 export function maskCurrency(value) {
   if (value == null) return "";
-  // Remove caracteres não numéricos
   const cleaned = value.toString().replace(/\D/g, "");
-  // Formata como moeda
   return formatCurrency(parseFloat(cleaned) / 100);
 }
 

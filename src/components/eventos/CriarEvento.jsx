@@ -17,7 +17,6 @@ function CriarEvento({ token, onCriado }) {
     setSucesso("");
     setLoading(true);
     try {
-      // Ajuste conforme a API espera os dados
       await eventosAPI.criarEvento(
         {
           titulo,

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { relatoriosAPI } from "../services/api";
 import { formatCurrency, formatDate } from "../utils/format";
 import ScrollToTopButton from "../components/utils/ScrollToTopButton";
-// Importando ícones para uma UI mais rica
 import {
   ArrowUpCircle,
   ArrowDownCircle,
@@ -14,7 +13,6 @@ import {
 import "../css/Relatorios.css";
 
 export default function Relatorios() {
-  // Verifica se o usuário tem cargos
   const user = JSON.parse(localStorage.getItem("user"));
   const cargos = user?.cargos || [];
   const temCargo = Array.isArray(cargos) && cargos.length > 0;
@@ -49,7 +47,6 @@ export default function Relatorios() {
 
   useEffect(() => {
     buscarRelatorio(mes, ano);
-    // eslint-disable-next-line
   }, []);
 
   function handleSubmit(e) {
@@ -57,7 +54,6 @@ export default function Relatorios() {
     buscarRelatorio(mes, ano);
   }
 
-  // Cálculos para os cards de resumo
   const saldoMesFinanceiro = relatorio
     ? relatorio.total_entradas - relatorio.total_saidas
     : 0;
@@ -121,9 +117,7 @@ export default function Relatorios() {
             Resumo de {String(relatorio.mes).padStart(2, "0")}/{relatorio.ano}
           </h3>
 
-          {/* --- GRID DE RESUMO GERAL --- */}
           <div className="summary-grid">
-            {/* Cards de Resumo (Entradas, Saídas, Saldo do Mês, Saldo Final) */}
             <div className="summary-card income">
               <ArrowUpCircle size={28} className="summary-card__icon" />
               <div className="summary-card__details">
@@ -168,10 +162,8 @@ export default function Relatorios() {
             </div>
           </div>
 
-          {/* --- [VISÃO DETALHADA - APENAS PARA USUÁRIOS COM CARGO] --- */}
           {temCargo && (
             <>
-              {/* === DETALHES FINANCEIROS (DETALHADO) === */}
               <section className="report-section detailed-view">
                 <div className="report-section__header">
                   <HeartHandshake className="section-icon" size={24} />
@@ -193,7 +185,6 @@ export default function Relatorios() {
                     </strong>
                   </span>
                 </div>
-                {/* Entradas Financeiras */}
                 <div className="details-block-header">
                   <h5>Entradas Financeiras</h5>
                 </div>
@@ -203,7 +194,6 @@ export default function Relatorios() {
                     type="entrada"
                   />
                 </div>
-                {/* Saídas Financeiras */}
                 <div className="details-block-header">
                   <h5>Saídas Financeiras</h5>
                 </div>
@@ -212,7 +202,6 @@ export default function Relatorios() {
                 </div>
               </section>
 
-              {/* === DETALHES DE MISSÕES (DETALHADO) === */}
               <section className="report-section detailed-view">
                 <div className="report-section__header">
                   <Rocket className="section-icon" size={24} />
@@ -234,7 +223,6 @@ export default function Relatorios() {
                     </strong>
                   </span>
                 </div>
-                {/* Entradas de Missões */}
                 <div className="details-block-header">
                   <h5>Entradas de Missões</h5>
                 </div>
@@ -244,7 +232,6 @@ export default function Relatorios() {
                     type="entrada"
                   />
                 </div>
-                {/* Saídas de Missões */}
                 <div className="details-block-header">
                   <h5>Saídas de Missões</h5>
                 </div>
@@ -253,7 +240,6 @@ export default function Relatorios() {
                 </div>
               </section>
 
-              {/* === DETALHES DE PROJETOS (DETALHADO) === */}
               <section className="report-section detailed-view">
                 <div className="report-section__header">
                   <Landmark className="section-icon" size={24} />
@@ -275,7 +261,6 @@ export default function Relatorios() {
                     </strong>
                   </span>
                 </div>
-                {/* Entradas de Projetos */}
                 <div className="details-block-header">
                   <h5>Entradas de Projetos</h5>
                 </div>
@@ -285,7 +270,6 @@ export default function Relatorios() {
                     type="entrada"
                   />
                 </div>
-                {/* Saídas de Projetos */}
                 <div className="details-block-header">
                   <h5>Saídas de Projetos</h5>
                 </div>
@@ -296,10 +280,8 @@ export default function Relatorios() {
             </>
           )}
 
-          {/* --- [VISÃO RESUMIDA - PARA TODOS OS USUÁRIOS (NÃO ADMINISTRADORES)] --- */}
           {!temCargo && (
             <>
-              {/* Detalhes Financeiros (Resumido) */}
               <section className="report-section">
                 <div className="report-section__header">
                   <HeartHandshake className="section-icon" size={24} />
@@ -342,7 +324,6 @@ export default function Relatorios() {
                 </div>
               </section>
 
-              {/* Detalhes de Missões (Resumido) */}
               <section className="report-section">
                 <div className="report-section__header">
                   <Rocket className="section-icon" size={24} />
@@ -385,7 +366,6 @@ export default function Relatorios() {
                 </div>
               </section>
 
-              {/* Detalhes de Projetos (Resumido) */}
               <section className="report-section">
                 <div className="report-section__header">
                   <Landmark className="section-icon" size={24} />
@@ -436,14 +416,12 @@ export default function Relatorios() {
   );
 }
 
-// Componente para a tabela detalhada (visão de administrador)
 const TransactionTable = ({ transactions, type = "entrada" }) => {
   if (!transactions || transactions.length === 0) {
     return <p className="no-data-message">Nenhuma transação no período.</p>;
   }
   return (
     <>
-      {/* Tabela para telas grandes */}
       <div className="table-container">
         <table className="transactions-table">
           <thead>
@@ -471,7 +449,6 @@ const TransactionTable = ({ transactions, type = "entrada" }) => {
         </table>
       </div>
 
-      {/* Cards para telas pequenas */}
       <div className="transactions-list-container">
         {transactions.map((e) => (
           <div key={e.id} className="transaction-card">
@@ -501,14 +478,12 @@ const TransactionTable = ({ transactions, type = "entrada" }) => {
   );
 };
 
-// Componente auxiliar para Saídas (resumo e detalhado) que renderiza tabela ou cards
 const TransactionList = ({ transactions }) => {
   if (!transactions || transactions.length === 0) {
     return <p className="no-data-message">Nenhuma transação no período.</p>;
   }
   return (
     <>
-      {/* Estrutura de Tabela para telas > 820px */}
       <div className="table-container">
         <table className="transactions-table">
           <thead>
@@ -532,7 +507,6 @@ const TransactionList = ({ transactions }) => {
         </table>
       </div>
 
-      {/* Estrutura de Cards para telas <= 820px */}
       <div className="transactions-list-container">
         {transactions.map((s) => (
           <div key={s.id} className="transaction-card">

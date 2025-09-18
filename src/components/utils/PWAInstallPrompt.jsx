@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { X, Download, Smartphone } from "lucide-react";
 
 function PWAInstallPrompt() {
-  // Estilos inline
   const styles = {
     wrapper: {
       position: "fixed",
@@ -99,7 +98,6 @@ function PWAInstallPrompt() {
   const [isInstalled, setIsInstalled] = useState(false);
 
   useEffect(() => {
-    // Verificar se já está instalado
     const isStandalone = window.matchMedia(
       "(display-mode: standalone)"
     ).matches;
@@ -110,7 +108,6 @@ function PWAInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e);
 
-      // Mostrar prompt após 3 segundos (menos intrusivo)
       setTimeout(() => {
         if (!isInstalled) {
           setShowPrompt(true);
@@ -123,7 +120,6 @@ function PWAInstallPrompt() {
       setShowPrompt(false);
       setDeferredPrompt(null);
 
-      // Mostrar feedback de sucesso
       console.log("📱 Sistema Vendas instalado com sucesso!");
     };
 
@@ -162,7 +158,6 @@ function PWAInstallPrompt() {
 
   const handleDismiss = () => {
     setShowPrompt(false);
-    // Mostrar novamente após 1 hora
     setTimeout(() => {
       if (deferredPrompt && !isInstalled) {
         setShowPrompt(true);

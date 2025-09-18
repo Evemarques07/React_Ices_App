@@ -29,7 +29,6 @@ function decodeJWT(token) {
 
 function isTokenExpired(decoded) {
   if (!decoded || !decoded.exp) return true;
-  // exp é em segundos, Date.now() em ms
   return Date.now() >= decoded.exp * 1000;
 }
 
@@ -37,13 +36,11 @@ function App() {
   const [user, setUser] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  // Removido estado route, agora navegação é por rotas
   const navigate = useNavigate();
 
   const [showExitModal, setShowExitModal] = useState(false);
   const [pendingPop, setPendingPop] = useState(false);
 
-  // Intercepta navegação para login (sair do app)
   useEffect(() => {
     if (!userInfo) return;
     const handlePopState = () => {
@@ -59,25 +56,22 @@ function App() {
     };
   }, [userInfo]);
 
-  // Verifica periodicamente se o token expirou e faz logout automático
   useEffect(() => {
     if (!userInfo) return;
     const interval = setInterval(() => {
       if (isTokenExpired(userInfo)) {
         handleLogout();
       }
-    }, 30000); // verifica a cada 30 segundos
+    }, 30000); 
     return () => clearInterval(interval);
   }, [userInfo]);
 
   useEffect(() => {
-    // Recupera usuário do localStorage se existir
     const saved = localStorage.getItem("user");
     if (saved) {
       const obj = JSON.parse(saved);
       if (obj.access_token) {
         const info = decodeJWT(obj.access_token);
-        // Se o token expirou, desloga
         if (isTokenExpired(info)) {
           handleLogout();
           return;
@@ -90,7 +84,6 @@ function App() {
     }
   }, []);
 
-  // Removido persistência manual de rota
 
   const handleLogin = (data) => {
     setUser(data);
@@ -98,7 +91,7 @@ function App() {
     if (data.access_token) {
       const info = decodeJWT(data.access_token);
       setUserInfo(info);
-      navigate("/"); // redireciona para Home após login
+      navigate("/");
     }
   };
 
@@ -108,7 +101,7 @@ function App() {
     localStorage.removeItem("user");
     setShowExitModal(false);
     setPendingPop(false);
-    navigate("/login"); // volta para tela de login
+    navigate("/login");
   };
 
   const handleCancelExit = () => {
@@ -158,7 +151,6 @@ function App() {
         </>
       )}
 
-      {/* Modal de confirmação de saída */}
       {showExitModal && (
         <div
           style={{

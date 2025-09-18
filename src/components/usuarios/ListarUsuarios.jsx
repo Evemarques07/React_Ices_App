@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { usuariosAPI } from "../../services/api"; // Assumindo que este caminho está correto
-import { maskCPF } from "../../utils/format"; // Assumindo que este caminho está correto
+import { usuariosAPI } from "../../services/api"; 
+import { maskCPF } from "../../utils/format"; 
 
 export default function ListarUsuarios() {
   const [usuarios, setUsuarios] = useState([]);
@@ -8,14 +8,14 @@ export default function ListarUsuarios() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const primaryColor = "#2c3e50"; // Azul escuro para títulos e elementos principais
-  const accentColor = "#3498db"; // Azul mais claro para detalhes e hover
-  const successColor = "#2ecc71"; // Verde para sucesso
-  const errorColor = "#e74c3c"; // Vermelho para erro/exclusão
-  const borderColor = "#ecf0f1"; // Cinza claro para bordas
-  const textColor = "#34495e"; // Cinza escuro para texto
-  const lightBg = "#fdfdfe"; // Fundo leve para cards/tabela
-  const grayText = "#7f8c8d"; // Texto cinza para descrições
+  const primaryColor = "#2c3e50"; 
+  const accentColor = "#3498db"; 
+  const successColor = "#2ecc71"; 
+  const errorColor = "#e74c3c"; 
+  const borderColor = "#ecf0f1"; 
+  const textColor = "#34495e"; 
+  const lightBg = "#fdfdfe"; 
+  const grayText = "#7f8c8d"; 
 
   useEffect(() => {
     async function fetchUsuarios() {
@@ -47,7 +47,7 @@ export default function ListarUsuarios() {
       await usuariosAPI.deletarUsuario(id, token);
       setUsuarios(usuarios.filter((u) => u.id !== id));
       setSuccess("Usuário excluído com sucesso!");
-      setTimeout(() => setSuccess(""), 2000); // Aumentei o tempo para ver a mensagem
+      setTimeout(() => setSuccess(""), 2000); 
     } catch (err) {
       alert("Erro ao excluir usuário: " + (err.message || ""));
     } finally {
@@ -55,11 +55,10 @@ export default function ListarUsuarios() {
     }
   }
 
-  // Campos para mostrar
   const campos = [
     { key: "nome", label: "Nome" },
     { key: "cpf", label: "CPF" },
-    { key: "ativo", label: "Status" }, // Renomeado para 'Status'
+    { key: "ativo", label: "Status" },
   ];
 
   return (
@@ -75,7 +74,6 @@ export default function ListarUsuarios() {
         <div style={{ color: successColor, marginTop: 12, padding: "10px", background: "#e8fff2", borderRadius: 8 }}>{success}</div>
       )}
 
-      {/* Tabela para telas maiores */}
       <div className="usuarios-tabela-container" style={{ display: "none" }}>
         <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: "0 10px" }}>
           <thead>
@@ -159,7 +157,6 @@ export default function ListarUsuarios() {
         </table>
       </div>
 
-      {/* Cards para telas menores */}
       <div className="usuarios-cards-container" style={{ display: "block" }}>
         {usuarios.map((u) => (
           <div
@@ -212,7 +209,7 @@ export default function ListarUsuarios() {
                   fontWeight: 600,
                   cursor: "pointer",
                   fontSize: "0.8rem",
-                  alignSelf: "flex-start", // Alinha o botão à esquerda nos cards
+                  alignSelf: "flex-start", 
                   transition: "background-color 0.2s ease",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#c0392b")}

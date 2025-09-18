@@ -27,7 +27,6 @@ export default function CalendarioEventos() {
       const token = user?.access_token;
       const membroId = user?.membro_id;
 
-      // Eventos
       const resEventos = await eventosAPI.listarEventosAtivos(token);
       const listaEventos = resEventos.items || resEventos;
       const eventosFormatados = listaEventos.map((ev) => ({
@@ -168,7 +167,6 @@ export default function CalendarioEventos() {
     if (info.view && info.view.title) {
       setTituloCalendario(capitalizarMesTitulo(info.view.title));
     }
-    // Atualiza intervalo do mês para filtrar eventos/escalas
     const dataCentral = info.start;
     const ano = dataCentral.getFullYear();
     const mes = dataCentral.getMonth() + 1;
@@ -254,7 +252,7 @@ export default function CalendarioEventos() {
           height="auto"
           headerToolbar={{
             left: "prev,next today",
-            center: "", // Remove o título central
+            center: "",
             right: "dayGridMonth,dayGridWeek,dayGridDay",
           }}
           buttonText={{

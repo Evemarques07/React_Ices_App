@@ -6,7 +6,6 @@ export default function Diacono({ user }) {
   const [modal, setModal] = useState(null);
   const [colEscalas, setColEscalas] = useState(true);
 
-  // Recupera token do usuário logado
   const token =
     (user && user.access_token) ||
     (localStorage.getItem("user")

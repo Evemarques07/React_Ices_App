@@ -1,20 +1,6 @@
 import { useEffect, useState } from "react";
-import { eventosAPI } from "../../services/api"; // Assumindo que este caminho está correto
-
-// Função para formatar a data (mantida a original, mas pode ser melhorada se necessário)
-function formatarData(data) {
-  if (!data) return "-";
-  const d = new Date(data);
-  const options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
-  return d.toLocaleString("pt-BR", options).replace(",", "");
-}
+import { eventosAPI } from "../../services/api";
+import { formatarData } from "../../utils/format";
 
 export default function ListarEventos() {
   const [eventos, setEventos] = useState([]);
@@ -36,16 +22,15 @@ export default function ListarEventos() {
   });
   const limit = 20;
 
-  // Cores e estilos consistentes
-  const primaryColor = "#2c3e50"; // Azul escuro para títulos e elementos principais
-  const accentColor = "#3498db"; // Azul mais claro para detalhes e hover
-  const successColor = "#2ecc71"; // Verde para sucesso
-  const errorColor = "#e74c3c"; // Vermelho para erro/exclusão
-  const borderColor = "#ecf0f1"; // Cinza claro para bordas
-  const textColor = "#34495e"; // Cinza escuro para texto
-  const lightBg = "#fdfdfe"; // Fundo leve para cards/tabela
-  const grayText = "#7f8c8d"; // Texto cinza para descrições
-  const whiteBg = "#ffffff"; // Fundo branco puro
+  const primaryColor = "#2c3e50"; 
+  const accentColor = "#3498db"; 
+  const successColor = "#2ecc71";
+  const errorColor = "#e74c3c"; 
+  const borderColor = "#ecf0f1";
+  const textColor = "#34495e";
+  const lightBg = "#fdfdfe";
+  const grayText = "#7f8c8d";
+  const whiteBg = "#ffffff";
 
   useEffect(() => {
     async function fetchEventos() {
@@ -93,7 +78,6 @@ export default function ListarEventos() {
       setEditForm({
         titulo: dados.titulo || "",
         descricao: dados.descricao || "",
-        // Ajuste para garantir o formato 'YYYY-MM-DDTHH:MM'
         data_inicio: dados.data_inicio
           ? new Date(dados.data_inicio).toISOString().slice(0, 16)
           : "",
@@ -136,7 +120,7 @@ export default function ListarEventos() {
           data_final: "",
           ativo: true,
         });
-      }, 2000); // Aumentei o tempo para ver a mensagem
+      }, 2000); 
     } catch (err) {
       setEditError(err.message || "Erro ao atualizar evento.");
     } finally {
@@ -163,13 +147,12 @@ export default function ListarEventos() {
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  // Campos para mostrar
   const campos = [
     { key: "titulo", label: "Título" },
     { key: "descricao", label: "Descrição" },
     { key: "data_inicio", label: "Início" },
     { key: "data_final", label: "Fim" },
-    { key: "ativo", label: "Status" }, // Renomeado para 'Status'
+    { key: "ativo", label: "Status" },
   ];
 
   return (
@@ -208,7 +191,6 @@ export default function ListarEventos() {
         </div>
       )}
 
-      {/* Tabela para telas maiores */}
       <div className="eventos-tabela-container" style={{ display: "none" }}>
         <table
           style={{
@@ -324,7 +306,6 @@ export default function ListarEventos() {
         </table>
       </div>
 
-      {/* Cards para telas menores */}
       <div className="eventos-cards-container" style={{ display: "block" }}>
         {eventos.map((e) => (
           <div
@@ -371,7 +352,7 @@ export default function ListarEventos() {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: "0.8rem",
-                justifyContent: "flex-end", // Alinha botões à direita
+                justifyContent: "flex-end", 
               }}
             >
               <button
@@ -462,7 +443,6 @@ export default function ListarEventos() {
         </button>
       </div>
 
-      {/* Modal de edição */}
       {editModal && (
         <div
           style={{
@@ -471,7 +451,7 @@ export default function ListarEventos() {
             left: 0,
             width: "100vw",
             height: "100vh",
-            background: "rgba(0,0,0,0.6)", // Fundo mais escuro
+            background: "rgba(0,0,0,0.6)", 
             zIndex: 3000,
             display: "flex",
             alignItems: "center",
@@ -487,13 +467,13 @@ export default function ListarEventos() {
             style={{
               background: whiteBg,
               borderRadius: 12,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.25)", // Sombra mais pronunciada
+              boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
               padding: "2.5rem 2rem",
-              maxWidth: 480, // Ligeiramente mais largo
+              maxWidth: 480, 
               width: "100%",
               display: "flex",
               flexDirection: "column",
-              gap: "1.2rem", // Aumentar o espaçamento entre campos
+              gap: "1.2rem",
               position: "relative",
               maxHeight: "90vh",
               overflowY: "auto",
@@ -508,7 +488,7 @@ export default function ListarEventos() {
                 right: 20,
                 background: "none",
                 border: "none",
-                fontSize: "2rem", // Tamanho maior
+                fontSize: "2rem", 
                 color: grayText,
                 cursor: "pointer",
                 transition: "color 0.2s ease",
@@ -522,7 +502,7 @@ export default function ListarEventos() {
               style={{
                 color: primaryColor,
                 fontWeight: 700,
-                fontSize: "1.5rem", // Título maior
+                fontSize: "1.5rem", 
                 marginBottom: 10,
                 borderBottom: `1px solid ${borderColor}`,
                 paddingBottom: 8,
@@ -580,7 +560,7 @@ export default function ListarEventos() {
                 setEditForm((f) => ({ ...f, descricao: e.target.value }))
               }
               placeholder="Descrição"
-              rows="4" // Mais linhas para descrição
+              rows="4" 
               style={{
                 padding: "0.8rem",
                 borderRadius: 8,
@@ -588,7 +568,7 @@ export default function ListarEventos() {
                 fontSize: "1rem",
                 color: textColor,
                 outlineColor: accentColor,
-                resize: "vertical", // Permite redimensionar verticalmente
+                resize: "vertical", 
               }}
             />
             <label style={{ color: grayText, fontSize: "0.9rem" }}>Data de Início:</label>
@@ -637,7 +617,7 @@ export default function ListarEventos() {
                   setEditForm((f) => ({ ...f, ativo: e.target.checked }))
                 }
                 id="editAtivoEvento"
-                style={{ transform: "scale(1.2)" }} // Checkbox um pouco maior
+                style={{ transform: "scale(1.2)" }} 
               />
               <label htmlFor="editAtivoEvento" style={{ color: textColor, fontSize: "1rem" }}>
                 Evento Ativo

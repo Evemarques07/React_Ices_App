@@ -88,7 +88,6 @@ const ListarCargos = ({ token }) => {
 
   return (
     <div>
-        {/* mostrar a quantidade de cargos */}
       <h2>Lista de Cargos ({cargos.length})</h2>
       {loading && <p>Carregando...</p>}
       {mensagem && <p style={{ color: "red" }}>{mensagem}</p>}

@@ -119,7 +119,6 @@ export default function Home({ user }) {
         </p>
       </div>
 
-      {/* Botão flutuante único para redes sociais */}
       {(() => {
         const [showSocial, setShowSocial] = React.useState(false);
         return (

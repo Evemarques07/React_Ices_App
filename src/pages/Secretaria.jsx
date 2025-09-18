@@ -41,7 +41,7 @@ const styles = {
     fontFamily:
       '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     width: "100%",
-    backgroundColor: "#f0f2f5", // Light gray background for a clean look
+    backgroundColor: "#f0f2f5",
     borderRadius: "20px",
     boxShadow: "0 15px 40px rgba(0, 0, 0, 0.08)",
     padding: "3.5rem 1.5rem",
@@ -83,7 +83,7 @@ const styles = {
     fontSize: "2.8rem",
     fontWeight: 800,
     marginBottom: "0.8rem",
-    color: "#0077b6", // Main brand color
+    color: "#0077b6", 
   },
   subtitle: {
     fontSize: "1.3rem",
@@ -101,7 +101,7 @@ const styles = {
     ...commonButtonStyles,
   },
   secondaryButton: {
-    background: "#6c757d", // A more neutral color
+    background: "#6c757d", 
     "&:hover": {
       background: "#5a6268",
     },
@@ -126,7 +126,7 @@ const styles = {
     animation: "fadeIn 0.3s ease-out forwards",
   },
   modalContent: {
-    position: "relative", // Changed to relative for centering with flex
+    position: "relative", 
     width: "95%",
     maxWidth: "800px",
     minHeight: "auto",
@@ -166,7 +166,7 @@ const styles = {
     borderRadius: "15px",
     boxShadow: "0 5px 20px rgba(0,0,0,0.06)",
     padding: "1.5rem 1.8rem",
-    borderLeft: "6px solid #0077b6", // Accent border
+    borderLeft: "6px solid #0077b6", 
   },
   collapseBtn: {
     background: "none",
@@ -191,7 +191,6 @@ const styles = {
     fontSize: "1rem",
     transition: "transform 0.2s ease",
   },
-  // Keyframes for animations
   "@keyframes fadeIn": {
     from: { opacity: 0 },
     to: { opacity: 1 },
@@ -201,7 +200,6 @@ const styles = {
     to: { transform: "translateY(0)", opacity: 1 },
   },
 
-  // Responsive adjustments
   "@media (max-width: 768px)": {
     mainContainer: {
       width: "98%",
@@ -308,7 +306,6 @@ export default function Secretaria({ user }) {
     );
   }
 
-  // Recupera token do usuário logado
   const token =
     (user && user.access_token) ||
     (localStorage.getItem("user")

@@ -13,7 +13,6 @@ const cargoMap = {
   Segundo_Tesoureiro: "Segundo Tesoureiro",
   Tesoureiro: "Tesoureiro",
 };
-// CPF
 const ListarLideranca = ({ token }) => {
   const [lideranca, setLideranca] = useState([]);
   const [loading, setLoading] = useState(false);

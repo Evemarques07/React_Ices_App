@@ -199,7 +199,6 @@ export default function ListaTodosNomes() {
 
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
-  // Campos para mostrar
   const campos = [
     { key: "id", label: "ID" },
     { key: "nome", label: "Nome" },
@@ -224,7 +223,6 @@ export default function ListaTodosNomes() {
   return (
     <div style={{ padding: "2rem 0", position: "relative" }}>
       <h2>Lista de Todos os Nomes ({total})</h2>
-      {/* Filtro por nome */}
       <form
         onSubmit={handleFiltroSubmit}
         style={{
@@ -291,7 +289,6 @@ export default function ListaTodosNomes() {
       </h3> */}
       {loading && <div>Carregando membros...</div>}
       {error && <div style={{ color: "#c53030", marginTop: 12 }}>{error}</div>}
-      {/* Tabela para telas maiores */}
       <div className="membros-tabela" style={{ display: "none" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
@@ -354,7 +351,6 @@ export default function ListaTodosNomes() {
         </table>
       </div>
 
-      {/* Cards para telas menores */}
       <div className="membros-cards">
         {membros.map((m) => (
           <div
@@ -371,7 +367,6 @@ export default function ListaTodosNomes() {
               gap: "1.5rem",
             }}
           >
-            {/* Header do Card com Nome, ID e Status */}
             <div
               style={{
                 display: "flex",
@@ -415,7 +410,6 @@ export default function ListaTodosNomes() {
               </div>
             </div>
 
-            {/* Conteúdo do Card - Agrupado em seções */}
             <div
               style={{
                 display: "grid",
@@ -423,7 +417,6 @@ export default function ListaTodosNomes() {
                 gap: "1.2rem",
               }}
             >
-              {/* Seção 1: Informações Pessoais */}
               <div
                 style={{
                   display: "flex",
@@ -457,7 +450,6 @@ export default function ListaTodosNomes() {
                 </div>
               </div>
 
-              {/* Seção 2: Contato e Endereço */}
               <div
                 style={{
                   display: "flex",
@@ -485,7 +477,6 @@ export default function ListaTodosNomes() {
                 </div>
               </div>
 
-              {/* Seção 3: Filiação e Outros Dados */}
               <div
                 style={{
                   display: "flex",
@@ -522,7 +513,6 @@ export default function ListaTodosNomes() {
                 </div>
               </div>
 
-              {/* Seção 4: Dados do Cônjuge (visível apenas se for casado) */}
               {m.estado_civil === "casado" && (
                 <div
                   style={{
@@ -559,7 +549,6 @@ export default function ListaTodosNomes() {
               )}
             </div>
 
-            {/* Botão de Edição */}
             <div
               style={{
                 display: "flex",
@@ -591,7 +580,6 @@ export default function ListaTodosNomes() {
           </div>
         ))}
       </div>
-      {/* Botões de navegação */}
       <div
         style={{
           display: "flex",
@@ -635,7 +623,6 @@ export default function ListaTodosNomes() {
         </button>
       </div>
 
-      {/* Modal de edição */}
       {editModal && (
         <div
           style={{
@@ -672,7 +659,6 @@ export default function ListaTodosNomes() {
               overflowY: "auto",
             }}
           >
-            {/* --- CABEÇALHO --- */}
             <div
               style={{
                 display: "flex",
@@ -708,7 +694,6 @@ export default function ListaTodosNomes() {
               </button>
             </div>
 
-            {/* --- SEÇÃO: DADOS PESSOAIS --- */}
             <fieldset
               style={{
                 border: "1px solid #dee2e6",
@@ -816,7 +801,6 @@ export default function ListaTodosNomes() {
               </div>
             </fieldset>
 
-            {/* --- SEÇÃO: CONTATO --- */}
             <fieldset
               style={{
                 border: "1px solid #dee2e6",
@@ -884,7 +868,6 @@ export default function ListaTodosNomes() {
               </div>
             </fieldset>
 
-            {/* --- SEÇÃO: FILIAÇÃO --- */}
             <fieldset
               style={{
                 border: "1px solid #dee2e6",
@@ -935,7 +918,6 @@ export default function ListaTodosNomes() {
               </div>
             </fieldset>
 
-            {/* --- SEÇÃO CONDICIONAL: DADOS DO CÔNJUGE --- */}
             {editForm.estado_civil === "casado" && (
               <fieldset
                 style={{
@@ -1011,7 +993,6 @@ export default function ListaTodosNomes() {
               </fieldset>
             )}
 
-            {/* --- SEÇÃO: INFORMAÇÕES DA IGREJA --- */}
             <fieldset
               style={{
                 border: "1px solid #dee2e6",
@@ -1104,7 +1085,6 @@ export default function ListaTodosNomes() {
               </div>
             </fieldset>
 
-            {/* --- BOTÕES E MENSAGENS --- */}
             <div style={{ marginTop: "1rem" }}>
               <button
                 type="submit"
@@ -1149,7 +1129,6 @@ export default function ListaTodosNomes() {
             </div>
           </form>
 
-          {/* --- ESTILOS CSS GLOBAIS PARA O FORMULÁRIO --- */}
           <style>{`
       form label {
         display: block;

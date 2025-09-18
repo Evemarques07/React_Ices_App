@@ -9,7 +9,7 @@ const styles = {
     fontFamily:
       '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     width: "100%",
-    backgroundColor: "#f0f2f5", // Light gray background for a clean look
+    backgroundColor: "#f0f2f5", 
     borderRadius: "20px",
     boxShadow: "0 15px 40px rgba(0, 0, 0, 0.08)",
     padding: "3.5rem 2.5rem",
@@ -81,33 +81,30 @@ const styles = {
     fontWeight: 600,
     cursor: "pointer",
     fontSize: "1.05rem",
-    boxShadow: "0 6px 20px rgba(0, 118, 255, 0.35)", // Sombra elegante
+    boxShadow: "0 6px 20px rgba(0, 118, 255, 0.35)", 
     transition: "transform 0.2s ease, box-shadow 0.3s ease",
-    minWidth: "220px", // Garante largura mínima para cada botão
-    flexGrow: 1, // Permite que os botões cresçam se houver espaço
+    minWidth: "220px",
+    flexGrow: 1, 
     "&:hover": {
-      // Estilo de hover
       transform: "translateY(-3px)",
       boxShadow: "0 8px 25px rgba(0, 118, 255, 0.45)",
     },
   },
 
-  // --- Modal (Fundo escuro) ---
   modalOverlay: {
     position: "fixed",
     top: 0,
     left: 0,
     width: "100vw",
     height: "100vh",
-    background: "rgba(0,0,0,0.5)", // Fundo mais escuro para maior contraste
+    background: "rgba(0,0,0,0.5)", 
     zIndex: 2000,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backdropFilter: "blur(4px)", // Efeito de desfoque no fundo
+    backdropFilter: "blur(4px)",
   },
 
-  // --- Conteúdo do Modal (o formulário) ---
   modalContent: {
     position: "fixed",
     top: 0,
@@ -127,15 +124,14 @@ const styles = {
     animation: "modalFadeIn 0.3s forwards ease-out",
   },
 
-  // --- Botão Fechar do Modal ---
   modalCloseButton: {
     position: "absolute",
     top: "1rem",
     right: "1rem",
-    background: "none", // Sem background
+    background: "none", 
     border: "none",
-    color: "#6b7280", // Cor mais neutra para o 'x'
-    fontSize: "1.8rem", // Ícone 'x' maior
+    color: "#6b7280", 
+    fontSize: "1.8rem", 
     fontWeight: "bold",
     cursor: "pointer",
     lineHeight: 1,
@@ -148,16 +144,14 @@ const styles = {
     },
   },
 
-  // --- Componentes listados (EntradasFinanceiras, etc.) ---
   sectionContainer: {
     // backgroundColor: "#ffffff",
     // borderRadius: "16px",
     // boxShadow: "0 8px 25px rgba(0, 0, 0, 0.05)",
     // padding: "2.5rem",
-    // marginBottom: "2rem", // Espaçamento entre as seções
+    // marginBottom: "2rem",
   },
 
-  // --- Media Queries para responsividade ---
   "@media (max-width: 1020px)": {
     mainContainer: {
       width: "98%",
@@ -175,18 +169,18 @@ const styles = {
       fontSize: "0.9rem",
     },
     buttonGroup: {
-      flexDirection: "column", // Botões empilhados em telas menores
+      flexDirection: "column", 
       gap: "1rem",
       margin: "1.5rem 0",
     },
     actionButton: {
-      minWidth: "unset", // Remove largura mínima para se adaptar
-      width: "100%", // Ocupa toda a largura disponível
+      minWidth: "unset", 
+      width: "100%", 
       padding: "1rem 1.2rem",
       fontSize: "0.95rem",
     },
     modalContent: {
-      width: "95%", // Ocupa mais largura em telas pequenas
+      width: "95%",
       padding: "1.5rem",
     },
     modalCloseButton: {
@@ -222,7 +216,7 @@ export default function Tesoureiro({ user }) {
     );
   }
 
-  const [modal, setModal] = useState(null); // 'caixa', 'projetos', 'missionaria', 'saida'
+  const [modal, setModal] = useState(null); 
 
   const openModal = (tipo) => setModal(tipo);
   const closeModal = () => setModal(null);
@@ -249,7 +243,7 @@ export default function Tesoureiro({ user }) {
         <div style={styles.modalOverlay} onClick={closeModal}>
           <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <button onClick={closeModal} style={styles.modalCloseButton}>
-              &times; {/* Caractere 'X' para fechar */}
+              &times; 
             </button>
             {modal === "entrada" && (
               <NovaEntrada token={user?.access_token} onSuccess={closeModal} />

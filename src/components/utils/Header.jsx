@@ -3,7 +3,6 @@ import { FaBars, FaSignOutAlt, FaUserEdit, FaKey } from "react-icons/fa";
 import { useRef, useState, useEffect } from "react";
 import { usuariosAPI } from "../../services/api";
 
-// 1. Estilizando o componente principal do cabeçalho
 const HeaderContainer = styled.header`
   background: linear-gradient(
     to right,
@@ -24,7 +23,6 @@ const HeaderContainer = styled.header`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada e suave */
 `;
 
-// 2. Estilizando o contêiner interno para o conteúdo do usuário
 const UserContentWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -32,14 +30,12 @@ const UserContentWrapper = styled.div`
   width: 100%;
 `;
 
-// 3. Grupo de elementos à esquerda (hambúrguer e avatar)
 const LeftGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 15px; /* Mais espaço entre os elementos */
 `;
 
-// 4. Botão do hambúrguer estilizado
 const HamburgerButton = styled.button`
   background: transparent;
   color: #fff;
@@ -61,7 +57,6 @@ const HamburgerButton = styled.button`
   }
 `;
 
-// 5. Avatar do usuário estilizado
 const UserAvatar = styled.div`
   width: 40px; /* Avatar um pouco maior */
   height: 40px;
@@ -77,14 +72,12 @@ const UserAvatar = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
-// 6. Grupo de elementos à direita (info do usuário e botão de sair)
 const RightGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 25px; /* Mais espaço entre os elementos */
 `;
 
-// 7. Informações do usuário (nome e cargo)
 const UserInfoText = styled.div`
   text-align: right;
 `;
@@ -117,7 +110,6 @@ const UserRole = styled.div`
   }
 `;
 
-// 8. Botão de sair estilizado
 const LogoutButton = styled.button`
   background: #fff;
   color: #007bff; /* Cor combinando com o tema */
@@ -157,7 +149,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
   const [senhaSuccess, setSenhaSuccess] = useState("");
   const avatarRef = useRef(null);
   const popoverRef = useRef(null);
-  // Mapeamento dos cargos para nomes legíveis
   const cargoMap = {
     Diacono: "Diácono",
     Diretor_Patrimonio: "Diretor de Patrimônio",
@@ -185,11 +176,9 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
     return `${names[0]} ${names[1]}`;
   };
 
-  // Função para abrir/fechar popover
   const handleAvatarClick = () => setPopoverOpen((v) => !v);
   const handleClosePopover = () => setPopoverOpen(false);
 
-  // Função para abrir modal de senha
   const handleOpenSenhaModal = () => {
     setPopoverOpen(false);
     setModalOpen(true);
@@ -198,7 +187,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
     setSenhaSuccess("");
   };
 
-  // Função para alterar senha
   const handleAlterarSenha = async () => {
     setSenhaLoading(true);
     setSenhaError("");
@@ -218,7 +206,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
     }
   };
 
-  // Fecha modal
   const handleCloseModal = () => {
     setModalOpen(false);
     setSenhaError("");
@@ -226,7 +213,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
     setNovaSenha("");
   };
 
-  // Fecha popover ao clicar fora
   useEffect(() => {
     if (!popoverOpen) return;
     function handleClickOutside(e) {
@@ -249,7 +235,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
       {userInfo && (
         <UserContentWrapper>
           <LeftGroup>
-            {/* Oculta o botão do hambúrguer se o drawer já estiver aberto para evitar clique duplo em alguns casos, ou se não houver setDrawerOpen */}
             {!drawerOpen && setDrawerOpen && (
               <HamburgerButton
                 onClick={() => setDrawerOpen(true)}
@@ -338,7 +323,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
           </RightGroup>
         </UserContentWrapper>
       )}
-      {/* Modal de alteração de senha */}
       {modalOpen && (
         <div
           style={{

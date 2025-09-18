@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { entradasAPI, saidasAPI, membrosAPI } from "../../services/api";
 import { formatDate, formatCurrency } from "../../utils/format";
-import { maskCurrency } from "../../utils/format"; // Importa a função de máscara
+import { maskCurrency } from "../../utils/format"; 
 
 const styles = {
   container: {
-    maxWidth: "100%", // Mantido conforme solicitado
-    background: "transparent", // Removido fundo branco
+    maxWidth: "100%", 
+    background: "transparent", 
     borderRadius: 12,
-    boxShadow: "none", // Remove sombra para não duplicar efeito
+    boxShadow: "none", 
     // padding: "2.5rem 2rem",
     fontFamily: "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     color: "#333333",
@@ -28,7 +28,7 @@ const styles = {
   label: {
     display: "block",
     fontWeight: "600",
-    color: "#005691", // Tom de azul mais profundo
+    color: "#005691", 
     marginBottom: 8,
     fontSize: "0.9rem",
   },
@@ -36,29 +36,29 @@ const styles = {
     width: "100%",
     padding: "0.8rem 1rem",
     borderRadius: 8,
-    border: "1px solid #ced4da", // Borda mais visível
+    border: "1px solid #ced4da", 
     fontSize: "1rem",
     background: "#f8f9fa",
-    color: "#495057", // Cor do texto mais escura e legível
+    color: "#495057", 
     transition: "all 0.3s ease-in-out",
-    boxSizing: "border-box", // Garante que padding não estoure o width
+    boxSizing: "border-box",
   },
   inputFocus: {
-    borderColor: "#007bff", // Borda azul ao focar
+    borderColor: "#007bff", 
     boxShadow: "0 0 0 0.2rem rgba(0, 123, 255, 0.25)",
   },
   button: {
     padding: "0.8rem 1.5rem",
     borderRadius: 8,
     border: "none",
-    background: "linear-gradient(90deg, #007bff, #0056b3)", // Gradiente azul moderno
+    background: "linear-gradient(90deg, #007bff, #0056b3)",
     color: "#ffffff",
     fontWeight: "bold",
     cursor: "pointer",
     fontSize: "1rem",
     transition: "background-color 0.3s ease",
     boxShadow: "0 4px 10px rgba(0, 123, 255, 0.2)",
-    flexShrink: 0, // Prevent shrinking
+    flexShrink: 0, 
   },
   buttonHover: {
     background: "linear-gradient(90deg, #0056b3, #003f7f)",
@@ -66,8 +66,8 @@ const styles = {
   buttonGroup: {
     display: "flex",
     gap: "1rem",
-    marginTop: "auto", // Alinha os botões com os outros campos
-    flexWrap: "wrap", // Allow buttons to wrap to the next line
+    marginTop: "auto", 
+    flexWrap: "wrap", 
     flexDirection: "row",
   },
   secondaryButton: {
@@ -117,7 +117,7 @@ const styles = {
   },
   valor: {
     fontWeight: "700",
-    color: "#28a745", // Verde para valores positivos (pode ser ajustado para entrada/saída)
+    color: "#28a745", 
     fontSize: "1.1rem",
   },
   data: {
@@ -154,7 +154,7 @@ const styles = {
     borderRadius: 8,
     maxHeight: 200,
     overflowY: "auto",
-    marginTop: "4.8rem", // Espaço maior abaixo do input
+    marginTop: "4.8rem",
     zIndex: 100,
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
     listStyle: "none",
@@ -172,7 +172,7 @@ const styles = {
     background: "#e9ecef",
   },
   autocompleteItemSelected: {
-    background: "#e0f2fe", // Azul claro para item selecionado
+    background: "#e0f2fe", 
     color: "#005691",
     fontWeight: "600",
   },
@@ -228,11 +228,9 @@ export default function MovimentacoesFiltradas({ token }) {
     tipo_movimento: "",
     tipo_caixa: "",
   });
-  const [membros, setMembros] = useState([]); // <-- movido para cima
-  // Ref para input e lista de autocomplete
+  const [membros, setMembros] = useState([]); 
   const membroInputRef = useRef(null);
   const autocompleteListRef = useRef(null);
-  // Fecha autocomplete ao clicar fora
   useEffect(() => {
     if (membros.length === 0) return;
     function handleClickOutside(event) {
@@ -254,9 +252,8 @@ export default function MovimentacoesFiltradas({ token }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(100); // You can adjust this
+  const [itemsPerPage, setItemsPerPage] = useState(100); 
   const [totalItems, setTotalItems] = useState(0);
-  // --- ESTILOS PARA O FORMULÁRIO DE EDIÇÃO ---
   const editStyles = {
     formContainer: {
       padding: "1rem",
@@ -307,18 +304,15 @@ export default function MovimentacoesFiltradas({ token }) {
       fontWeight: "bold",
     },
   };
-  // Estados para edição inline
   const [editingId, setEditingId] = useState(null);
   const [editFormData, setEditFormData] = useState({});
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState("");
-  // Função para iniciar edição
   const handleEditClick = async (id) => {
     setEditingId(id);
     setEditError("");
     setEditLoading(true);
     try {
-      // Busca os dados atuais da movimentação
       const mov = movimentacoes.find((m) => m.id === id);
       setEditFormData({
         tipo: mov.tipo || "",
@@ -335,7 +329,6 @@ export default function MovimentacoesFiltradas({ token }) {
     }
   };
 
-  // Lista de tipos por caixa/movimento
   function getTipos(caixa, movimento) {
     if (caixa === "financeiro" && movimento === "entrada") {
       return ["DÍZIMO", "OFERTA COMUM", "ENTRADA MEAN/MEAR"];
@@ -445,7 +438,6 @@ export default function MovimentacoesFiltradas({ token }) {
     }
   };
 
-  // Ref to store the latest token
   const tokenRef = useRef(token);
   useEffect(() => {
     tokenRef.current = token;
@@ -458,13 +450,11 @@ export default function MovimentacoesFiltradas({ token }) {
     } catch {}
   }
 
-  // Effect to trigger search when page or itemsPerPage changes
   useEffect(() => {
     if (movimentacoes.length > 0 || currentPage > 1) {
-      // Only re-fetch if there are results or if it's not the first page load
       handleSubmit(null, currentPage);
     }
-  }, [currentPage, itemsPerPage]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentPage, itemsPerPage]); 
 
   const handleChange = (e) => {
     setFiltro({ ...filtro, [e.target.name]: e.target.value });
@@ -482,10 +472,9 @@ export default function MovimentacoesFiltradas({ token }) {
         skip,
         itemsPerPage
       );
-      // Se vier array direto
       if (Array.isArray(res)) {
         setMovimentacoes(res);
-        setTotalItems(res.length); // Não é o total real, mas mostra o que veio
+        setTotalItems(res.length);
       } else {
         setMovimentacoes(res.items || []);
         setTotalItems(res.total || (res.items ? res.items.length : 0));
@@ -494,7 +483,7 @@ export default function MovimentacoesFiltradas({ token }) {
     } catch (err) {
       console.error("Erro ao buscar movimentações:", err);
       setError(err.message || "Erro ao buscar movimentações");
-      setMovimentacoes([]); // Clear previous results on error
+      setMovimentacoes([]);
       setTotalItems(0);
     } finally {
       setLoading(false);
@@ -509,12 +498,11 @@ export default function MovimentacoesFiltradas({ token }) {
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Agrupamento por tipo_caixa e tipo_movimento
   const agrupadas = {};
   movimentacoes.forEach((mov) => {
-    const caixa = mov.caixa || "Geral"; // Mudança de "Outros" para "Geral"
+    const caixa = mov.caixa || "Geral"; 
     if (!agrupadas[caixa]) agrupadas[caixa] = {};
-    const movimento = mov.movimento || "Não Classificado"; // Mudança de "Outros"
+    const movimento = mov.movimento || "Não Classificado";
     if (!agrupadas[caixa][movimento]) agrupadas[caixa][movimento] = [];
     agrupadas[caixa][movimento].push(mov);
   });
@@ -704,7 +692,7 @@ export default function MovimentacoesFiltradas({ token }) {
               setMembros([]);
               setMovimentacoes([]);
               setError("");
-              setCurrentPage(1); // Reset page on clear
+              setCurrentPage(1);
               setTotalItems(0);
             }}
             onMouseEnter={(e) =>

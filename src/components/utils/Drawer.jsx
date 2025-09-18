@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { FaSignOutAlt } from "react-icons/fa";
 
-// Paleta de cores para consistência
 const colors = {
   primary: "#007bff",
   primaryDark: "#0056b3",
@@ -20,16 +19,14 @@ const colors = {
   textInactive: "#fff",
   hoverInactive: "rgba(255, 255, 255, 0.15)",
   hoverActive: "#e9ecef",
-  accent: "#e91e63", // Cor de destaque para o botão de sair
+  accent: "#e91e63", 
   accentHover: "#c2185b",
 };
 
-// Transições e efeitos comuns
 const transitions = {
   smooth: "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)",
 };
 
-// 1. Container principal do Drawer
 const DrawerContainer = styled.aside`
   position: fixed;
   top: 0;
@@ -65,7 +62,6 @@ const DrawerContainer = styled.aside`
   }
 `;
 
-// 2. Navegação dos links
 const NavMenu = styled.nav`
   display: flex;
   flex-direction: column;
@@ -74,7 +70,6 @@ const NavMenu = styled.nav`
   padding: 1.5rem 1rem;
 `;
 
-// 3. Estilo para os botões do menu
 const MenuItemButton = styled.button`
   background: ${(props) => (props.$active ? colors.white : "transparent")};
   color: ${(props) =>
@@ -108,7 +103,6 @@ const MenuItemButton = styled.button`
   }
 `;
 
-// 4. Botão de fechar (apenas para mobile)
 const CloseButton = styled(MenuItemButton)`
   margin: 1rem;
   background: ${colors.white};
@@ -122,7 +116,6 @@ const CloseButton = styled(MenuItemButton)`
   }
 `;
 
-// 5. Overlay para fechar o Drawer ao clicar fora (apenas mobile)
 const DrawerOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -141,7 +134,6 @@ const DrawerOverlay = styled.div`
   }
 `;
 
-// 6. Botão de Logout com estilo diferenciado
 const LogoutButton = styled(MenuItemButton)`
   margin: 1rem;
   background: rgba(255, 255, 255, 0.2);

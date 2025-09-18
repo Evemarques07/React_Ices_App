@@ -9,7 +9,6 @@ export default function useUltimasEntradas(token) {
   let tokenSalvo = token;
   if (!tokenSalvo) {
     try {
-      // É mais seguro usar optional chaining e nullish coalescing
       tokenSalvo = JSON.parse(localStorage.getItem("user"))?.access_token ?? null;
     } catch {
       console.error("Falha ao parsear 'user' do localStorage.");
@@ -18,7 +17,6 @@ export default function useUltimasEntradas(token) {
   }
 
   useEffect(() => {
-    // Função async auto-executável dentro do useEffect
     (async () => {
       if (!tokenSalvo) {
         console.warn("Token não informado para UltimasEntradas, busca não realizada.");

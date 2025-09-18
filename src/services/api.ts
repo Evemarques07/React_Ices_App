@@ -53,7 +53,6 @@ export const usuariosAPI = {
     },
     token: string
   ) {
-    // Envia membro_id como query string, sem body
     const url = new URL(`${URL_BASE}/usuarios/`);
     url.searchParams.append("membro_id", usuario.membro_id.toString());
     const response = await fetch(url.toString(), {
@@ -66,7 +65,6 @@ export const usuariosAPI = {
     });
 
     if (!response.ok) {
-      // Tenta extrair mensagem detalhada do backend
       let msg = "Erro ao criar usuário";
       try {
         const err = await response.json();

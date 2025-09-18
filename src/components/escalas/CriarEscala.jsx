@@ -14,7 +14,7 @@ export default function CriarEscala({ token, onCriado }) {
 
   async function buscarMembros(e) {
     setNomeBusca(e.target.value);
-    setMembroId(""); // Limpa seleção ao digitar
+    setMembroId(""); 
     if (e.target.value.length < 2) {
       setMembros([]);
       return;

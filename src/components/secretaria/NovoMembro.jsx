@@ -161,7 +161,6 @@ export default function NovoMembro() {
           Novo Membro / Contribuinte
         </h3>
 
-        {/* Campos Principais */}
         <div
           style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
         >
@@ -260,7 +259,6 @@ export default function NovoMembro() {
           />
         </div>
 
-        {/* Seção de Contato */}
         <div
           style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
         >
@@ -313,7 +311,6 @@ export default function NovoMembro() {
           />
         </div>
 
-        {/* Seção de Informações Adicionais */}
         <div
           style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
         >
@@ -506,7 +503,6 @@ export default function NovoMembro() {
           )}
         </div>
 
-        {/* Tipo e Usuário */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <label
@@ -569,7 +565,6 @@ export default function NovoMembro() {
           )}
         </div>
 
-        {/* Botão de Envio e Mensagens de Feedback */}
         <div
           style={{
             width: "100%",
