@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "Ices React",
+        name: "Ice Siqueira",
         short_name: "Ices",
         description: "Aplicativo PWA instalável",
         theme_color: "#0097d8",
