@@ -1115,6 +1115,14 @@ export default function Patrimonio() {
                 border: "1px solid #d1d5db",
               }}
             />
+            <label
+              style={{
+                fontWeight: 600,
+                color: "#111827",
+              }}
+            >
+              Data de Aquisição:
+            </label>
             <input
               type="date"
               value={
