@@ -13,8 +13,8 @@ import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
 import PWAInstallPrompt from "./components/utils/PWAInstallPrompt";
+import "./App.css";
 
-// Componente para avisar sobre nova versão
 function UpdateBanner({ onReload }) {
   return (
     <div
@@ -38,7 +38,7 @@ function UpdateBanner({ onReload }) {
     </div>
   );
 }
-import "./App.css";
+
 
 function decodeJWT(token) {
   if (!token) return null;
@@ -76,7 +76,6 @@ function App() {
       fetch("/index.html", { cache: "no-store" })
         .then((res) => res.text())
         .then((text) => {
-          // Extrai um hash ou data do build do HTML
           const match = text.match(
             /<meta name="build-version" content="([^"]+)"/
           );
