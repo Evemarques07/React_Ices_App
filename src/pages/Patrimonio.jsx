@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { patrimonioAPI } from "../services/api";
+import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 
 // Definindo as opções fora do componente para evitar recriação
 const tiposDePatrimonio = [
@@ -1212,6 +1213,7 @@ export default function Patrimonio() {
           </form>
         </div>
       )}
+      <ScrollToTopButton />
     </div>
   );
 }

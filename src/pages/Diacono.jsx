@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CriarEscala from "../components/escalas/CriarEscala";
 import ListarEscalas from "../components/escalas/ListarEscalas";
+import ScrollToTopButton from "../components/utils/ScrollToTopButton";
 
 export default function Diacono({ user }) {
   const [modal, setModal] = useState(null);
@@ -178,6 +179,7 @@ export default function Diacono({ user }) {
         </button>
         {!colEscalas && <ListarEscalas />}
       </div>
+      <ScrollToTopButton />
     </div>
   );
 }

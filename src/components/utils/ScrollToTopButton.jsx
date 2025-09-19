@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function ScrollToTopButton({
   right = "1.2rem",
   bottom = "1.2rem",
-  size = 40,
+  size = 60,
   color = "#4f46e5",
   showAfter = 300,
 }) {
