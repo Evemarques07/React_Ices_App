@@ -6,7 +6,8 @@ import {
   TrendingUp,
   Users,
   Calendar,
-  X,
+  Wrench,
+  HeartHandshake,
 } from "lucide-react";
 import { FaSignOutAlt } from "react-icons/fa";
 
@@ -19,7 +20,7 @@ const colors = {
   textInactive: "#fff",
   hoverInactive: "rgba(255, 255, 255, 0.15)",
   hoverActive: "#e9ecef",
-  accent: "#e91e63", 
+  accent: "#e91e63",
   accentHover: "#c2185b",
 };
 
@@ -154,6 +155,7 @@ export default function Drawer({
   autorizadoTesoureiro,
   autorizadoSecretario,
   autorizadoDiacono,
+  autorizadoPatrimonio,
   handleLogout,
   navigate,
 }) {
@@ -201,7 +203,16 @@ export default function Drawer({
               $active={currentPath === "/diacono"}
               onClick={() => handleNavigation("/diacono")}
             >
-              <Users size={20} /> Diácono
+              <HeartHandshake size={20} /> Diácono
+            </MenuItemButton>
+          )}
+
+          {autorizadoPatrimonio && (
+            <MenuItemButton
+              $active={currentPath === "/patrimonio"}
+              onClick={() => handleNavigation("/patrimonio")}
+            >
+              <Wrench size={20} /> Patrimônio
             </MenuItemButton>
           )}
 

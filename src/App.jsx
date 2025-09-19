@@ -8,6 +8,7 @@ import Relatorios from "./pages/Relatorios";
 import Tesoureiro from "./pages/Tesoureiro";
 import Secretaria from "./pages/Secretaria";
 import Diacono from "./pages/Diacono";
+import Patrimonio from "./pages/Patrimonio";
 import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
@@ -128,6 +129,8 @@ function App() {
   const autorizadoDiacono =
     cargos.includes("Diacono") || cargos.includes("primeiro_usuario");
 
+  const autorizadoPatrimonio = cargos.includes("Patrimonio") || cargos.includes("primeiro_usuario");
+
   return (
     <div className="app-root">
       {userInfo && (
@@ -145,6 +148,7 @@ function App() {
             autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
             autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
             autorizadoDiacono={autorizadoDiacono || autorizadoPastor}
+            autorizadoPatrimonio={autorizadoPatrimonio || autorizadoPastor}
             handleLogout={handleLogout}
             navigate={navigate}
           />
@@ -258,6 +262,9 @@ function App() {
               <Route path="/calendario" element={<CalendarioEventos />} />
               {autorizadoDiacono || autorizadoPastor ? (
                 <Route path="/diacono" element={<Diacono user={user} />} />
+              ) : null}
+              {autorizadoPatrimonio || autorizadoPastor ? (
+                <Route path="/patrimonio" element={<Patrimonio user={user} />} />
               ) : null}
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
             </RouterRoutes>

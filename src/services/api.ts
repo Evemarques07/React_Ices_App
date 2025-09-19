@@ -1143,4 +1143,111 @@ export const cargosAPI = {
   },
 };
 
+export const patrimonioAPI = {
+  async listarPatrimonios(token: string, skip = 0, limit = 20) {
+    const url = new URL(`${URL_BASE}/patrimonio/`);
+    url.searchParams.append("skip", skip.toString());
+    url.searchParams.append("limit", limit.toString());
 
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar patrimônios");
+    }
+    return response.json();
+  },
+  async criarPatrimonio(
+    patrimonio: {
+      nome_item: string;
+      tipo: string;
+      preco_aquisicao: number;
+      data_aquisicao: string;
+      observacoes: string;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/patrimonio/`, {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(patrimonio),
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao criar patrimônio");
+    }
+    return response.json();
+  },
+  async buscarPatrimonioPorId(patrimonio_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/patrimonio/${patrimonio_id}`, {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar patrimônio");
+    }
+    return response.json();
+  },
+  async buscarPatrimonioPorNome(nome_item: string, token: string) {
+    const url = new URL(`${URL_BASE}/patrimonio/buscar`);
+    url.searchParams.append("nome_item", nome_item);
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar patrimônio");
+    }
+    return response.json();
+  },
+  async editarPatrimonio(
+    patrimonio_id: number,
+    dadosAtualizados: {
+      nome_item?: string;
+      tipo?: string;
+      preco_aquisicao?: number;
+      data_aquisicao?: string;
+      observacoes?: string;
+    },
+    token: string
+  ) {
+    const response = await fetch(`${URL_BASE}/patrimonio/${patrimonio_id}`, {
+      method: "PATCH",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dadosAtualizados),
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao editar patrimônio");
+    }
+    return response.json();
+  },
+  async deletarPatrimonio(patrimonio_id: number, token: string) {
+    const response = await fetch(`${URL_BASE}/patrimonio/${patrimonio_id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao deletar patrimônio");
+    }
+    return response.json();
+  },
+};
