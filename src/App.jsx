@@ -190,7 +190,7 @@ function App() {
     cargos.includes("Diacono") || cargos.includes("primeiro_usuario");
 
   const autorizadoPatrimonio =
-    cargos.includes("Patrimonio") || cargos.includes("primeiro_usuario");
+    cargos.includes("Diretor_Patrimonio") || cargos.includes("primeiro_usuario");
 
   return (
     <div className="app-root">
