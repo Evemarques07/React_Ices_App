@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { relatoriosAPI } from "../../services/api"; // Verifique se o caminho está correto
+import { relatoriosAPI } from "../../services/api"; 
 
 export default function RelatorioPDFLayout({
   relatorio: relatorioProp,
@@ -15,8 +15,6 @@ export default function RelatorioPDFLayout({
   });
 
   useEffect(() => {
-    // Se o relatório não foi passado como prop, busca na API.
-    // Isso é útil para testar o layout de forma isolada.
     if (!relatorioProp) {
       setLoading(true);
       const user = JSON.parse(localStorage.getItem("user"));
@@ -34,13 +32,12 @@ export default function RelatorioPDFLayout({
         .then((data) => setRelatorio(data))
         .catch((err) => {
           console.error("Erro ao buscar dados para o relatório PDF:", err);
-          setRelatorio(null); // Define como nulo em caso de erro
+          setRelatorio(null);
         })
         .finally(() => setLoading(false));
     }
   }, [mes, ano, tipo, relatorioProp]);
 
-  // Estados de Carregamento e Erro
   if (loading) {
     return (
       <div
@@ -70,7 +67,6 @@ export default function RelatorioPDFLayout({
     );
   }
 
-  // --- ESTILOS PARA CONTROLE DE PDF ---
   const noBreakInside = { pageBreakInside: "avoid", breakInside: "avoid" };
   const forcePageBreakBefore = {
     pageBreakBefore: "always",
@@ -78,7 +74,6 @@ export default function RelatorioPDFLayout({
   };
   const keepWithNext = { pageBreakAfter: "avoid", breakAfter: "avoid" };
 
-  // --- FUNÇÕES RENDERIZADORAS (para evitar repetição) ---
 
   const formatValue = (value) =>
     value?.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) ||
@@ -87,7 +82,6 @@ export default function RelatorioPDFLayout({
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("pt-BR", { timeZone: "UTC" });
 
-  // Renderiza uma tabela de transações detalhadas (entradas ou saídas)
   const TabelaDetalhada = ({
     items,
     title,
@@ -150,7 +144,6 @@ export default function RelatorioPDFLayout({
     </div>
   );
 
-  // Renderiza uma tabela resumida (entradas por tipo)
   const TabelaResumida = ({ data, title }) => (
     <div style={{ ...noBreakInside, marginTop: "24px" }}>
       <h3 style={{ color: "#1B3917", ...keepWithNext }}>{title}</h3>
@@ -190,7 +183,6 @@ export default function RelatorioPDFLayout({
     </div>
   );
 
-  // Componente para renderizar os cards de resumo
   const ResumoCard = ({ title, value }) => (
     <div
       style={{
@@ -217,7 +209,6 @@ export default function RelatorioPDFLayout({
     </div>
   );
 
-  // --- LAYOUT PRINCIPAL DO PDF ---
   return (
     <div
       style={{
@@ -229,7 +220,6 @@ export default function RelatorioPDFLayout({
         padding: 32,
       }}
     >
-      {/* SEÇÃO 1: FINANCEIRO */}
       <div style={noBreakInside}>
         <h2
           style={{
@@ -282,7 +272,6 @@ export default function RelatorioPDFLayout({
         />
       </div>
 
-      {/* SEÇÃO 2: MISSIONÁRIO - Força nova página */}
       <div style={{ ...forcePageBreakBefore, ...noBreakInside }}>
         <h2
           style={{
@@ -333,7 +322,6 @@ export default function RelatorioPDFLayout({
         />
       </div>
 
-      {/* SEÇÃO 3: PROJETOS - Força nova página */}
       <div style={{ ...forcePageBreakBefore, ...noBreakInside }}>
         <h2
           style={{
@@ -384,7 +372,6 @@ export default function RelatorioPDFLayout({
         />
       </div>
 
-      {/* Rodapé Final */}
       <div
         style={{
           marginTop: 45,

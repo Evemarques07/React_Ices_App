@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
-import RelatorioPDFLayout from "../components/utils/RelatorioPDFLayout"; // Certifique-se do caminho correto
+import RelatorioPDFLayout from "../components/utils/RelatorioPDFLayout"
 import { relatoriosAPI } from "../services/api";
 import { formatCurrency, formatDate } from "../utils/format";
 import ScrollToTopButton from "../components/utils/ScrollToTopButton";
@@ -17,8 +17,6 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "../css/Relatorios.css";
 
-// Componentes de tabela e lista (assumo que estão em outro lugar ou definidos aqui)
-// Se não, você precisará movê-los para um arquivo separado e importá-los ou defini-los aqui.
 const TransactionTable = ({ transactions, type = "entrada" }) => {
   if (!transactions || transactions.length === 0) {
     return <p className="no-data-message">Nenhuma transação no período.</p>;
@@ -171,7 +169,7 @@ export default function Relatorios() {
 
   useEffect(() => {
     buscarRelatorio(mes, ano);
-  }, [mes, ano]); // Adicionado mes e ano como dependências para recarregar ao mudar
+  }, [mes, ano]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -211,26 +209,25 @@ export default function Relatorios() {
       );
 
       const container = document.createElement("div");
-      container.style.position = "absolute"; // Usar absolute em vez de fixed para evitar problemas de layout
+      container.style.position = "absolute"; 
       container.style.left = "-9999px";
       container.style.top = "0";
-      container.style.width = "800px"; // Largura do layout do PDF
+      container.style.width = "800px"; 
       container.style.background = "#fff";
       container.innerHTML = htmlString;
       document.body.appendChild(container);
 
-      // Usar a largura real do contêiner para o html2canvas
       const canvas = await html2canvas(container, {
-        scale: 2, // Melhor resolução para o PDF
+        scale: 2, 
         useCORS: true,
         backgroundColor: "#fff",
-        windowWidth: 800, // Important: match the container width
-        scrollX: -window.scrollX, // Ajusta o scroll para evitar cortes
+        windowWidth: 800,
+        scrollX: -window.scrollX, 
         scrollY: -window.scrollY,
       });
       document.body.removeChild(container);
 
-      const imgData = canvas.toDataURL("image/jpeg", 1.0); // Usar JPEG para arquivos menores e qualidade 1.0
+      const imgData = canvas.toDataURL("image/jpeg", 1.0);
       const pdf = new jsPDF({
         orientation: "p",
         unit: "mm",
@@ -245,12 +242,10 @@ export default function Relatorios() {
       let heightLeft = imgHeight;
       let position = 0;
 
-      // Adiciona a primeira página
       pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
       heightLeft -= pdfHeight;
 
-      // Adiciona páginas extras se necessário
-      while (heightLeft > -10) { // Pequena margem para evitar cortes mínimos
+      while (heightLeft > -10) { 
         position = heightLeft - imgHeight;
         pdf.addPage();
         pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);

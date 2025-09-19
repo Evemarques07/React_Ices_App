@@ -1,8 +1,6 @@
-
-/* Variáveis CSS para cores */
 :root {
-  --primary-color: #1976d2; /* Azul para destaque do usuário */
-  --secondary-color: #007bff; /* Azul padrão para eventos */
+  --primary-color: #1976d2;
+  --secondary-color: #007bff;
   --text-color-dark: #333;
   --text-color-light: #fff;
   --bg-light: #f8f9fa;
@@ -42,10 +40,9 @@
   box-shadow: var(--shadow-light);
   padding: 1.5rem;
   position: relative;
-  overflow: hidden; /* Garante que elementos internos não vazem */
+  overflow: hidden;
 }
 
-/* Estilos do FullCalendar */
 .fc .fc-toolbar-title {
   font-size: 1.7rem;
   color: var(--primary-color);
@@ -89,7 +86,6 @@
   border-radius: 8px;
 }
 
-/* Estilos dos eventos */
 .fc-event {
   border-radius: 6px;
   padding: 4px 8px;
@@ -101,7 +97,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   transition: all 0.2s ease-in-out;
-  border: none; /* Remover borda padrão */
+  border: none;
 }
 
 .fc-event:hover {
@@ -109,32 +105,28 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Eventos gerais */
 .evento-geral {
   background-color: var(--secondary-color);
   color: var(--text-color-light);
 }
 
-/* Escalas */
 .escala {
-  background-color: #888; /* Cinza para escalas de outros */
+  background-color: #888;
   color: var(--text-color-light);
 }
 
-/* Escala do usuário logado - DESTAQUE */
 .escala-usuario {
-  background-color: var(--primary-color); /* Azul mais forte */
-  font-weight: 700; /* Mais negrito */
-  box-shadow: 0 2px 6px rgba(var(--primary-color), 0.3); /* Sombra para destaque */
+  background-color: var(--primary-color);
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(var(--primary-color), 0.3);
   border: 1px solid rgba(var(--primary-color), 0.5);
 }
 
 .escala-usuario:hover {
-  background-color: #1565c0; /* Escurecer um pouco no hover */
-  transform: scale(1.02); /* Leve aumento de tamanho */
+  background-color: #1565c0;
+  transform: scale(1.02);
 }
 
-/* Modal de Eventos */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -146,7 +138,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px); /* Efeito de blur no fundo */
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
@@ -160,7 +152,7 @@
   flex-direction: column;
   gap: 1.2rem;
   position: relative;
-  animation: fadeInScale 0.3s ease-out; /* Animação de entrada */
+  animation: fadeInScale 0.3s ease-out;
 }
 
 @keyframes fadeInScale {
@@ -226,14 +218,13 @@
 }
 
 .status-ativo {
-  background-color: #28a745; /* Verde */
+  background-color: #28a745;
 }
 
 .status-inativo {
-  background-color: #dc3545; /* Vermelho */
+  background-color: #dc3545;
 }
 
-/* Responsividade */
 @media (max-width: 800px) {
   .calendario-container {
     padding: 1rem;
@@ -298,7 +289,6 @@
   }
 }
 
-/* Header do FullCalendar responsivo para botões */
 
 .fc-header-toolbar {
   display: flex;

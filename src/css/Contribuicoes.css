@@ -1,9 +1,6 @@
-/* Contribuicoes.css */
-
-/* Variáveis CSS para cores e sombras */
 :root {
-  --primary-color: #007bff; /* Azul vibrante */
-  --secondary-color: #6c757d; /* Cinza médio */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
   --text-color: #333;
   --light-gray: #f8f9fa;
   --border-color: #dee2e6;
@@ -12,12 +9,11 @@
   --shadow-md: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 
-  /* Cores específicas para tipos de contribuição */
-  --dizimo-color: #28a745; /* Verde */
-  --oferta-comum-color: #ffc107; /* Amarelo */
-  --compromisso-fe-color: #fd7e14; /* Laranja */
-  --nossa-casa-color: #6f42c1; /* Roxo */
-  --oferta-especial-color: #17a2b8; /* Azul claro */
+  --dizimo-color: #28a745;
+  --oferta-comum-color: #ffc107;
+  --compromisso-fe-color: #fd7e14;
+  --nossa-casa-color: #6f42c1;
+  --oferta-especial-color: #17a2b8;
 }
 
 body {
@@ -71,7 +67,7 @@ body {
 }
 
 .error-message {
-  color: #dc3545; /* Vermelho para erros */
+  color: #dc3545;
   background-color: #fdd;
   border: 1px solid #dc3545;
 }
@@ -134,12 +130,11 @@ body {
   font-weight: 700;
   margin-bottom: 25px;
   padding-bottom: 10px;
-  border-bottom: 3px solid; /* Cor definida pelas classes de tipo */
+  border-bottom: 3px solid;
   display: inline-block;
   color: var(--text-color);
 }
 
-/* Cores dos títulos de categoria */
 .category-title.dizimo {
   border-color: var(--dizimo-color);
 }
@@ -170,7 +165,7 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
-  border-left: 5px solid; /* Cor definida pelas classes de tipo */
+  border-left: 5px solid;
   min-height: 60px;
 }
 
@@ -179,7 +174,6 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* Cores da borda esquerda do card */
 .card.dizimo {
   border-left-color: var(--dizimo-color);
 }
@@ -198,7 +192,7 @@ body {
 
 .card-header {
   padding: 8px 14px;
-  background-color: #e9ecef; /* Um cinza claro para o cabeçalho */
+  background-color: #e9ecef;
   display: flex;
   justify-content: flex-end;
   border-bottom: 1px solid var(--border-color);
@@ -207,7 +201,7 @@ body {
 .card-value {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--primary-color); /* Cor principal para o valor */
+  color: var(--primary-color);
 }
 
 .card.dizimo .card-value {
@@ -243,7 +237,7 @@ body {
 }
 
 .meta-icon {
-  color: var(--primary-color); /* Ícones com a cor principal */
+  color: var(--primary-color);
 }
 
 .card.dizimo .meta-icon {
@@ -262,7 +256,6 @@ body {
   color: var(--oferta-especial-color);
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .contribuicoes-container {
     margin: 20px auto;
@@ -283,7 +276,7 @@ body {
   }
 
   .card-grid {
-    grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    grid-template-columns: 1fr;
   }
 }
 
