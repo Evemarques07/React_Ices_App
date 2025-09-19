@@ -13,6 +13,31 @@ import CalendarioEventos from "./pages/CalendarioEventos";
 import Drawer from "./components/utils/Drawer";
 import Header from "./components/utils/Header";
 import PWAInstallPrompt from "./components/utils/PWAInstallPrompt";
+
+// Componente para avisar sobre nova versão
+function UpdateBanner({ onReload }) {
+  return (
+    <div
+      style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        width: "100vw",
+        background: "#007bff",
+        color: "#fff",
+        textAlign: "center",
+        padding: "1rem",
+        zIndex: 99999,
+        fontWeight: "bold",
+        boxShadow: "0 -2px 12px rgba(0,0,0,0.18)",
+        cursor: "pointer",
+      }}
+      onClick={onReload}
+    >
+      Nova versão disponível! Clique para atualizar.
+    </div>
+  );
+}
 import "./App.css";
 
 function decodeJWT(token) {
@@ -42,6 +67,42 @@ function App() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [pendingPop, setPendingPop] = useState(false);
 
+  const [updateAvailable, setUpdateAvailable] = useState(false);
+
+  useEffect(() => {
+    let lastVersion = null;
+    let intervalId = null;
+    function checkVersion() {
+      fetch("/index.html", { cache: "no-store" })
+        .then((res) => res.text())
+        .then((text) => {
+          // Extrai um hash ou data do build do HTML
+          const match = text.match(
+            /<meta name="build-version" content="([^"]+)"/
+          );
+          const version = match ? match[1] : text.length; 
+          if (lastVersion === null) {
+            lastVersion = version;
+          } else if (version !== lastVersion) {
+            setUpdateAvailable(true);
+            clearInterval(intervalId);
+          }
+        });
+    }
+    intervalId = setInterval(checkVersion, 15000); 
+    checkVersion();
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleReload = () => {
+    if (window.caches) {
+      caches.keys().then((names) => {
+        for (let name of names) caches.delete(name);
+      });
+    }
+    window.location.reload(true);
+  };
+
   useEffect(() => {
     if (!userInfo) return;
     const handlePopState = () => {
@@ -63,7 +124,7 @@ function App() {
       if (isTokenExpired(userInfo)) {
         handleLogout();
       }
-    }, 30000); 
+    }, 30000);
     return () => clearInterval(interval);
   }, [userInfo]);
 
@@ -84,7 +145,6 @@ function App() {
       }
     }
   }, []);
-
 
   const handleLogin = (data) => {
     setUser(data);
@@ -129,10 +189,12 @@ function App() {
   const autorizadoDiacono =
     cargos.includes("Diacono") || cargos.includes("primeiro_usuario");
 
-  const autorizadoPatrimonio = cargos.includes("Patrimonio") || cargos.includes("primeiro_usuario");
+  const autorizadoPatrimonio =
+    cargos.includes("Patrimonio") || cargos.includes("primeiro_usuario");
 
   return (
     <div className="app-root">
+      {updateAvailable && <UpdateBanner onReload={handleReload} />}
       {userInfo && (
         <>
           <Header
@@ -264,7 +326,10 @@ function App() {
                 <Route path="/diacono" element={<Diacono user={user} />} />
               ) : null}
               {autorizadoPatrimonio || autorizadoPastor ? (
-                <Route path="/patrimonio" element={<Patrimonio user={user} />} />
+                <Route
+                  path="/patrimonio"
+                  element={<Patrimonio user={user} />}
+                />
               ) : null}
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
             </RouterRoutes>
