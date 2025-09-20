@@ -53,6 +53,52 @@
     justify-content: center;
   }
 
+  /* Logo responsiva */
+  .logo-home {
+    z-index: 1;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+  
+  /* Desktop: logo do lado esquerdo */
+  @media (min-width: 1020px) {
+    .card-boas-vindas {
+      flex-direction: row;
+      text-align: left;
+      gap: 30px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    
+    .logo-home {
+      order: 1;
+      margin-bottom: 0;
+    }
+    
+    .titulo-boas-vindas {
+      order: 2;
+      align-items: flex-start;
+      flex: 1;
+    }
+  }
+  
+  /* Mobile: logo acima */
+  @media (max-width: 1019px) {
+    .card-boas-vindas {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .logo-home {
+      order: 1;
+      margin-bottom: 20px;
+    }
+    
+    .titulo-boas-vindas {
+      order: 2;
+      align-items: center;
+    }
+  }
+
   .card-boas-vindas::before {
     content: "";
     position: absolute;
@@ -66,21 +112,12 @@
     z-index: 0;
   }
 
-  .logo-home {
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 25px;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
-    z-index: 1;
-  }
-
   .titulo-boas-vindas {
     margin: 0;
     font-size: 2.2rem;
     font-weight: 700;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 5px;
     z-index: 1;
     line-height: 1.2;

@@ -103,6 +103,28 @@ const RightGroup = styled.div`
   gap: 25px; /* Mais espaço entre os elementos */
 `;
 
+const CenterLogo = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  img {
+    height: 32px;
+    width: auto;
+  }
+  
+  /* Esconde no mobile para não atrapalhar o layout */
+  @media (max-width: 1019px) {
+    display: none;
+  }
+`;
+
 const UserInfoText = styled.div`
   text-align: right;
 `;
@@ -275,6 +297,14 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen, collapsed,
               </HamburgerButton>
             )}
           </LeftGroup>
+
+          <CenterLogo>
+            <img 
+              src="/src/assets/iceslogo12.png" 
+              alt="Logo ICES" 
+              title="Igreja Cristã Evangélica Siqueira"
+            />
+          </CenterLogo>
 
           <RightGroup>
             <UserInfoText>

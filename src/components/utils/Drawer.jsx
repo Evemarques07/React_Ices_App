@@ -336,12 +336,12 @@ export default function Drawer({
           <MenuText $collapsed={collapsed}>Sair</MenuText>
         </LogoutButton>
         
-        {!collapsed && ( // O botão fechar só aparece quando não está colapsado (e em mobile)
+        {/* {!collapsed && ( // O botão fechar só aparece quando não está colapsado (e em mobile)
           <CloseButton onClick={() => setOpen(false)}>
             <ChevronLeft size={20} />
             <MenuText $collapsed={false}>Fechar</MenuText>
           </CloseButton>
-        )}
+        )} */}
       </DrawerContainer>
     </>
   );

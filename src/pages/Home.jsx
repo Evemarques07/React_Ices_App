@@ -31,6 +31,16 @@ export default function Home({ user }) {
   return (
     <div className="container-principal">
       <div className="card-boas-vindas">
+        <img
+          src={logo}
+          alt="Logo Ices"
+          className="logo-home"
+          style={{
+            width: 80,
+            height: 80,
+            objectFit: "contain",
+          }}
+        />
         <h2 className="titulo-boas-vindas">
           <p className="saudacao">Bem-vindo,</p>
           <p className="nome-usuario-home">
@@ -40,22 +50,6 @@ export default function Home({ user }) {
             )}
           </p>
         </h2>
-        <img
-          src={logo}
-          alt="Logo Ices"
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 120,
-            height: 120,
-            opacity: 0.18,
-            pointerEvents: "none",
-            zIndex: 0,
-            objectFit: "contain",
-          }}
-        />
       </div>
 
       <div className="card-sobre-app">
