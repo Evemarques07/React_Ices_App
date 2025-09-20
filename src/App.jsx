@@ -62,6 +62,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const [showExitModal, setShowExitModal] = useState(false);
@@ -200,12 +201,15 @@ function App() {
             userInfo={userInfo}
             drawerOpen={drawerOpen}
             setDrawerOpen={setDrawerOpen}
+            collapsed={collapsed}
+            setCollapsed={setCollapsed}
             handleLogout={handleLogout}
           />
           <Drawer
             userInfo={userInfo}
             open={drawerOpen}
             setOpen={setDrawerOpen}
+            collapsed={collapsed}
             autorizadoTesoureiro={autorizadoTesoureiro || autorizadoPastor}
             autorizadoSecretario={autorizadoSecretario || autorizadoPastor}
             autorizadoDiacono={autorizadoDiacono || autorizadoPastor}
@@ -342,16 +346,16 @@ function App() {
             padding-left: 30px;
           }
           .drawer-content {
-            margin-left: 220px;
-            transition: margin-left 0.3s;
+            margin-left: ${collapsed ? '20px' : '230px'};
+            transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
           }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 1019px) {
           .main-content {
             padding-left: 0;
           }
           .drawer-content {
-            margin-left: 0;
+            margin-left: 0; /* No mobile, sem margem */
           }
         }
       `}</style>

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { FaBars, FaSignOutAlt, FaUserEdit, FaKey } from "react-icons/fa";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { usuariosAPI } from "../../services/api";
 
@@ -34,6 +35,30 @@ const LeftGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 15px; /* Mais espaço entre os elementos */
+`;
+
+const CollapseButton = styled.button`
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  /* Esconde no mobile */
+  @media (max-width: 1019px) {
+    display: none;
+  }
 `;
 
 const HamburgerButton = styled.button`
@@ -140,7 +165,7 @@ const LogoutButton = styled.button`
   }
 `;
 
-export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
+export default function Header({ userInfo, drawerOpen, setDrawerOpen, collapsed, setCollapsed }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [novaSenha, setNovaSenha] = useState("");
@@ -235,6 +260,12 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen }) {
       {userInfo && (
         <UserContentWrapper>
           <LeftGroup>
+            <CollapseButton
+              onClick={() => setCollapsed(!collapsed)}
+              title={collapsed ? "Expandir menu" : "Recolher menu"}
+            >
+              {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            </CollapseButton>
             {!drawerOpen && setDrawerOpen && (
               <HamburgerButton
                 onClick={() => setDrawerOpen(true)}
