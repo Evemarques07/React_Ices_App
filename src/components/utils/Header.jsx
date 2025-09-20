@@ -3,6 +3,8 @@ import { FaBars, FaSignOutAlt, FaUserEdit, FaKey } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { usuariosAPI } from "../../services/api";
+import logo from "../../assets/iceslogo12.png"; 
+
 
 const HeaderContainer = styled.header`
   background: linear-gradient(
@@ -299,8 +301,9 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen, collapsed,
           </LeftGroup>
 
           <CenterLogo>
+            
             <img 
-              src="/src/assets/iceslogo12.png" 
+              src={logo} 
               alt="Logo ICES" 
               title="Igreja Cristã Evangélica Siqueira"
             />
