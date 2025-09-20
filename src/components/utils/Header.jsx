@@ -316,9 +316,6 @@ export default function Header({ userInfo, drawerOpen, setDrawerOpen, collapsed,
                 <UserRole>{getCargoName(userInfo.cargos[0])}</UserRole>
               )}
             </UserInfoText>
-            {/* <LogoutButton onClick={handleLogout} title="Sair da conta">
-              <FaSignOutAlt /> <span>Sair</span>
-            </LogoutButton> */}
             <div style={{ position: "relative" }}>
               <UserAvatar
                 ref={avatarRef}
